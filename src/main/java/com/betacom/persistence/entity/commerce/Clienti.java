@@ -9,8 +9,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+
+
 @Getter
 @Setter
+
 @Entity
 @Table (name="clienti")
 public class Clienti {
@@ -19,17 +22,21 @@ public class Clienti {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
     
-	@Column (nullable = false)
+	@Column (nullable =false)
 	private String email;
 	
-	@Column (nullable = false)
+	@Column (nullable =false)
 	private String nome;
 	
 	@Column (nullable =false)
 	private String cognome;
 	
-	@Column (nullable = false)
+	@Column (nullable =false)
 	private String indirizzo;
+	
+	
+	
+	
 	
 	
 }

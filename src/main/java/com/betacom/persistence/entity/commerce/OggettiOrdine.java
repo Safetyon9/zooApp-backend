@@ -1,7 +1,4 @@
-package com.betacom.persistence.entity.gestione;
-
-import java.time.LocalTime;
-import java.util.List;
+package com.betacom.persistence.entity.commerce;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,34 +6,29 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 
 @Entity
-@Table (name="turni")
-
-public class Turni {
+@Table (name="oggetti_ordine")
+public class OggettiOrdine {
 
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
+
+	@Column (nullable =false)
+	private Integer quantita;
 	
 	@Column (nullable =false)
-	private LocalTime inizioTurno;
+	private Integer totale;
 	
-	@Column (nullable =false)
-	private LocalTime fineTurno;
+	@ManyToOne
+	@JoinColumn(name ="prodotti" , referencedColumnName = "id")
+	private Prodotti prodotto;
 	
-    @OneToMany
-    @JoinColumn(name = "area", referencedColumnName = "id")
-    private List<Aree> area;
-    
-	
-	
+	@ManyToOne
+	@JoinColumn(name = "ordini",referencedColumnName ="id")
+	private Ordini ordine;
 	
 }
