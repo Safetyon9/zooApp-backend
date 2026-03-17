@@ -38,7 +38,7 @@ public class Prodotti {
 
 	@OneToMany
 	@JoinColumn(name ="oggetti_ordini" , referencedColumnName = "id")
-	private List<OggettiOrdine> oggettoOrdine;
+	private List<OggettiOrdini> oggettoOrdine;
 	
 	
 	

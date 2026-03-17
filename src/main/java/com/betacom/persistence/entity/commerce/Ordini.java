@@ -34,7 +34,7 @@ public class Ordini {
 	
 	@OneToMany
 	@JoinColumn(name = "oggetti_ordine",referencedColumnName ="id")
-	private List<OggettiOrdine> OggettoOrdine;
+	private List<OggettiOrdini> OggettoOrdine;
 	
 	
 }
