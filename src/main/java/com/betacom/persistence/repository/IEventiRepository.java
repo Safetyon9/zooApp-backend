@@ -1,5 +1,5 @@
 package com.betacom.persistence.repository;
 
-public interface IAreeRepository {
+public interface IEventiRepository {
 
 }

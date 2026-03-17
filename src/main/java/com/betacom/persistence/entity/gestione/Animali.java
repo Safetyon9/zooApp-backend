@@ -1,4 +1,4 @@
-package com.betacom.persistence.entity;
+package com.betacom.persistence.entity.gestione;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,18 +15,26 @@ import lombok.Setter;
 @Setter
 
 @Entity
-@Table (name="mangime")
-public class Mangimi {
-
+@Table (name="animali")
+public class Animali {
+	
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+	@Column(nullable = false)
+	private Integer numeroAnimali;
 	
-	@Column(nullable=false)
-	private String tipoMangime;
+	@Column(nullable = false)
+	private String specie;
 	
+    @OneToOne
+    @JoinColumn(name = "area", referencedColumnName = "id")
+    private Aree area;
+    
 	@OneToOne
-	@JoinColumn(name = "animali",referencedColumnName ="id")
-	private Animali animale;
+	@JoinColumn(name = "mangime",referencedColumnName ="id")
+	private Mangimi mangime;
+
 	
 }

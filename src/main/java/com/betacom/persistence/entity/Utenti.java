@@ -1,6 +1,7 @@
 package com.betacom.persistence.entity;
 
 import com.betacom.enums.Roles;
+import com.betacom.persistence.entity.gestione.Dipendenti;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

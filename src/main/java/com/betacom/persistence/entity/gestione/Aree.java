@@ -1,4 +1,4 @@
-package com.betacom.persistence.entity;
+package com.betacom.persistence.entity.gestione;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.betacom.persistence.entity;
+package com.betacom.persistence.entity.commerce;
 
 import java.time.LocalDate;
 

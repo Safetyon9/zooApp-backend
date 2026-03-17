@@ -1,4 +1,4 @@
-package com.betacom.persistence.entity;
+package com.betacom.persistence.entity.commerce;
 
 import java.time.LocalDate;
 
@@ -13,21 +13,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
-@Table (name="biglietti")
-public class Biglietti {
+@Table (name="eventi")
+public class Eventi {
 
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 	
 	@Column(nullable = false)
-	private LocalDate dataBiglietto;
+	private String tipoEvento;
 	
 	@Column(nullable = false)
-	private Integer prezzo;
-	
-	
-	
+	private LocalDate dataEvento;
 }

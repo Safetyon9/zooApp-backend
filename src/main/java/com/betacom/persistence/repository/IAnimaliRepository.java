@@ -1,5 +1,5 @@
 package com.betacom.persistence.repository;
 
-public class IAnimaliRepository {
+public interface IAnimaliRepository {
 
 }
