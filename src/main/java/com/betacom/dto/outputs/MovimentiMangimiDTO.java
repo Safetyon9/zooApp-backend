@@ -9,6 +9,6 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class AnimaliDTO {
+public class MovimentiMangimiDTO {
 
 }
