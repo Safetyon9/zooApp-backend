@@ -14,16 +14,12 @@ import lombok.Setter;
 @Table(name="scimmie")
 public class Scimmie extends Animali{
 	
-	@Column(nullable = false, length = 30)
-	private String tipoMovimenti; // es: "brachiazione", "quadrupede", "saltatoria"
+	@Column(name = "tipo_movimento", nullable = false, length = 30)
+	private String tipoMovimento; // es: "brachiazione", "quadrupede", "saltatoria"
 	
-	@Column(nullable = false)
+	@Column(name = "coda_prensile", nullable = false)
 	private Boolean codaPrensile; //alcune scimmie usano la coda come una “mano”
 	
-	@Column(nullable = false, length = 30)
+	@Column(name = "tipo_dentatura", nullable = false, length = 30)
 	private String tipoDentatura; // es: "frugivora(frutta)", "onnivora", "insettivora"
-	
-	
-	
-	
 }

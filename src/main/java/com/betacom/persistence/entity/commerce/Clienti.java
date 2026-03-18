@@ -32,11 +32,5 @@ public class Clienti {
 	private String cognome;
 	
 	@Column (nullable =false)
-	private String indirizzo;
-	
-	
-	
-	
-	
-	
+	private String indirizzo;	
 }

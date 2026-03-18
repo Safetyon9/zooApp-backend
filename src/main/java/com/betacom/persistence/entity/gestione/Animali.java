@@ -1,5 +1,7 @@
 package com.betacom.persistence.entity.gestione;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -54,8 +56,11 @@ public class Animali {
 	@Column(nullable = false)
 	private Integer eta;
 	
-	@Column(nullable = false)
+	@Column(name = "aspettativa_vita", nullable = false)
 	private Integer aspettativaVita;
+	
+	@Column(name = "data_arrivo", nullable = false)
+	private LocalDate dataArrivo;
 	
     @OneToOne
     @JoinColumn(name = "area", referencedColumnName = "id")

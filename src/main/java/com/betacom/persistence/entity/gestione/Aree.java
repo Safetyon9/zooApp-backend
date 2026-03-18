@@ -46,7 +46,5 @@ public class Aree {
 	
     @ManyToOne
     @JoinColumn(name = "turni", referencedColumnName = "id")
-    private Turni turno;
-    
-	
+    private Turni turno;	
 }

@@ -14,12 +14,12 @@ import lombok.Setter;
 @Table(name = "leoni")
 public class Leoni extends Animali{
 	
-	@Column(nullable = false)
+	@Column(name = "lunghezza_criniera", nullable = false)
     private Double lunghezzaCriniera; // in centimetri
 
-    @Column(nullable = false)
+    @Column(name = "numero_cuccioli", nullable = false)
     private Integer numeroCuccioli;
 
-    @Column(nullable = false)
+    @Column(name = "velocità_massima", nullable = false)
     private Double velocitaMassima;	// in km/h
 }
