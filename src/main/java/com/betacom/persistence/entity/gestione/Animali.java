@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -13,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table (name="animali")
 public class Animali {
@@ -23,10 +25,37 @@ public class Animali {
     private Integer id;
     
 	@Column(nullable = false)
-	private Integer numeroAnimali;
+	private Double peso;
 	
 	@Column(nullable = false)
-	private String specie;
+    private Double altezza;
+	
+	@Column(nullable = false, length = 50)
+	private String colore;
+	
+	@Column(nullable = false, length = 20)
+	private String sesso;
+	
+	@Column(nullable = false, length = 50)
+	private String dieta;
+	
+	@Column(nullable = false, length = 50)
+    private String specie;
+	
+	@Column(nullable = false, length = 50)
+    private String provenienza;
+	
+	@Column(nullable = false, length = 50)
+    private String habitat;
+	
+	@Column(nullable = false)
+	private boolean pericolosita;
+	
+	@Column(nullable = false)
+	private Integer eta;
+	
+	@Column(nullable = false)
+	private Integer aspettativaVita;
 	
     @OneToOne
     @JoinColumn(name = "area", referencedColumnName = "id")
