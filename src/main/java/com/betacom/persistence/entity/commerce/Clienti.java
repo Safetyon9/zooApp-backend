@@ -3,9 +3,12 @@ package com.betacom.persistence.entity.commerce;
 import java.util.List;
 
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.checkout.Ordini;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +23,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
 @Table (name="clienti")
 public class Clienti {
@@ -29,7 +31,7 @@ public class Clienti {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
     
-	@Column (nullable =false)
+	@Column (nullable =false, unique = true)
 	private String email;
 	
 	@Column (nullable =false)
@@ -42,12 +44,15 @@ public class Clienti {
 	private String indirizzo;	
 	
 	@OneToOne
-	@JoinColumn(name = "utenti",referencedColumnName ="id", unique = true)
+	@JoinColumn(name = "utente_id",referencedColumnName ="id", nullable = false, unique = true)
 	private Utenti utente;
 	
-	@OneToOne
-	@JoinColumn(name = "carrelli",referencedColumnName ="id", unique = true)
-	private Carrelli carrello;
+	@OneToOne(
+			mappedBy = "cliente",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY
+			)
+    private Carrelli carrello;
 	
 	@OneToMany(mappedBy = "cliente")
 	private List<Ordini> ordini;
