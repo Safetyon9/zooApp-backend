@@ -39,5 +39,7 @@ public class Dipendenti {
 	@JoinColumn(name = "movimenti_mangime",referencedColumnName ="id")
 	private List<MovimentiMangimi> MovimentoMangime;
 	
-	
+	@ManyToOne
+    @JoinColumn(name = "turni",referencedColumnName ="id")
+    private List<Turni> turno;
 }

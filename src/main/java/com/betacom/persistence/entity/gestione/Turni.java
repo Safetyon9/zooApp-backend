@@ -36,7 +36,8 @@ public class Turni {
     @JoinColumn(name = "area", referencedColumnName = "id")
     private List<Aree> area;
     
-	
-	
+    @OneToMany
+    @JoinColumn(name = "dipendenti", referencedColumnName = "id")
+    private List<Dipendenti> dipendente;
 	
 }
