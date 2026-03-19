@@ -17,6 +17,10 @@
 application-local.properties
 *.local.properties
 
+# File SQL specifici
+define.sql
+drop.sql
+
 # Sistemi operativi
 Thumbs.db
 .DS_Store
