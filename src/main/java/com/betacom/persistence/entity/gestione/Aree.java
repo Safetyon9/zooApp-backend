@@ -2,26 +2,21 @@ package com.betacom.persistence.entity.gestione;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
-@Table (name="area")
+@Table (name="aree")
 public class Aree {
 
 	@Id
@@ -31,20 +26,30 @@ public class Aree {
 	@Column (nullable = false)
 	private String tipoStruttura;
 	
+	@Column(nullable = false)
+    private String nomeArea;
+	
+	@Column
+    private String descrizione;
+
+    @Column(nullable = false)
+    private Integer capienza;
 
 	@OneToMany(
 			mappedBy = "area",
-			fetch = FetchType.EAGER
+			fetch = FetchType.LAZY
 			)
 	private List<Animali> animale;
 	
 	@OneToMany(
 			mappedBy = "area",
-			fetch = FetchType.EAGER
+			fetch = FetchType.LAZY
 			)
-	private List<Dipendenti> dipendente;
+	private List<MangimiStocks> mangimiStocks;
 	
-    @ManyToOne
-    @JoinColumn(name = "turni", referencedColumnName = "id")
-    private Turni turno;	
+	@OneToMany(
+			mappedBy = "area",
+			fetch = FetchType.LAZY
+			)
+    private List<AssegnazioneTurni> assegnazioniTurno;
 }

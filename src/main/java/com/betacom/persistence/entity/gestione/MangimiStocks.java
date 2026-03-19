@@ -1,5 +1,6 @@
 package com.betacom.persistence.entity.gestione;
 
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,21 +16,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table (name="movimenti_mangime")
-public class MovimentiMangimi {
+@Table (name="mangime_stocks")
+public class MangimiStocks {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
-    @Column(nullable=false)
-    private Boolean movimento; //true entrata mangime false uscita
 
-    @ManyToOne
-    @JoinColumn(name = "dipendente_id")
-    private Dipendenti dipendente;
+    @Column(nullable = false)
+    private Double quantita;
+    
+    @Column(name = "data_scadenza", nullable = false)
+    private LocalDate dataScadenza;
     
     @ManyToOne
-    @JoinColumn(name = "mangime_id", nullable = false)
+    @JoinColumn(name = "mangime_id")
     private Mangimi mangime;
+    
+    @ManyToOne
+    @JoinColumn(name = "area_id")
+    private Aree area;
 }

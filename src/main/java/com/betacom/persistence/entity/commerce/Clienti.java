@@ -42,14 +42,13 @@ public class Clienti {
 	private String indirizzo;	
 	
 	@OneToOne
-	@JoinColumn(name = "utenti",referencedColumnName ="id")
+	@JoinColumn(name = "utenti",referencedColumnName ="id", unique = true)
 	private Utenti utente;
 	
 	@OneToOne
-	@JoinColumn(name = "carrelli",referencedColumnName ="id")
+	@JoinColumn(name = "carrelli",referencedColumnName ="id", unique = true)
 	private Carrelli carrello;
 	
-	@OneToMany
-	@JoinColumn(name = "ordine",referencedColumnName ="id")
-	private List<Ordini> ordine;
+	@OneToMany(mappedBy = "cliente")
+	private List<Ordini> ordini;
 }

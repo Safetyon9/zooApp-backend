@@ -21,7 +21,6 @@ import lombok.Setter;
 @Table (name="biglietti")
 public class Biglietti {
 
-
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,5 +38,4 @@ public class Biglietti {
 	@ManyToOne
 	@JoinColumn(name ="eventi" , referencedColumnName = "id")
 	private Eventi evento;
-	
 }
