@@ -45,6 +45,10 @@ public class Clienti {
 	@JoinColumn(name = "utenti",referencedColumnName ="id")
 	private Utenti utente;
 	
+	@OneToOne
+	@JoinColumn(name = "carrelli",referencedColumnName ="id")
+	private Carrelli carrello;
+	
 	@OneToMany
 	@JoinColumn(name = "ordine",referencedColumnName ="id")
 	private List<Ordini> ordine;

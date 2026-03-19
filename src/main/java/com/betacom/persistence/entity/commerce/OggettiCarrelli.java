@@ -1,5 +1,7 @@
 package com.betacom.persistence.entity.commerce;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,12 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Setter
+@Getter
 @Entity
-@Table (name="oggetti_ordine")
-public class OggettiOrdini {
-
+@Table(name="oggetti_carrello")
+public class OggettiCarrelli {
+	
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,10 +30,6 @@ public class OggettiOrdini {
 	private Integer prezzoTotale;
 	
 	@ManyToOne
-	@JoinColumn(name ="prodotti" , referencedColumnName = "id")
-	private Prodotti prodotto;
-	
-	@ManyToOne
-	@JoinColumn(name = "ordini",referencedColumnName ="id")
-	private Ordini ordine;
+	@JoinColumn(name = "carrelli",referencedColumnName ="id")
+	private Carrelli carrello;
 }
