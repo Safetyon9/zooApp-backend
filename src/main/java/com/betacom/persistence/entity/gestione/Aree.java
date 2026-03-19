@@ -32,11 +32,11 @@ public class Aree {
 	private String tipoStruttura;
 	
 
-	@OneToOne(
+	@OneToMany(
 			mappedBy = "area",
-			cascade =  CascadeType.REMOVE
+			fetch = FetchType.EAGER
 			)
-	private Animali animale;
+	private List<Animali> animale;
 	
 	@OneToMany(
 			mappedBy = "area",
@@ -46,7 +46,5 @@ public class Aree {
 	
     @ManyToOne
     @JoinColumn(name = "turni", referencedColumnName = "id")
-    private Turni turno;
-    
-	
+    private Turni turno;	
 }

@@ -40,7 +40,4 @@ public class Prodotti {
 	@JoinColumn(name ="oggetti_ordini" , referencedColumnName = "id")
 	private List<OggettiOrdini> oggettoOrdine;
 	
-	
-	
-	
 }

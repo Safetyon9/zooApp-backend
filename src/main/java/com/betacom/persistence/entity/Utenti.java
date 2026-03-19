@@ -1,6 +1,7 @@
 package com.betacom.persistence.entity;
 
 import com.betacom.enums.Roles;
+import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.gestione.Dipendenti;
 
 import jakarta.persistence.Column;
@@ -41,7 +42,9 @@ public class Utenti {
 	@JoinColumn(name = "dipendenti",referencedColumnName ="id")
 	private Dipendenti dipendente;
 	
-	
+	@OneToOne
+	@JoinColumn(name = "clienti",referencedColumnName ="id")
+	private Clienti cliente;
 	
 	
 }
