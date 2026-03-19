@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -35,9 +37,12 @@ public class Dipendenti {
 	@JoinColumn(name = "utenti",referencedColumnName ="id")
 	private Utenti utente;
 	
-	@OneToMany
-	@JoinColumn(name = "movimenti_mangime",referencedColumnName ="id")
-	private List<MovimentiMangimi> MovimentoMangime;
-	
+	@ManyToMany
+    @JoinTable(
+        name = "dipendenti_turni",
+        joinColumns = @JoinColumn(name = "dipendente_id"),
+        inverseJoinColumns = @JoinColumn(name = "turno_id")
+    )
+    private List<Turni> turni;
 	
 }
