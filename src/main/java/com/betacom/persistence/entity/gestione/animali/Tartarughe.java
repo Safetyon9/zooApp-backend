@@ -17,7 +17,6 @@ import lombok.Setter;
 @Table(name="tartarughe")
 public class Tartarughe extends Animali{
 
-
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;

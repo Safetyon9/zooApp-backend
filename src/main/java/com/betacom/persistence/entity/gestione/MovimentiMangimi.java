@@ -24,11 +24,10 @@ public class MovimentiMangimi {
 	
 	@Column(nullable=false)
 	private Boolean movimento;
+	
 	//true entrata mangime false uscita
 	@ManyToOne
 	@JoinColumn(name = "dipendenti",referencedColumnName ="id")
 	private Dipendenti dipendente;
-	
-	
 	
 }
