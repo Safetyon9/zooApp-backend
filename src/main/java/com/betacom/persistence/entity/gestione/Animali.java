@@ -70,5 +70,5 @@ public abstract class Animali {
     private Aree area;
     
 	@ManyToMany(mappedBy = "animali")
-    private List<Mangimi> tipiMangimi;
+    private List<Mangimi> Mangimi;
 }

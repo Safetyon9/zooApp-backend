@@ -33,6 +33,6 @@ public class OggettiCarrelli {
     private Carrelli carrello;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "acquistabile_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
     private Items item;
 }

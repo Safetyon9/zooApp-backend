@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Table (name="animali")
+@Table (name="items")
 public abstract class Items {
 
 	@Id
