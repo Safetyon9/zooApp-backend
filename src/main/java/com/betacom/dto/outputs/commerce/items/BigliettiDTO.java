@@ -1,4 +1,4 @@
-package com.betacom.dto.outputs.commerce;
+package com.betacom.dto.outputs.commerce.items;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class Ordini {
+public class BigliettiDTO {
 
 }

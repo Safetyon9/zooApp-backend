@@ -1,4 +1,4 @@
-package com.betacom.dto.outputs.commerce;
+package com.betacom.dto.outputs.commerce.checkout;
 
 import lombok.Builder;
 import lombok.Getter;

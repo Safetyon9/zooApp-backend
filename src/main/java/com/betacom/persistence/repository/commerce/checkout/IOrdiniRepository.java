@@ -1,4 +1,4 @@
-package com.betacom.persistence.repository.commerce;
+package com.betacom.persistence.repository.commerce.checkout;
 
 import org.springframework.stereotype.Repository;
 
