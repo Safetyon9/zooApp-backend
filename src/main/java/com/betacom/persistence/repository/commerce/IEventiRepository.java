@@ -8,4 +8,7 @@ import com.betacom.persistence.entity.commerce.Eventi;
 @Repository
 public interface IEventiRepository extends JpaRepository<Eventi, Integer>{
 
+	
+	
+	
 }
