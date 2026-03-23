@@ -62,7 +62,9 @@ public class PagamentiImpl implements IPagamentiServices{
 		pag.setImporto(req.getImporto());
 		pag.setOrdine(ordine);
 		pag.setMetodoPagamento(metodo);
-		pag.setCoupon();
+		pag.setCoupon(coupon);
+		
+		
 		
 	}
 	
