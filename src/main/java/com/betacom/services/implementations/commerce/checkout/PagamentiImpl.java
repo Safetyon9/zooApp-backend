@@ -123,17 +123,5 @@ public class PagamentiImpl implements IPagamentiServices{
 
 		return buildPagamentoDTO(pag.get());
 	}
-	
-	public static PagamentiDTO buildPagamentoDTO(Pagamenti p){
-	    return PagamentiDTO.builder()
-	            .id(p.getId())
-	            .importo(p.getImporto())
-	            .stato(p.getStato().toString())
-	            .dataEsecuzione(p.getDataEsecuzione())
-	            .ordineId(p.getOrdine().getId())
-	            .metodoPagamentoId(p.getId())
-	            .couponId(p.getId())
-	            .build();
-	}
 
 }

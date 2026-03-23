@@ -1,14 +1,11 @@
 package com.betacom.utilities;
-
-<<<<<<< HEAD
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
+import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
-=======
-import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
-import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
->>>>>>> 1f8dce9d210e33446c49b1e93153bc5ecebc218e
+import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 
 public class Mapper {
@@ -24,9 +21,7 @@ public class Mapper {
 	            .tipo(b.getTipo())
 	            .build();
 	}
-	
-<<<<<<< HEAD
-	
+
 	public static ClientiDTO buildClienteDTO(Clienti c){
 	    return ClientiDTO.builder()
 	            .id(c.getId())
@@ -36,10 +31,9 @@ public class Mapper {
 	            .indirizzo(c.getIndirizzo())
 	            .utenteId(c.getUtenteId())
 	            .build();
-	}//devo sistemare utenti
+	}
 	
-	
-=======
+
 	private OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()
                 .id(oo.getId())
@@ -51,5 +45,16 @@ public class Mapper {
                 .build();
     }
 
->>>>>>> 1f8dce9d210e33446c49b1e93153bc5ecebc218e
+	
+	public static PagamentiDTO buildPagamentoDTO(Pagamenti p){
+	    return PagamentiDTO.builder()
+	            .id(p.getId())
+	            .importo(p.getImporto())
+	            .stato(p.getStato().toString())
+	            .dataEsecuzione(p.getDataEsecuzione())
+	            .ordineId(p.getOrdine().getId())
+	            .metodoPagamentoId(p.getId())
+	            .couponId(p.getId())
+	            .build();
+	}
 }
