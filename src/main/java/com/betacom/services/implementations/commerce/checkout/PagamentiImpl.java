@@ -24,6 +24,7 @@ import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IPagamentiServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +111,7 @@ public class PagamentiImpl implements IPagamentiServices{
 		log.debug("list");
 		List<Pagamenti> lP = pagaR.findAll();
 
-		return buildPagamentoDTO(lP);
+		return Mapper.buildPagamentoDTO(lP);
 	}
 	
 	@Override
@@ -121,7 +122,7 @@ public class PagamentiImpl implements IPagamentiServices{
 		if (pag.isEmpty())
 			throw new ZooException("Pagamento non trovato in DB");
 
-		return buildPagamentoDTO(pag.get());
+		return Mapper.buildPagamentoDTO(pag.get());
 	}
 
 }

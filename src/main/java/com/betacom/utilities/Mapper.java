@@ -1,4 +1,7 @@
 package com.betacom.utilities;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
@@ -56,5 +59,19 @@ public class Mapper {
 	            .metodoPagamentoId(p.getId())
 	            .couponId(p.getId())
 	            .build();
+	}
+	
+	public static List<PagamentiDTO> buildPagamentoDTO(List<Pagamenti> lP){
+	    return lP.stream()
+				.map(p -> PagamentiDTO.builder()
+		            .id(p.getId())
+		            .importo(p.getImporto())
+		            .stato(p.getStato().toString())
+		            .dataEsecuzione(p.getDataEsecuzione())
+		            .ordineId(p.getOrdine().getId())
+		            .metodoPagamentoId(p.getId())
+		            .couponId(p.getId())
+		            .build()
+				).collect(Collectors.toList());
 	}
 }
