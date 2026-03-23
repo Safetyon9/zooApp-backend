@@ -12,6 +12,7 @@ import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.services.interfaces.IUtentiServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

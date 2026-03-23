@@ -39,7 +39,7 @@ public class Mapper {
 
 	private OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()
-                .id(oo.getId())
+                .id(oo.getId()) 
                 .itemId(oo.getItem().getId())
                 .nomeItem(oo.getItem().getNome())
                 .quantita(oo.getQuantita())
