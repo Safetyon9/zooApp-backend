@@ -5,14 +5,15 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table (name="animali")
-public class Animali {
+public abstract class Animali {
 	
 	@Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -64,13 +65,10 @@ public class Animali {
 	@Column(name = "date_arrivo", nullable = false)
 	private LocalDate dataArrivo;
 	
-	@ManyToOne
-    @JoinColumn(name = "aree", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "area_id")
     private Aree area;
     
-	@OneToMany
-	@JoinColumn(name = "mangimi",referencedColumnName ="id")
-	private List<Mangimi> mangime;
-
-	
+	@ManyToMany(mappedBy = "animali")
+    private List<Mangimi> Mangimi;
 }

@@ -2,6 +2,7 @@ package com.betacom.persistence.entity.commerce;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,11 @@ public class OggettiCarrelli {
 	@Column (nullable =false)
 	private Integer prezzoTotale;
 	
-	@ManyToOne
-	@JoinColumn(name = "carrelli",referencedColumnName ="id")
-	private Carrelli carrello;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "carrello_id", referencedColumnName = "id", nullable = false)
+    private Carrelli carrello;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
+    private Items item;
 }

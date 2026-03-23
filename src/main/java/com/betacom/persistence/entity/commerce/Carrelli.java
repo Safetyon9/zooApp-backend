@@ -2,7 +2,9 @@ package com.betacom.persistence.entity.commerce;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,11 +25,10 @@ public class Carrelli {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 	
-	@OneToOne
-	@JoinColumn(name = "clienti",referencedColumnName ="id")
-	private Clienti cliente;
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true, nullable = false)
+    private Clienti cliente;
 	
-	@OneToMany
-	@JoinColumn(name = "oggetti_carrello",referencedColumnName ="id")
-	private List<OggettiCarrelli> OggettoCarrello;
+	@OneToMany(mappedBy = "carrello", cascade = CascadeType.ALL)
+    private List<OggettiCarrelli> oggettiCarrello;
 }
