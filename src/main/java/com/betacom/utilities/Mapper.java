@@ -5,10 +5,12 @@ import java.util.stream.Collectors;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
+import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
+import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 
 public class Mapper {
@@ -55,9 +57,9 @@ public class Mapper {
 	            .importo(p.getImporto())
 	            .stato(p.getStato().toString())
 	            .dataEsecuzione(p.getDataEsecuzione())
-	            .ordineId(p.getOrdine().getId())
-	            .metodoPagamentoId(p.getId())
-	            .couponId(p.getId())
+	            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
+	            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
+	            .couponId(p.getCoupon() != null ? p.getCoupon().getId() : null)
 	            .build();
 	}
 	
@@ -68,10 +70,38 @@ public class Mapper {
 		            .importo(p.getImporto())
 		            .stato(p.getStato().toString())
 		            .dataEsecuzione(p.getDataEsecuzione())
-		            .ordineId(p.getOrdine().getId())
-		            .metodoPagamentoId(p.getId())
-		            .couponId(p.getId())
+		            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
+		            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
+		            .couponId(p.getCoupon() != null ? p.getCoupon().getId() : null)
 		            .build()
 				).collect(Collectors.toList());
+	}
+	
+	public static SpedizioniDTO buildSpedizioniDTO(Spedizioni s){
+	    return SpedizioniDTO.builder()
+	    		.id(s.getId())
+                .indirizzo(s.getIndirizzo())
+                .corriere(s.getCorriere())
+                .trackingNumber(s.getTrackingNumber())
+                .costo(s.getCosto())
+                .stato(s.getStato().toString())
+                .dataAggiornamento(s.getDataAggiornamento())
+                .ordineId(s.getOrdine() != null ? s.getOrdine().getId() : null)
+                .build();
+	}
+	
+	public static List<SpedizioniDTO> buildSpedizioniDTO(List<Spedizioni> lS){
+	    return lS.stream()
+	    		.map(s -> SpedizioniDTO.builder()
+	                    .id(s.getId())
+	                    .indirizzo(s.getIndirizzo())
+	                    .corriere(s.getCorriere())
+	                    .trackingNumber(s.getTrackingNumber())
+	                    .costo(s.getCosto())
+	                    .stato(s.getStato().toString())
+	                    .dataAggiornamento(s.getDataAggiornamento())
+	                    .ordineId(s.getOrdine() != null ? s.getOrdine().getId() : null)
+	                    .build()
+	            ).collect(Collectors.toList());
 	}
 }

@@ -1,7 +1,5 @@
 package com.betacom.services.implementations.commerce.checkout;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,14 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
-import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.enums.StatoPagamento;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
-import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
