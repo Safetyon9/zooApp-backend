@@ -2,6 +2,7 @@ package com.betacom.services.implementations.commerce.checkout;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,7 +108,9 @@ public class PagamentiImpl implements IPagamentiServices{
 		log.debug("list");
 		List<Pagamenti> lP = pagaR.findAll();
 
-		return Mapper.buildPagamentoDTO(lP);
+		return lP.stream()
+	    		.map(p -> Mapper.buildPagamentoDTO(p))
+	    		.collect(Collectors.toList());
 	}
 	
 	@Override

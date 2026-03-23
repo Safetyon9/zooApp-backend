@@ -39,7 +39,7 @@ public class Mapper {
 	            .nome(c.getNome())
 	            .cognome(c.getCognome())
 	            .indirizzo(c.getIndirizzo())
-	            .utenteId(c.getUtenteId())
+	            .utenteId(c.getUtente() != null ? c.getUtente().getId() : null)
 	            .build();
 	}
 	
@@ -76,20 +76,6 @@ public class Mapper {
 	            .build();
 	}
 	
-	public static List<PagamentiDTO> buildPagamentoDTO(List<Pagamenti> lP){
-	    return lP.stream()
-				.map(p -> PagamentiDTO.builder()
-		            .id(p.getId())
-		            .importo(p.getImporto())
-		            .stato(p.getStato().toString())
-		            .dataEsecuzione(p.getDataEsecuzione())
-		            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
-		            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
-		            .couponId(p.getCoupon() != null ? p.getCoupon().getId() : null)
-		            .build()
-				).collect(Collectors.toList());
-	}
-	
 	public static SpedizioniDTO buildSpedizioniDTO(Spedizioni s){
 	    return SpedizioniDTO.builder()
 	    		.id(s.getId())
@@ -101,21 +87,6 @@ public class Mapper {
                 .dataAggiornamento(s.getDataAggiornamento())
                 .ordineId(s.getOrdine() != null ? s.getOrdine().getId() : null)
                 .build();
-	}
-	
-	public static List<SpedizioniDTO> buildSpedizioniDTO(List<Spedizioni> lS){
-	    return lS.stream()
-	    		.map(s -> SpedizioniDTO.builder()
-	                    .id(s.getId())
-	                    .indirizzo(s.getIndirizzo())
-	                    .corriere(s.getCorriere())
-	                    .trackingNumber(s.getTrackingNumber())
-	                    .costo(s.getCosto())
-	                    .stato(s.getStato().toString())
-	                    .dataAggiornamento(s.getDataAggiornamento())
-	                    .ordineId(s.getOrdine() != null ? s.getOrdine().getId() : null)
-	                    .build()
-	            ).collect(Collectors.toList());
 	}
 	
 	public static BigliettiGiornateDTO buildBigliettiGiornateDTO(BigliettiGiornata bg) {

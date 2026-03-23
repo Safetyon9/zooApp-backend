@@ -1,6 +1,7 @@
 package com.betacom.services.implementations.commerce.checkout;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,8 +94,11 @@ public class SpedizioniImpl implements ISpedizioniServices{
 	public List<SpedizioniDTO> list() {
 		log.debug("list");
 
-	    List<Spedizioni> lista = speR.findAll();
-	    return Mapper.buildSpedizioniDTO(lista);
+	    List<Spedizioni> lS = speR.findAll();
+	    
+	    return lS.stream()
+	    		.map(s -> Mapper.buildSpedizioniDTO(s))
+	    		.collect(Collectors.toList());
 	}
 	
 	@Override

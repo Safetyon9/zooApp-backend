@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.services.interfaces.commerce.items.IClientiServices;
@@ -17,7 +19,7 @@ import com.betacom.utilities.Mapper;
 public class ClientiImpl implements IClientiServices {
 
     @Autowired
-    private IClientiRepository repo;
+    private IClientiRepository repoC;
 
     @Override
     public void create(ClientiReq req) throws Exception {
@@ -28,12 +30,12 @@ public class ClientiImpl implements IClientiServices {
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
 
-        repo.save(c);
+        repoC.save(c);
     }
 
     @Override
     public void update(ClientiReq req) throws Exception {
-        Clienti c = repo.findById(req.getUtenteId())
+        Clienti c = repoC.findById(req.getUtenteId())
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
         c.setEmail(req.getEmail());
@@ -42,25 +44,30 @@ public class ClientiImpl implements IClientiServices {
         c.setIndirizzo(req.getIndirizzo());
         c.setId(req.getUtenteId());
 
-        repo.save(c);
+        repoC.save(c);
     }
 
     @Override
     public void delete(Integer id) throws Exception {
-        repo.deleteById(id);
+    	
+    	Clienti c = repoC.findById(id)
+				.orElseThrow(() -> new ZooException("Cliente non trovato nel DB"));
+		
+    	repoC.delete(c);
     }
 
     @Override
-    public List<ClientiDTO> findAll() throws Exception {
-        return repo.findAll()
-                .stream()
-                .map()
-                .toList();
+    public List<ClientiDTO> findAll() {
+    	List<Clienti> lC = repoC.findAll();
+    	
+        return lC.stream()
+               .map(c -> Mapper.buildClienteDTO(c))
+               .toList();
     }
 
     @Override
     public ClientiDTO getById(Integer id) throws Exception {
-        Clienti c = repo.findById(id)
+        Clienti c = repoC.findById(id)
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
         return Mapper.buildClienteDTO(c);

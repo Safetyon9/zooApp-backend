@@ -1,6 +1,7 @@
 package com.betacom.services.implementations.commerce.items;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,8 +110,10 @@ public class BigliettiGiornataImpl implements IBigliettiGiornataServices{
 	public List<BigliettiGiornateDTO> list() {
 		log.debug("list");
 
-	    List<BigliettiGiornata> lista = speR.findAll();
-	    return Mapper.buildBigliettiGiornateDTO(lista);
+	    List<BigliettiGiornata> lB = speR.findAll();
+	    return lB.stream()
+	    		.map(b -> Mapper.buildBigliettiGiornateDTO(b))
+	    		.collect(Collectors.toList());
 	}
 	
 	@Override
