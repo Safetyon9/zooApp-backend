@@ -1,0 +1,126 @@
+package com.betacom.services.implementations.commerce.items;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.betacom.dto.inputs.commerce.items.ProdottiReq;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.items.Items;
+import com.betacom.persistence.entity.commerce.items.Prodotti;
+import com.betacom.persistence.repository.commerce.IItemsRepository;
+import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
+import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.services.interfaces.commerce.items.IProdottiServices;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class ProdottiImpl implements IProdottiServices {
+
+    private final IProdottiRepository repoP;
+    private final IItemsRepository repoItems;
+    private final IMessaggiServices msgS;
+
+    @Transactional(rollbackFor = ZooException.class)
+    @Override
+    public void create(ProdottiReq req) {
+        log.debug("create {}", req);
+
+        Items item = repoItems.findById(req.getItemId())
+                .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
+
+        if (repoP.findBySku(req.getSku()).isPresent()) {
+            throw new ZooException(msgS.get("prd_exists"));
+        }
+
+        Prodotti p = new Prodotti();
+        p.setDimensioni(req.getDimensioni());
+        p.setPeso(req.getPeso());
+        p.setStock(req.getStock());
+        p.setSku(req.getSku());
+        p.setCategoria(req.getCategoria());
+
+        repoP.save(p);
+    }
+
+    @Transactional(rollbackFor = ZooException.class)
+    @Override
+    public void update(ProdottiReq req) throws ZooException {
+        log.debug("update {}", req);
+
+        Prodotti p = repoP.findBySku(req.getSku())
+                .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
+
+        p.setDimensioni(req.getDimensioni());
+        p.setPeso(req.getPeso());
+        p.setStock(req.getStock());
+        p.setCategoria(req.getCategoria());
+
+        repoP.save(p);
+    }
+
+    @Transactional(rollbackFor = ZooException.class)
+    @Override
+    public void delete(Long sku) throws ZooException {
+        log.debug("delete sku={}", sku);
+
+        Prodotti p = repoP.findBySku(sku)
+                .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
+        repoP.delete(p);
+    }
+
+    @Override
+    public List<ProdottiDTO> list() {
+        log.debug("list prodotti");
+
+        return repoP.findAll().stream()
+                .map(p -> ProdottiDTO.builder()
+                        .id(p.getId())
+                        .itemId(p.getId())
+                        .nome(p.getNome())
+                        .descrizione(p.getDescrizione())
+                        .prezzo(p.getPrezzo())
+                        .dimensioni(p.getDimensioni())
+                        .peso(p.getPeso())
+                        .stock(p.getStock())
+                        .sku(p.getSku())
+                        .categoria(p.getCategoria())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public ProdottiDTO getBySku(Long sku) throws ZooException {
+        log.debug("getBySku {}", sku);
+
+        Prodotti p = repoP.findBySku(sku)
+                .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
+
+        return ProdottiDTO.builder()
+                .id(p.getId())
+                .itemId(p.getId())
+                .nome(p.getNome())
+                .descrizione(p.getDescrizione())
+                .prezzo(p.getPrezzo())
+                .dimensioni(p.getDimensioni())
+                .peso(p.getPeso())
+                .stock(p.getStock())
+                .sku(p.getSku())
+                .categoria(p.getCategoria())
+                .build();
+    }
+
+    @Override
+    public List<ProdottiDTO> find(Integer id, String nome, String descrizione,
+                                  String categoria, Integer stock) {
+
+        log.debug("find {} / {} / {} / {} / {}", id, nome, descrizione, categoria, stock);
+        return list(); 
+    }
+}

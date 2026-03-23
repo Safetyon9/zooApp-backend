@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
-import com.betacom.persistence.repository.commerce.ClientiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.services.interfaces.commerce.items.IClientiServices;
 import com.betacom.utilities.Mapper;
@@ -28,21 +27,20 @@ public class ClientiImpl implements IClientiServices {
         c.setNome(req.getNome());
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
-        c.setUtenteId(req.getUtenteId());
 
         repo.save(c);
     }
 
     @Override
     public void update(ClientiReq req) throws Exception {
-        Clienti c = repo.findById(req.getId())
+        Clienti c = repo.findById(req.getUtenteId())
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
         c.setEmail(req.getEmail());
         c.setNome(req.getNome());
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
-        c.setUtenteId(req.getUtenteId());
+        c.setId(req.getUtenteId());
 
         repo.save(c);
     }
@@ -56,7 +54,7 @@ public class ClientiImpl implements IClientiServices {
     public List<ClientiDTO> findAll() throws Exception {
         return repo.findAll()
                 .stream()
-                .map(Mapper::buildClienteDTO)
+                .map()
                 .toList();
     }
 
