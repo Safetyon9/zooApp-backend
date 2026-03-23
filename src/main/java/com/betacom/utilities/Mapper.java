@@ -37,7 +37,6 @@ public class Mapper {
 	            .utenteId(c.getUtenteId())
 	            .build();
 	}
-	
 
 	private OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()

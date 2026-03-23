@@ -1,4 +1,4 @@
-package com.betacom.dto.outputs.commerce;
+package com.betacom.dto.outputs.commerce.items;
 
 import java.math.BigDecimal;
 

@@ -3,7 +3,7 @@ package com.betacom.services.interfaces.commerce;
 import java.util.List;
 
 import com.betacom.dto.inputs.commerce.ItemsReq;
-import com.betacom.dto.outputs.commerce.ItemsDTO;
+import com.betacom.dto.outputs.commerce.items.ItemsDTO;
 
 public interface IItemsServices {
 	void create(ItemsReq req) throws Exception;

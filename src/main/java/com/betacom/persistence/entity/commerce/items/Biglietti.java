@@ -1,7 +1,5 @@
 package com.betacom.persistence.entity.commerce.items;
 
-import com.betacom.persistence.entity.commerce.Items;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

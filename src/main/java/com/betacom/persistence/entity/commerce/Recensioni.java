@@ -1,6 +1,9 @@
 package com.betacom.persistence.entity.commerce;
 
 import java.time.LocalDateTime;
+
+import com.betacom.persistence.entity.commerce.items.Items;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

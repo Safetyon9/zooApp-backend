@@ -2,7 +2,7 @@ package com.betacom.persistence.entity.commerce.checkout;
 
 import java.math.BigDecimal;
 
-import com.betacom.persistence.entity.commerce.Items;
+import com.betacom.persistence.entity.commerce.items.Items;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

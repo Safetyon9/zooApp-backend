@@ -1,4 +1,4 @@
-package com.betacom.persistence.entity.commerce;
+package com.betacom.persistence.entity.commerce.items;
 
 import java.math.BigDecimal;
 

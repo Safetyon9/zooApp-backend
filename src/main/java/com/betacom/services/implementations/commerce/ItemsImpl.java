@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.inputs.commerce.ItemsReq;
-import com.betacom.dto.outputs.commerce.ItemsDTO;
+import com.betacom.dto.outputs.commerce.items.ItemsDTO;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.IItemsServices;

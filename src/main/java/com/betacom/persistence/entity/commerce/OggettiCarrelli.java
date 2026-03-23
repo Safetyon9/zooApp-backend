@@ -1,5 +1,7 @@
 package com.betacom.persistence.entity.commerce;
 
+import com.betacom.persistence.entity.commerce.items.Items;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
