@@ -12,6 +12,7 @@ import lombok.ToString;
 
 public class EventiReq {
 
+	private Integer Id;
     private String tipoEvento;
     private LocalDate dataInizio;
     private LocalDate dataFine;

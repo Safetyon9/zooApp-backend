@@ -3,15 +3,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
+import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
+import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 
 public class Mapper {
 
@@ -37,6 +41,17 @@ public class Mapper {
 	            .utenteId(c.getUtenteId())
 	            .build();
 	}
+	
+	public static EventiDTO buildEventoDTO(Eventi e){
+	    return EventiDTO.builder()
+	            .id(e.getId())
+	            .tipoEvento(e.getTipoEvento())
+	            .dataInizio(e.getDataInizio())
+	            .dataFine(e.getDataFine())
+	            .build();
+	}
+	
+	
 	
 
 	private OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
@@ -104,4 +119,17 @@ public class Mapper {
 	                    .build()
 	            ).collect(Collectors.toList());
 	}
+	
+	public static BigliettiGiornateDTO buildBigliettiGiornateDTO(BigliettiGiornata bg) {
+	    return BigliettiGiornateDTO.builder()
+	            .id(bg.getId())
+	            .bigliettoId(bg.getBiglietto() != null ? bg.getBiglietto().getId() : null)
+	            .giornataId(bg.getGiornata() != null ? bg.getGiornata().getId() : null)
+	            .eventoId(bg.getEvento() != null ? bg.getEvento().getId() : null)
+	            .prezzo(bg.getPrezzo())
+	            .stock(bg.getStock())
+	            .build();
+	}
+	
+	
 }
