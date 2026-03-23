@@ -76,7 +76,7 @@ public class BigliettiImpl implements IBigliettiServices {
         Biglietti b = bigliettiR.findById(id)
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        BigliettiDTO dto = new BigliettiDTO(null);
+        BigliettiDTO dto = new BigliettiDTO();
 
         dto.setId(b.getId());
         dto.setNome(b.getNome());
