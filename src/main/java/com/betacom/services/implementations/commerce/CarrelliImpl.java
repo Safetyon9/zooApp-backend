@@ -13,6 +13,7 @@ import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.ICarrelliServices;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class CarrelliImpl implements ICarrelliServices{
 	
 	private final ICarrelliRepository carrelliRepo;
 	private final IClientiRepository clientiRepo;
-	//private final IMessaggiServices msgS;
+	private final IMessaggiServices msgS;
 	
 	@Override
 	public void create(CarrelliReq req) throws Exception {

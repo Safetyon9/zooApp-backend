@@ -1,5 +1,15 @@
 package com.betacom.dto.inputs.commerce.checkout;
 
-public class MetodiPagamentoReq {
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Setter
+@Getter
+@ToString
+public class MetodiPagamentoReq {
+	
+	private Integer id;
+    private String nome;
+    private String provider;
 }
