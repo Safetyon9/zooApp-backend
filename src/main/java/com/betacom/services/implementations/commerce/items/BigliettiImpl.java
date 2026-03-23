@@ -27,54 +27,35 @@ public class BigliettiImpl implements IBigliettiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public BigliettiDTO create(BigliettiReq req) throws Exception {
+    public void create(BigliettiReq req) throws Exception {
         log.debug("create {}", req);
 
-        Biglietti biglietto = new Biglietti();
-        biglietto.setNome(req.getNome());
-        biglietto.setDescrizione(req.getDescrizione());
-        biglietto.setUrlImmagine(req.getUrlImmagine());
-        biglietto.setPrezzo(req.getPrezzo());
-        biglietto.setTipo(req.getTipo());
+        Biglietti b = new Biglietti();
 
-        biglietto = bigliettiR.save(biglietto);
+        b.setNome(req.getNome());
+        b.setDescrizione(req.getDescrizione());
+        b.setUrlImmagine(req.getUrlImmagine());
+        b.setPrezzo(req.getPrezzo());
+        b.setTipo(req.getTipo());
 
-        BigliettiDTO dto = new BigliettiDTO();
-        dto.setId(biglietto.getId());
-        dto.setNome(biglietto.getNome());
-        dto.setDescrizione(biglietto.getDescrizione());
-        dto.setUrlImmagine(biglietto.getUrlImmagine());
-        dto.setPrezzo(biglietto.getPrezzo());
-        dto.setTipo(biglietto.getTipo());
-
-        return dto;
+        bigliettiR.save(b);
     }
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public BigliettiDTO update(Integer id, BigliettiReq req) throws Exception {
-        log.debug("update {} {}", id, req);
+    public void update(BigliettiReq req) throws Exception {
+        log.debug("update {}", req);
 
-        Biglietti biglietto = bigliettiR.findById(id)
-                .orElseThrow(() -> new ZooException("Biglietto non trovato in DB: " + id));
+        Biglietti b = bigliettiR.findById(req.getId())
+                .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        biglietto.setNome(req.getNome());
-        biglietto.setDescrizione(req.getDescrizione());
-        biglietto.setUrlImmagine(req.getUrlImmagine());
-        biglietto.setPrezzo(req.getPrezzo());
-        biglietto.setTipo(req.getTipo());
+        b.setNome(req.getNome());
+        b.setDescrizione(req.getDescrizione());
+        b.setUrlImmagine(req.getUrlImmagine());
+        b.setPrezzo(req.getPrezzo());
+        b.setTipo(req.getTipo());
 
-        biglietto = bigliettiR.save(biglietto);
-
-        BigliettiDTO dto = new BigliettiDTO();
-        dto.setId(biglietto.getId());
-        dto.setNome(biglietto.getNome());
-        dto.setDescrizione(biglietto.getDescrizione());
-        dto.setUrlImmagine(biglietto.getUrlImmagine());
-        dto.setPrezzo(biglietto.getPrezzo());
-        dto.setTipo(biglietto.getTipo());
-
-        return dto;
+        bigliettiR.save(b);
     }
 
     @Transactional(rollbackFor = ZooException.class)
@@ -82,49 +63,52 @@ public class BigliettiImpl implements IBigliettiServices {
     public void delete(Integer id) throws Exception {
         log.debug("delete {}", id);
 
-        Biglietti biglietto = bigliettiR.findById(id)
-                .orElseThrow(() -> new ZooException("Biglietto non trovato in DB: " + id));
+        Biglietti b = bigliettiR.findById(id)
+                .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        bigliettiR.delete(biglietto);
+        bigliettiR.delete(b);
     }
 
     @Override
     public BigliettiDTO getById(Integer id) throws Exception {
         log.debug("getById {}", id);
 
-        Biglietti biglietto = bigliettiR.findById(id)
-                .orElseThrow(() -> new ZooException("Biglietto non trovato in DB: " + id));
+        Biglietti b = bigliettiR.findById(id)
+                .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        BigliettiDTO dto = new BigliettiDTO();
-        dto.setId(biglietto.getId());
-        dto.setNome(biglietto.getNome());
-        dto.setDescrizione(biglietto.getDescrizione());
-        dto.setUrlImmagine(biglietto.getUrlImmagine());
-        dto.setPrezzo(biglietto.getPrezzo());
-        dto.setTipo(biglietto.getTipo());
+        BigliettiDTO dto = new BigliettiDTO(null);
+
+        dto.setId(b.getId());
+        dto.setNome(b.getNome());
+        dto.setDescrizione(b.getDescrizione());
+        dto.setUrlImmagine(b.getUrlImmagine());
+        dto.setPrezzo(b.getPrezzo());
+        dto.setTipo(b.getTipo());
 
         return dto;
     }
 
     @Override
-    public List<BigliettiDTO> getAll() throws Exception {
-        log.debug("getAll");
+    public List<BigliettiDTO> findAll() throws Exception {
+        log.debug("findAll");
 
         List<Biglietti> lista = bigliettiR.findAll();
-        List<BigliettiDTO> dtoList = new ArrayList<>();
+        List<BigliettiDTO> listaDTO = new ArrayList<>();
 
-        for (Biglietti biglietto : lista) {
+        for (Biglietti b : lista) {
+
             BigliettiDTO dto = new BigliettiDTO();
-            dto.setId(biglietto.getId());
-            dto.setNome(biglietto.getNome());
-            dto.setDescrizione(biglietto.getDescrizione());
-            dto.setUrlImmagine(biglietto.getUrlImmagine());
-            dto.setPrezzo(biglietto.getPrezzo());
-            dto.setTipo(biglietto.getTipo());
 
-            dtoList.add(dto);
+            dto.setId(b.getId());
+            dto.setNome(b.getNome());
+            dto.setDescrizione(b.getDescrizione());
+            dto.setUrlImmagine(b.getUrlImmagine());
+            dto.setPrezzo(b.getPrezzo());
+            dto.setTipo(b.getTipo());
+
+            listaDTO.add(dto);
         }
 
-        return dtoList;
+        return listaDTO;
     }
 }

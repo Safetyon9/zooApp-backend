@@ -1,14 +1,17 @@
 package com.betacom.dto.outputs.commerce.items;
 
-import lombok.Builder;
+import com.betacom.dto.outputs.commerce.ItemsDTO;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
-@Builder
 @ToString
+@SuperBuilder
+
 public class BigliettiDTO extends ItemsDTO {
 
     private String tipo;

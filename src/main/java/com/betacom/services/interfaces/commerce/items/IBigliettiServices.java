@@ -8,9 +8,11 @@ import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 
 public interface IBigliettiServices {
 
-    BigliettiDTO create(BigliettiReq req) throws Exception;
-    BigliettiDTO update(Integer id, BigliettiReq req) throws Exception;
+    void create(BigliettiReq req) throws Exception;
+    void update(BigliettiReq req) throws Exception;
     void delete(Integer id) throws Exception;
     BigliettiDTO getById(Integer id) throws Exception;
-    List<BigliettiDTO> getAll() throws Exception;
+    List<BigliettiDTO> findAll() throws Exception;
 }
+//create void o con id
+//create update req tutti boid
