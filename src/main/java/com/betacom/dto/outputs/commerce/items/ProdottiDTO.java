@@ -1,14 +1,27 @@
 package com.betacom.dto.outputs.commerce.items;
 
+import java.math.BigDecimal;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @Builder
 @ToString
 public class ProdottiDTO {
+
+    private Integer id;
+    private Integer itemId;
+    private String nome;
+    private String descrizione;
+    private BigDecimal prezzo;
+    private BigDecimal dimensioni;
+    private BigDecimal peso;
+    private Integer stock;
+    private Long sku;
+    private String categoria;
 
 }

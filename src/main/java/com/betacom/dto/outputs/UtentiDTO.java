@@ -5,10 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @Builder
 @ToString
 public class UtentiDTO {
+
+    private Integer id;
+    private String userName;
+    private String email;
+    private String role;   // es. "USER", "ADMIN"
 
 }
