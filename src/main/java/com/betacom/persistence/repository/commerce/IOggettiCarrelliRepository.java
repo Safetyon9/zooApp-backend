@@ -1,5 +1,9 @@
 package com.betacom.persistence.repository.commerce;
 
-public interface IOggettiCarrelliRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.betacom.persistence.entity.commerce.OggettiCarrelli;
+
+public interface IOggettiCarrelliRepository extends JpaRepository<OggettiCarrelli, Integer>{
 
 }

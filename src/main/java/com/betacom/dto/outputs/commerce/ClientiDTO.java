@@ -1,5 +1,4 @@
 package com.betacom.dto.outputs.commerce;
-
 import java.util.List;
 
 import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;

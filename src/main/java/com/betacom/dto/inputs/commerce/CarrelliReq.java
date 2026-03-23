@@ -1,5 +1,13 @@
 package com.betacom.dto.inputs.commerce;
 
-public class CarrelliReq {
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
+public class CarrelliReq {
+	private Integer id;
+    private Integer clienteId;
 }

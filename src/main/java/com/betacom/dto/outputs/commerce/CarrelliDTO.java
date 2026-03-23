@@ -1,5 +1,16 @@
 package com.betacom.dto.outputs.commerce;
 
-public class CarrelliDTO {
+import java.util.List;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@Builder
+public class CarrelliDTO {
+	private Integer id;
+	private ClientiDTO cliente;                        
+	private List<OggettiCarrelliDTO> oggettiCarrello;
 }
