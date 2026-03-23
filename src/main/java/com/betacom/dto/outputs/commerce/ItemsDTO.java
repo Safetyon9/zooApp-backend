@@ -21,4 +21,6 @@ public class ItemsDTO {
     private String urlImmagine;
 
     private BigDecimal prezzo;
+    
+    //test
 }
