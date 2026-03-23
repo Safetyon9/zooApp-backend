@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
+import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
@@ -58,14 +60,53 @@ public class CarrelliImpl implements ICarrelliServices{
 
 	@Override
 	public List<CarrelliDTO> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Carrelli> lC = carrelliRepo.findAll();
+		
+		return lC.stream()
+				.map(c -> CarrelliDTO.builder()
+		        .id(c.getId())
+		        .cliente(ClientiDTO.builder()
+		                .id(c.getCliente().getId())
+		                .email(c.getCliente().getEmail())
+		                .nome(c.getCliente().getNome())
+		                .cognome(c.getCliente().getCognome())
+		                .indirizzo(c.getCliente().getIndirizzo())
+		                //aggiungere altri campi cliente (?)
+		                .build())
+		        .oggettiCarrello(c.getOggettiCarrello().stream()
+		                .map(oc -> OggettiCarrelliDTO.builder()
+		                        .id(oc.getId())
+		                        .quantita(oc.getQuantita())
+		                        .prezzoTotale(oc.getPrezzoTotale())
+		                        .build())
+		                .toList())
+		        .build()).toList();
 	}
 
 	@Override
 	public CarrelliDTO getById(Integer id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Carrelli carrelli = carrelliRepo.findById(id)
+				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "));
+		
+		return CarrelliDTO.builder()
+		        .id(carrelli.getId())
+		        .cliente(ClientiDTO.builder()
+		                .id(carrelli.getCliente().getId())
+		                .email(carrelli.getCliente().getEmail())
+		                .nome(carrelli.getCliente().getNome())
+		                .cognome(carrelli.getCliente().getCognome())
+		                .indirizzo(carrelli.getCliente().getIndirizzo())
+		                //aggiungere altri campi cliente (?)
+		                .build())
+		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
+		                .map(oc -> OggettiCarrelliDTO.builder()
+		                        .id(oc.getId())
+		                        .quantita(oc.getQuantita())
+		                        .prezzoTotale(oc.getPrezzoTotale())
+		                        .build())
+		                .toList())
+		        .build();
 	}
 
 }
