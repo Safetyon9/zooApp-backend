@@ -6,7 +6,7 @@ import com.betacom.persistence.entity.commerce.items.Biglietti;
 public class Mapper {
 
 
-	public static BigliettiDTO buildAbbonamentoDTO(Biglietti b){
+	public static BigliettiDTO buildBigliettiDTO(Biglietti b){
 	    return BigliettiDTO.builder()
 	            .id(b.getId())
 	            .nome(b.getNome())

@@ -12,6 +12,7 @@ import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.services.interfaces.commerce.items.IBigliettiServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,16 +77,7 @@ public class BigliettiImpl implements IBigliettiServices {
         Biglietti b = bigliettiR.findById(id)
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        BigliettiDTO dto = new BigliettiDTO();
-
-        dto.setId(b.getId());
-        dto.setNome(b.getNome());
-        dto.setDescrizione(b.getDescrizione());
-        dto.setUrlImmagine(b.getUrlImmagine());
-        dto.setPrezzo(b.getPrezzo());
-        dto.setTipo(b.getTipo());
-
-        return dto;
+        return Mapper.buildBigliettiDTO(b);
     }
 
     @Override
@@ -97,16 +89,8 @@ public class BigliettiImpl implements IBigliettiServices {
 
         for (Biglietti b : lista) {
 
-            BigliettiDTO dto = new BigliettiDTO();
-
-            dto.setId(b.getId());
-            dto.setNome(b.getNome());
-            dto.setDescrizione(b.getDescrizione());
-            dto.setUrlImmagine(b.getUrlImmagine());
-            dto.setPrezzo(b.getPrezzo());
-            dto.setTipo(b.getTipo());
-
-            listaDTO.add(dto);
+         
+            listaDTO.add(Mapper.buildBigliettiDTO(b));
         }
 
         return listaDTO;
