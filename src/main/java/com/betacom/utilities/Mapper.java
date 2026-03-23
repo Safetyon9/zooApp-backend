@@ -29,6 +29,5 @@ public class Mapper {
                 .prezzoTotale(oo.getPrezzoTotale())
                 .build();
     }
-	
-	//commento random
+
 }
