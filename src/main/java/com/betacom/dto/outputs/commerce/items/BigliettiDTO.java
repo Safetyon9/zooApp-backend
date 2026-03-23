@@ -9,6 +9,8 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class BigliettiDTO {
+public class BigliettiDTO extends ItemsDTO {
+
+    private String tipo;
 
 }
