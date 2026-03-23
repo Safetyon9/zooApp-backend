@@ -23,7 +23,6 @@ public class OrdiniDTO {
     private String indirizzo;
     private LocalDateTime dataOrdine;
     private StatoOrdine stato;
-
-    private List<OggettiOrdiniDTO> oggettiordinis;
+    private List<OggettiOrdiniDTO> righe;
 
 }
