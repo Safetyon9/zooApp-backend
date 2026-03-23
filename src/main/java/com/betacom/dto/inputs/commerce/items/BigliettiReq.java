@@ -7,6 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BigliettiReq {
+public class BigliettiReq extends ItemsReq {
 
+	  private String tipo;
+	
 }
