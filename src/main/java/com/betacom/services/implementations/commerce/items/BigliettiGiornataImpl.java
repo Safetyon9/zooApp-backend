@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.betacom.dto.inputs.commerce.items.BigliettiGiornateReq;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
-import com.betacom.persistence.repository.commerce.IGioranteRepository;
+import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -25,7 +25,7 @@ public class BigliettiGiornataImpl implements IBigliettiGiornataServices{
 	private final IMessaggiServices msgS;
 	
 	private final IBigliettiRepository bigR;
-	private final IGioranteRepository gioR;
+	private final IGiornateRepository gioR;
 	private final IEventiRepository eveR;
 	
 	@Override

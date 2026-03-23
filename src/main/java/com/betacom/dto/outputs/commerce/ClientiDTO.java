@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class ClientiDTO {
+public class ClientiDTO  {
     private Integer id;
     private String email;
     private String nome;
