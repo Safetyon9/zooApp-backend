@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.checkout.Coupons;
+import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
@@ -46,19 +48,24 @@ public class PagamentiImpl implements IPagamentiServices{
 		if (req.getCouponId() == null)
 			throw new ZooException("Coupon collegato non trovato.");
 		
-		/*
+		
 		Ordini ordine = ordR.findById(req.getOrdineId())
+	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+		MetodiPagamento metodo = metR.findById(req.getMetodoPagamentoId())
+	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+		Coupons coupon = couR.findById(req.getCouponId())
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
 	          
 	            
 		
 		Pagamenti pag = new Pagamenti();
 		pag.setImporto(req.getImporto());
-		pag.setOrdine();
-		pag.setMetodoPagamento();
-		pag.setCoupon();
+		pag.setOrdine(ordine);
+		pag.setMetodoPagamento(metodo);
+		pag.setCoupon(coupon);
 		
-		*/
+		
+		
 	}
 	
 	@Transactional (rollbackFor = ZooException.class)
