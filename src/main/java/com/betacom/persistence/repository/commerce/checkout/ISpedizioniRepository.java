@@ -1,5 +1,11 @@
 package com.betacom.persistence.repository.commerce.checkout;
 
-public interface ISpedizioniRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
+
+@Repository
+public interface ISpedizioniRepository extends JpaRepository<Spedizioni, Integer>{
 
 }

@@ -1,5 +1,11 @@
 package com.betacom.persistence.repository.commerce;
 
-public interface IRecensioniRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.betacom.persistence.entity.commerce.Recensioni;
+
+@Repository
+public interface IRecensioniRepository extends JpaRepository<Recensioni, Integer>{
 
 }
