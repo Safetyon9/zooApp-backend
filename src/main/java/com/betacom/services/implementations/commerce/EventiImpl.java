@@ -1,6 +1,8 @@
 package com.betacom.services.implementations.commerce;
 
 
+import static com.betacom.utilities.Mapper.buildEventiDTO;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.services.interfaces.commerce.items.IEventiServices;
 import com.betacom.utilities.Mapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class EventiImpl implements IEventiServices {
 
@@ -63,4 +68,13 @@ public class EventiImpl implements IEventiServices {
 
         return Mapper.buildEventoDTO(e);
     }
+    
+    @Override
+    public List<EventiDTO> list() {
+        log.debug("list");
+        List<Eventi> eV = repo.findAll();
+        return buildEventiDTO(eV);
+    }
+    
+    
 }

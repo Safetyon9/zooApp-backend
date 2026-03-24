@@ -1,4 +1,7 @@
 package com.betacom.utilities;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -64,6 +67,19 @@ public class Mapper {
 	            .dataFine(e.getDataFine())
 	            .build();
 	}
+	
+	
+	public static List<EventiDTO> buildEventiDTO(List<Eventi> eV){
+	    return eV.stream()
+	            .map(a -> EventiDTO.builder()
+	                    .id(a.getId())
+	                    .tipoEvento(a.getTipoEvento())
+	                    .dataInizio(a.getDataInizio())
+	                    .dataFine(a.getDataFine())
+	                    .build()
+	            ).collect(Collectors.toList());
+	}
+	
 
 	public static OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()
