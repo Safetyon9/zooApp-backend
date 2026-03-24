@@ -14,6 +14,7 @@ import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.ICouponsServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,15 +85,7 @@ public class CouponsImpl implements ICouponsServices{
 	public List<CouponsDTO> findAll() throws Exception {
 		List<Coupons> lC = couponsRepo.findAll();
 		return lC.stream()
-				.map(c -> CouponsDTO.builder()
-						.id(c.getId())
-	                    .codice(c.getCodice())
-	                    .tipo(c.getTipo().toString())
-	                    .valore(c.getValore())
-	                    .attivo(c.getAttivo())
-	                    .dataInizio(c.getDataInizio())
-	                    .dataFine(c.getDataFine())
-	                    .build())
+				.map(c -> Mapper.buildCouponsDTO(c))
 	            .toList();
 	}
 
@@ -102,15 +95,7 @@ public class CouponsImpl implements ICouponsServices{
 		Coupons c = couponsRepo.findById(id)
 				.orElseThrow(() -> new ZooException("Coupons non trovato nel DB"));
 		
-		return CouponsDTO.builder()
-				.id(c.getId())
-                .codice(c.getCodice())
-                .tipo(c.getTipo().toString())
-                .valore(c.getValore())
-                .attivo(c.getAttivo())
-                .dataInizio(c.getDataInizio())
-                .dataFine(c.getDataFine())
-                .build();
+		return Mapper.buildCouponsDTO(c);
 	}
 
 }

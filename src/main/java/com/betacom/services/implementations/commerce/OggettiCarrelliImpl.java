@@ -15,6 +15,7 @@ import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.IOggettiCarrelliRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.IOggettiCarrelliServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,13 +83,7 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 	public List<OggettiCarrelliDTO> findAll() throws Exception {
 		List<OggettiCarrelli> lOggC = oggRepo.findAll();
 		return lOggC.stream()
-				.map(oc -> OggettiCarrelliDTO.builder()
-						.id(oc.getId())
-						.prezzoTotale(oc.getPrezzoTotale())
-						.quantita(oc.getQuantita())
-						.carrelloId(oc.getCarrello().getId())  
-				        .itemId(oc.getItem().getId())
-						.build())
+				.map(oc -> Mapper.buildOggettiCarrelliDTO(oc))
 				.toList();
 	}
 
@@ -97,14 +92,8 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		OggettiCarrelli oggettiCarrelli = oggRepo.findById(id)
 				.orElseThrow(() -> new ZooException("oggetto carrello non trovato nel DB: "+ id));
 		
+		return Mapper.buildOggettiCarrelliDTO(oggettiCarrelli);
 		
-		return OggettiCarrelliDTO.builder()
-				.id(oggettiCarrelli.getId())
-				.prezzoTotale(oggettiCarrelli.getPrezzoTotale())
-				.quantita(oggettiCarrelli.getQuantita())
-				.carrelloId(oggettiCarrelli.getCarrello().getId())
-		        .itemId(oggettiCarrelli.getItem().getId())
-				.build();
 	}
 
 }

@@ -15,6 +15,7 @@ import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.ICarrelliServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,24 +65,7 @@ public class CarrelliImpl implements ICarrelliServices{
 		List<Carrelli> lC = carrelliRepo.findAll();
 		
 		return lC.stream()
-				.map(c -> CarrelliDTO.builder()
-		        .id(c.getId())
-		        .cliente(ClientiDTO.builder()
-		                .id(c.getCliente().getId())
-		                .email(c.getCliente().getEmail())
-		                .nome(c.getCliente().getNome())
-		                .cognome(c.getCliente().getCognome())
-		                .indirizzo(c.getCliente().getIndirizzo())
-		                //aggiungere altri campi cliente (?)
-		                .build())
-		        .oggettiCarrello(c.getOggettiCarrello().stream()
-		                .map(oc -> OggettiCarrelliDTO.builder()
-		                        .id(oc.getId())
-		                        .quantita(oc.getQuantita())
-		                        .prezzoTotale(oc.getPrezzoTotale())
-		                        .build())
-		                .toList())
-		        .build()).toList();
+				.map(c -> Mapper.buildCarrelliDTO(c)).toList();
 	}
 
 	@Override
@@ -90,24 +74,7 @@ public class CarrelliImpl implements ICarrelliServices{
 		Carrelli carrelli = carrelliRepo.findById(id)
 				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "));
 		
-		return CarrelliDTO.builder()
-		        .id(carrelli.getId())
-		        .cliente(ClientiDTO.builder()
-		                .id(carrelli.getCliente().getId())
-		                .email(carrelli.getCliente().getEmail())
-		                .nome(carrelli.getCliente().getNome())
-		                .cognome(carrelli.getCliente().getCognome())
-		                .indirizzo(carrelli.getCliente().getIndirizzo())
-		                //aggiungere altri campi cliente (?)
-		                .build())
-		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
-		                .map(oc -> OggettiCarrelliDTO.builder()
-		                        .id(oc.getId())
-		                        .quantita(oc.getQuantita())
-		                        .prezzoTotale(oc.getPrezzoTotale())
-		                        .build())
-		                .toList())
-		        .build();
+		return Mapper.buildCarrelliDTO(carrelli);
 	}
 
 }

@@ -11,6 +11,7 @@ import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IMetodiPagamentoServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,11 +66,7 @@ public class MetodiPagamentoImpl implements IMetodiPagamentoServices{
 		List<MetodiPagamento> lMP = metodoRepo.findAll();
 		
 		return lMP.stream()
-				.map(mp -> MetodiPagamentoDTO.builder()
-						.id(mp.getId())
-						.nome(mp.getNome())
-						.provider(mp.getProvider())
-						.build())
+				.map(mp -> Mapper.buildMetodiPagamentoDTO(mp))
 				.toList();
 	}
 
@@ -78,11 +75,7 @@ public class MetodiPagamentoImpl implements IMetodiPagamentoServices{
 		MetodiPagamento mp = metodoRepo.findById(id)
 				.orElseThrow(() -> new ZooException("Metodo di pagamento non presente nel DB"));
 		
-		return MetodiPagamentoDTO.builder()
-				.id(mp.getId())
-				.nome(mp.getNome())
-				.provider(mp.getProvider())
-				.build();
+		return Mapper.buildMetodiPagamentoDTO(mp);
 	}
 
 }

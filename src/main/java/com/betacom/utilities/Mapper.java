@@ -1,15 +1,23 @@
 package com.betacom.utilities;
+import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
+import com.betacom.dto.outputs.commerce.checkout.CouponsDTO;
+import com.betacom.dto.outputs.commerce.checkout.MetodiPagamentoDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
+import com.betacom.persistence.entity.commerce.OggettiCarrelli;
+import com.betacom.persistence.entity.commerce.checkout.Coupons;
+import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
@@ -105,4 +113,55 @@ public class Mapper {
 	            .build();
 	}
 	
+	public static OggettiCarrelliDTO buildOggettiCarrelliDTO(OggettiCarrelli oc) {
+		
+		return OggettiCarrelliDTO.builder()
+				.id(oc.getId())
+				.prezzoTotale(oc.getPrezzoTotale())
+				.quantita(oc.getQuantita())
+				.carrelloId(oc.getCarrello().getId())
+		        .itemId(oc.getItem().getId())
+				.build();
+	}
+	
+	public static CarrelliDTO buildCarrelliDTO(Carrelli carrelli) {
+		return CarrelliDTO.builder()
+		        .id(carrelli.getId())
+		        .cliente(ClientiDTO.builder()
+		                .id(carrelli.getCliente().getId())
+		                .email(carrelli.getCliente().getEmail())
+		                .nome(carrelli.getCliente().getNome())
+		                .cognome(carrelli.getCliente().getCognome())
+		                .indirizzo(carrelli.getCliente().getIndirizzo())
+		                //aggiungere altri campi cliente (?)
+		                .build())
+		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
+		                .map(oc -> OggettiCarrelliDTO.builder()
+		                        .id(oc.getId())
+		                        .quantita(oc.getQuantita())
+		                        .prezzoTotale(oc.getPrezzoTotale())
+		                        .build())
+		                .toList())
+		        .build();
+	}
+	
+	public static MetodiPagamentoDTO buildMetodiPagamentoDTO(MetodiPagamento mp) {
+		return MetodiPagamentoDTO.builder()
+				.id(mp.getId())
+				.nome(mp.getNome())
+				.provider(mp.getProvider())
+				.build();
+	}
+	
+	public static CouponsDTO buildCouponsDTO(Coupons c) {
+		return CouponsDTO.builder()
+				.id(c.getId())
+                .codice(c.getCodice())
+                .tipo(c.getTipo().toString())
+                .valore(c.getValore())
+                .attivo(c.getAttivo())
+                .dataInizio(c.getDataInizio())
+                .dataFine(c.getDataFine())
+                .build();
+	}
 }
