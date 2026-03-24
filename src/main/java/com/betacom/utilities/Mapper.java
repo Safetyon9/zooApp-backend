@@ -1,7 +1,4 @@
 package com.betacom.utilities;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
@@ -52,7 +49,7 @@ public class Mapper {
 	            .build();
 	}
 
-	private OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
+	public static OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()
                 .id(oo.getId()) 
                 .itemId(oo.getItem().getId())

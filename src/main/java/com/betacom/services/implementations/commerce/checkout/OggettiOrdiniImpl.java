@@ -1,6 +1,7 @@
 package com.betacom.services.implementations.commerce.checkout;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IOggettiOrdiniServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
 
-    private final IOggettiOrdiniRepository repoOO;
+    private final IOggettiOrdiniRepository ooR;
     private final IMessaggiServices msgS;
 
     @Transactional(rollbackFor = ZooException.class)
@@ -34,7 +36,7 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         oo.setPrezzoUnitario(req.getPrezzoUnitario());
         oo.setPrezzoTotale(req.getPrezzoTotale());
 
-        repoOO.save(oo);
+        ooR.save(oo);
     }
 
     @Transactional(rollbackFor = ZooException.class)
@@ -42,14 +44,14 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
     public void update(OggettiOrdiniReq req) throws ZooException {
         log.debug("update {}", req);
 
-        OggettiOrdini oo = repoOO.findById(req.getId())
+        OggettiOrdini oo = ooR.findById(req.getId())
                 .orElseThrow(() -> new ZooException(msgS.get("oggord_ntfnd")));
 
         oo.setQuantita(req.getQuantita());
         oo.setPrezzoUnitario(req.getPrezzoUnitario());
         oo.setPrezzoTotale(req.getPrezzoTotale());
 
-        repoOO.save(oo);
+        ooR.save(oo);
     }
 
     @Transactional(rollbackFor = ZooException.class)
@@ -57,46 +59,38 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
     public void delete(Integer id) throws ZooException {
         log.debug("delete {}", id);
 
-        OggettiOrdini oo = repoOO.findById(id)
+        OggettiOrdini oo = ooR.findById(id)
                 .orElseThrow(() -> new ZooException(msgS.get("oggord_ntfnd")));
-        repoOO.delete(oo);
+        ooR.delete(oo);
     }
 
     @Override
     public List<OggettiOrdiniDTO> list() {
         log.debug("list oggetti ordini");
-
-        return repoOO.findAll().stream()
-                .map(this::toDTO)
-                .toList();
+        
+        List<OggettiOrdini> lB = ooR.findAll();
+	    return lB.stream()
+	    		.map(b -> Mapper.buildOgettiOrdiniDTO(b))
+	    		.collect(Collectors.toList());
     }
 
     @Override
     public OggettiOrdiniDTO getById(Integer id) throws ZooException {
         log.debug("getById {}", id);
 
-        OggettiOrdini oo = repoOO.findById(id)
+        OggettiOrdini oo = ooR.findById(id)
                 .orElseThrow(() -> new ZooException(msgS.get("oggord_ntfnd")));
-        return toDTO(oo);
+        return Mapper.buildOgettiOrdiniDTO(oo);
     }
 
     @Override
     public List<OggettiOrdiniDTO> findByOrdineId(Integer ordineId) {
         log.debug("findByOrdineId {}", ordineId);
 
-        return repoOO.findByOrdineId(ordineId).stream()
-                .map(this::toDTO)
+        return ooR.findByOrdineId(ordineId).stream()
+                .map(b -> Mapper.buildOgettiOrdiniDTO(b))
                 .toList();
     }
 
-    private OggettiOrdiniDTO toDTO(OggettiOrdini oo) {
-        return OggettiOrdiniDTO.builder()
-                .id(oo.getId())
-                .itemId(oo.getItem() != null ? oo.getItem().getId() : null)
-                .nomeItem(oo.getItem() != null ? oo.getItem().getNome() : null)
-                .quantita(oo.getQuantita())
-                .prezzoUnitario(oo.getPrezzoUnitario())
-                .prezzoTotale(oo.getPrezzoTotale())
-                .build();
-    }
+    
 }
