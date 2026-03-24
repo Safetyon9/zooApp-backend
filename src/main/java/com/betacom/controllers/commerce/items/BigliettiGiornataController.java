@@ -1,4 +1,4 @@
-package com.betacom.controllers;
+package com.betacom.controllers.commerce.items;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/rest/recensioni")
-public class RecensioniController {
+@RequestMapping("/rest/biglietti-giornata")
+public class BigliettiGiornataController {
 
 }
