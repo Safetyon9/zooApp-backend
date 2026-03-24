@@ -50,9 +50,10 @@ public class UtentiImpl implements IUtentiServices {
     public void update(UtentiReq req) throws ZooException {
         log.debug("update {}", req);
 
-        Utenti u = repoU.findByUserName(req.getUserName())
-                .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
+        Utenti u = repoU.findById(req.getId())
+                .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
 
+        u.setUserName(req.getUserName());
         u.setEmail(req.getEmail());
         u.setPwd(req.getPassword());
         u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
