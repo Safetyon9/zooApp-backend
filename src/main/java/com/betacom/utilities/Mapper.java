@@ -52,6 +52,7 @@ public class Mapper {
 	            .cognome(c.getCognome())
 	            .indirizzo(c.getIndirizzo())
 	            .utenteId(c.getUtente() != null ? c.getUtente().getId() : null)
+	            .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
 	            .build();
 	}
 	
@@ -187,11 +188,7 @@ public class Mapper {
 		        .id(carrelli.getId())
 		        .cliente(buildClienteDTO(carrelli.getCliente()))
 		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
-		                .map(oc -> OggettiCarrelliDTO.builder()
-		                        .id(oc.getId())
-		                        .quantita(oc.getQuantita())
-		                        .prezzoTotale(oc.getPrezzoTotale())
-		                        .build())
+		                .map(oc -> buildOggettiCarrelliDTO(oc))
 		                .toList())
 		        .build();
 	}
