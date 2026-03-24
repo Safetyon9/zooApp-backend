@@ -14,6 +14,8 @@ import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.items.IProdottiServices;
+import com.betacom.utilities.Mapper;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,18 +82,7 @@ public class ProdottiImpl implements IProdottiServices {
         log.debug("list prodotti");
 
         return repoP.findAll().stream()
-                .map(p -> ProdottiDTO.builder()
-                        .id(p.getId())
-                        .itemId(p.getId())
-                        .nome(p.getNome())
-                        .descrizione(p.getDescrizione())
-                        .prezzo(p.getPrezzo())
-                        .dimensioni(p.getDimensioni())
-                        .peso(p.getPeso())
-                        .stock(p.getStock())
-                        .sku(p.getSku())
-                        .categoria(p.getCategoria())
-                        .build())
+                .map(p -> Mapper.buildProdottiDTO(p))
                 .toList();
     }
 
@@ -102,18 +93,7 @@ public class ProdottiImpl implements IProdottiServices {
         Prodotti p = repoP.findBySku(sku)
                 .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
 
-        return ProdottiDTO.builder()
-                .id(p.getId())
-                .itemId(p.getId())
-                .nome(p.getNome())
-                .descrizione(p.getDescrizione())
-                .prezzo(p.getPrezzo())
-                .dimensioni(p.getDimensioni())
-                .peso(p.getPeso())
-                .stock(p.getStock())
-                .sku(p.getSku())
-                .categoria(p.getCategoria())
-                .build();
+        return Mapper.buildProdottiDTO(p);
     }
 
     @Override

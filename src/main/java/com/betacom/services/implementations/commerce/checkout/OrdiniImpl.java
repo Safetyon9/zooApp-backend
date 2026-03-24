@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.checkout.OrdiniReq;
-import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;
 import com.betacom.enums.StatoOrdine;
 import com.betacom.exceptions.ZooException;
@@ -17,6 +16,7 @@ import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IOrdiniServices;
+import com.betacom.utilities.Mapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +46,6 @@ public class OrdiniImpl implements IOrdiniServices {
         o.setDataOrdine(LocalDateTime.now());
         o.setStato(StatoOrdine.ORDINATO);
 
-        // se vuoi creare anche le righe qui, itera su req.getOggetti() e popola la lista
-        // o.setOggettiOrdine(...)
 
         repoO.save(o);
     }
@@ -95,7 +93,7 @@ public class OrdiniImpl implements IOrdiniServices {
         log.debug("list ordini");
 
         return repoO.findAll().stream()
-                .map(this::toDTO)
+                .map(o -> Mapper.buildOrdiniDTO(o))
                 .toList();
     }
 
@@ -105,7 +103,7 @@ public class OrdiniImpl implements IOrdiniServices {
 
         Ordini o = repoO.findById(id)
                 .orElseThrow(() -> new ZooException(msgS.get("ord_ntfnd")));
-        return toDTO(o);
+        return Mapper.buildOrdiniDTO(o);
     }
 
     @Override
@@ -113,31 +111,7 @@ public class OrdiniImpl implements IOrdiniServices {
         log.debug("findByClienteId {}", clienteId);
 
         return repoO.findByClienteId(clienteId).stream()
-                .map(this::toDTO)
+                .map(o -> Mapper.buildOrdiniDTO(o))
                 .toList();
-    }
-
-    private OrdiniDTO toDTO(Ordini o) {
-        List<OggettiOrdiniDTO> righe = o.getOggettiOrdine().stream()
-                .map(oo -> OggettiOrdiniDTO.builder()
-                        .id(oo.getId())
-                        .itemId(oo.getItem().getId())
-                        .nomeItem(oo.getItem().getNome())
-                        .quantita(oo.getQuantita())
-                        .prezzoUnitario(oo.getPrezzoUnitario())
-                        .prezzoTotale(oo.getPrezzoTotale())
-                        .build())
-                .toList();
-
-        return OrdiniDTO.builder()
-                .id(o.getId())
-                .clienteId(o.getCliente().getId())
-                .nome(o.getNome())
-                .cognome(o.getCognome())
-                .indirizzo(o.getIndirizzo())
-                .dataOrdine(o.getDataOrdine())
-                .stato(o.getStato())
-                .righe(righe)
-                .build();
     }
 }

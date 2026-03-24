@@ -13,6 +13,8 @@ import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
+import com.betacom.utilities.Mapper;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,12 +75,7 @@ public class UtentiImpl implements IUtentiServices {
         log.debug("list utenti");
 
         return repoU.findAll().stream()
-                .map(u -> UtentiDTO.builder()
-                        .id(u.getId())
-                        .userName(u.getUserName())
-                        .email(u.getEmail())
-                        .role(u.getRole().name())
-                        .build())
+                .map(u -> Mapper.buildUtentiDTO(u))
                 .toList();
     }
 
@@ -89,11 +86,6 @@ public class UtentiImpl implements IUtentiServices {
         Utenti u = repoU.findByUserName(userName)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
-        return UtentiDTO.builder()
-                .id(u.getId())
-                .userName(u.getUserName())
-                .email(u.getEmail())
-                .role(u.getRole().name())
-                .build();
+        return Mapper.buildUtentiDTO(u);
     }
 }

@@ -1,4 +1,5 @@
 package com.betacom.utilities;
+import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
@@ -7,10 +8,13 @@ import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.dto.outputs.commerce.checkout.CouponsDTO;
 import com.betacom.dto.outputs.commerce.checkout.MetodiPagamentoDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
+import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
@@ -19,10 +23,12 @@ import com.betacom.persistence.entity.commerce.OggettiCarrelli;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
+import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
+import com.betacom.persistence.entity.commerce.items.Prodotti;
 
 public class Mapper {
 
@@ -67,7 +73,43 @@ public class Mapper {
                 .prezzoTotale(oo.getPrezzoTotale())
                 .build();
     }
-
+	
+	public static OrdiniDTO buildOrdiniDTO(Ordini o) {
+		return OrdiniDTO.builder()
+				.id(o.getId())
+				.clienteId(o.getCliente() != null ? o.getCliente().getId() : null)
+				.nome(o.getNome())
+				.cognome(o.getCognome())
+				.indirizzo(o.getIndirizzo())
+				.dataOrdine(o.getDataOrdine())
+				.build();
+		
+	}
+	public static ProdottiDTO buildProdottiDTO(Prodotti p) {
+		return ProdottiDTO.builder()
+                .id(p.getId())
+                .itemId(p.getId())
+                .nome(p.getNome())
+                .descrizione(p.getDescrizione())
+                .prezzo(p.getPrezzo())
+                .dimensioni(p.getDimensioni())
+                .peso(p.getPeso())
+                .stock(p.getStock())
+                .sku(p.getSku())
+                .categoria(p.getCategoria())
+                .build();
+		
+	}
+	
+	public static UtentiDTO buildUtentiDTO(Utenti u) {
+		return UtentiDTO.builder()
+			    .id(u.getId())
+			    .userName(u.getUserName())
+			    .email(u.getEmail())
+			    .role(u.getRole().name())
+			    .build();
+		
+	}
 	
 	public static PagamentiDTO buildPagamentoDTO(Pagamenti p){
 	    return PagamentiDTO.builder()
