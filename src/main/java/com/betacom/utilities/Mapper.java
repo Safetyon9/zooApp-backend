@@ -5,6 +5,7 @@ import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
+import com.betacom.dto.outputs.commerce.RecensioniDTO;
 import com.betacom.dto.outputs.commerce.checkout.CouponsDTO;
 import com.betacom.dto.outputs.commerce.checkout.MetodiPagamentoDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
@@ -20,6 +21,7 @@ import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.OggettiCarrelli;
+import com.betacom.persistence.entity.commerce.Recensioni;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
@@ -85,6 +87,19 @@ public class Mapper {
 				.build();
 		
 	}
+	
+	public static RecensioniDTO buildRecensioniDTO (Recensioni r) {
+		return RecensioniDTO.builder()
+				.id(r.getId())
+				.voto(r.getVoto())
+				.testo(r.getTesto())
+				.titolo(r.getTitolo())
+				.generaleZoo(r.getGeneraleZoo())
+				.clienteId(r.getCliente() != null ? r.getCliente().getId() : null)
+				.itemId(r.getItem() != null ? r.getItem().getId() : null)
+				.build();
+	}
+	
 	public static ProdottiDTO buildProdottiDTO(Prodotti p) {
 		return ProdottiDTO.builder()
                 .id(p.getId())
