@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IPagamentiServices;
@@ -29,9 +30,7 @@ public class PagamentiController {
 	private final IMessaggiServices msgS;
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> list(
-			@RequestParam (required = false) int x
-			){
+	public ResponseEntity<Object> list(){
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -43,20 +42,6 @@ public class PagamentiController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
-		
-	}
-	@GetMapping("/findByAttivita")
-	public ResponseEntity<Object> findByAttivita (@RequestParam (required = true)  String attivita){
-		Object r = new Object();
-		HttpStatus status = HttpStatus.OK;
-		try {
-			r= pagaS.findByAttivita(attivita);
-		} catch (Exception e) {
-			r=e.getMessage();
-			status = HttpStatus.BAD_REQUEST;
-		}
-		return ResponseEntity.status(status).body(r);
-		
 	}
 
 	@GetMapping("/findById")
@@ -64,18 +49,17 @@ public class PagamentiController {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			r= pagaS.findById(id);
+			r= pagaS.getById(id);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST; 
 		}
 		return ResponseEntity.status(status).body(r);
-		
 	}
 
 	
 	@PostMapping("/create")
-	public ResponseEntity<Resp> create(@RequestBody(required = true)  SocioReq req){
+	public ResponseEntity<Resp> create(@RequestBody(required = true)  PagamentiReq req){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -89,7 +73,7 @@ public class PagamentiController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Resp> update(@RequestBody(required = true)  SocioReq req){
+	public ResponseEntity<Resp> update(@RequestBody(required = true)  PagamentiReq req){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
