@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
@@ -23,13 +24,19 @@ public class GiornateImpl implements IGiornateServices {
     @Autowired
     private IEventiRepository evE;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void create(GiornateReq req) throws Exception {
-        Giornate g = new Giornate();
 
+        if (req.getData() == null)
+            throw new Exception("Data obbligatoria");
+
+        if (req.getEventoId() == null || req.getEventoId() <= 0)
+            throw new Exception("EventoId non valido");
+
+        Giornate g = new Giornate();
         g.setData(req.getData());
 
-       
         Eventi e = evE.findById(req.getEventoId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
@@ -38,14 +45,24 @@ public class GiornateImpl implements IGiornateServices {
         repo.save(g);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void update(GiornateReq req) throws Exception {
+
+        if (req.getId() == null || req.getId() <= 0)
+            throw new Exception("Id giornata non valido");
+
+        if (req.getData() == null)
+            throw new Exception("Data obbligatoria");
+
+        if (req.getEventoId() == null || req.getEventoId() <= 0)
+            throw new Exception("EventoId non valido");
+
         Giornate g = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Giornata non trovata"));
 
         g.setData(req.getData());
 
-      
         Eventi e = evE.findById(req.getEventoId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
@@ -54,6 +71,7 @@ public class GiornateImpl implements IGiornateServices {
         repo.save(g);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Integer id) throws Exception {
         repo.deleteById(id);

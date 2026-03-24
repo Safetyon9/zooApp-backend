@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -23,44 +24,78 @@ public class ClientiImpl implements IClientiServices {
     @Autowired
     private IUtentiRepository utentiRepo;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void create(ClientiReq req) throws Exception {
-        Clienti c = new Clienti();
 
-        c.setNome(req.getNome());
-        c.setCognome(req.getCognome());
-        c.setIndirizzo(req.getIndirizzo());
+        if (req.getNome() == null || req.getNome().isBlank())
+            throw new Exception("Nome obbligatorio");
 
-      
+        if (req.getCognome() == null || req.getCognome().isBlank())
+            throw new Exception("Cognome obbligatorio");
+
+        if (req.getIndirizzo() == null || req.getIndirizzo().isBlank())
+            throw new Exception("Indirizzo obbligatorio");
+
+        if (req.getUtenteId() == null || req.getUtenteId() <= 0)
+            throw new Exception("UtenteId non valido");
+
         Utenti u = utentiRepo.findById(req.getUtenteId())
                 .orElseThrow(() -> new Exception("Utente non trovato"));
 
+        Clienti c = new Clienti();
+        c.setNome(req.getNome());
+        c.setCognome(req.getCognome());
+        c.setIndirizzo(req.getIndirizzo());
         c.setUtente(u);
 
         repo.save(c);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void update(ClientiReq req) throws Exception {
+
+        if (req.getId() == null || req.getId() <= 0)
+            throw new Exception("Id cliente non valido");
+
+        if (req.getNome() == null || req.getNome().isBlank())
+            throw new Exception("Nome obbligatorio");
+
+        if (req.getCognome() == null || req.getCognome().isBlank())
+            throw new Exception("Cognome obbligatorio");
+
+        if (req.getIndirizzo() == null || req.getIndirizzo().isBlank())
+            throw new Exception("Indirizzo obbligatorio");
+
+        if (req.getUtenteId() == null || req.getUtenteId() <= 0)
+            throw new Exception("UtenteId non valido");
+
         Clienti c = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
-        c.setNome(req.getNome());
-        c.setCognome(req.getCognome());
-        c.setIndirizzo(req.getIndirizzo());
-
-      
         Utenti u = utentiRepo.findById(req.getUtenteId())
                 .orElseThrow(() -> new Exception("Utente non trovato"));
 
+        c.setNome(req.getNome());
+        c.setCognome(req.getCognome());
+        c.setIndirizzo(req.getIndirizzo());
         c.setUtente(u);
 
         repo.save(c);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Integer id) throws Exception {
-        repo.deleteById(id);
+
+        if (id == null || id <= 0)
+            throw new Exception("Id non valido");
+
+        Clienti c = repo.findById(id)
+                .orElseThrow(() -> new Exception("Cliente non trovato"));
+
+        repo.delete(c);
     }
 
     @Override

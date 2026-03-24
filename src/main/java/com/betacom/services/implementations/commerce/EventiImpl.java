@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
-
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.services.interfaces.commerce.items.IEventiServices;
 import com.betacom.utilities.Mapper;
@@ -22,10 +22,23 @@ public class EventiImpl implements IEventiServices {
     @Autowired
     private IEventiRepository repo;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void create(EventiReq req) throws Exception {
-        Eventi e = new Eventi();
 
+        if (req.getTipoEvento() == null || req.getTipoEvento().isBlank())
+            throw new Exception("Tipo evento obbligatorio");
+
+        if (req.getDataInizio() == null)
+            throw new Exception("Data inizio obbligatoria");
+
+        if (req.getDataFine() == null)
+            throw new Exception("Data fine obbligatoria");
+
+        if (req.getDataFine().isBefore(req.getDataInizio()))
+            throw new Exception("Data fine non può essere prima della data inizio");
+
+        Eventi e = new Eventi();
         e.setTipoEvento(req.getTipoEvento());
         e.setDataInizio(req.getDataInizio());
         e.setDataFine(req.getDataFine());
@@ -33,8 +46,25 @@ public class EventiImpl implements IEventiServices {
         repo.save(e);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void update(EventiReq req) throws Exception {
+
+        if (req.getId() == null || req.getId() <= 0)
+            throw new Exception("Id evento non valido");
+
+        if (req.getTipoEvento() == null || req.getTipoEvento().isBlank())
+            throw new Exception("Tipo evento obbligatorio");
+
+        if (req.getDataInizio() == null)
+            throw new Exception("Data inizio obbligatoria");
+
+        if (req.getDataFine() == null)
+            throw new Exception("Data fine obbligatoria");
+
+        if (req.getDataFine().isBefore(req.getDataInizio()))
+            throw new Exception("Data fine non può essere prima della data inizio");
+
         Eventi e = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
@@ -45,6 +75,7 @@ public class EventiImpl implements IEventiServices {
         repo.save(e);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Integer id) throws Exception {
         repo.deleteById(id);
@@ -65,6 +96,4 @@ public class EventiImpl implements IEventiServices {
 
         return Mapper.buildEventoDTO(e);
     }
-    
-    
 }

@@ -1,5 +1,6 @@
 package com.betacom.services.implementations.commerce.items;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,20 @@ public class BigliettiImpl implements IBigliettiServices {
     @Transactional(rollbackFor = ZooException.class)
     @Override
     public void create(BigliettiReq req) throws Exception {
+    	
+    	
         log.debug("create {}", req);
 
+
+        if (req.getNome() == null || req.getNome().isBlank())
+            throw new ZooException("Nome obbligatorio");
+
+        if (req.getPrezzo() == null || req.getPrezzo().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ZooException("Prezzo non valido");
+        
+        if (req.getTipo() == null || req.getTipo().isBlank())
+            throw new ZooException("Tipo obbligatorio");
+        
         Biglietti b = new Biglietti();
 
         b.setNome(req.getNome());
@@ -46,6 +59,18 @@ public class BigliettiImpl implements IBigliettiServices {
     @Override
     public void update(BigliettiReq req) throws Exception {
         log.debug("update {}", req);
+        
+        if (req.getId() == null || req.getId() <= 0)
+            throw new ZooException("Id non valido");
+
+        if (req.getNome() == null || req.getNome().isBlank())
+            throw new ZooException("Nome obbligatorio");
+
+        if (req.getPrezzo() == null || req.getPrezzo().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ZooException("Prezzo non valido");
+
+        if (req.getTipo() == null || req.getTipo().isBlank())
+            throw new ZooException("Tipo obbligatorio");
 
         Biglietti b = bigliettiR.findById(req.getId())
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
