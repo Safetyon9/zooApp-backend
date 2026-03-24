@@ -1,8 +1,5 @@
 package com.betacom.services.implementations.commerce;
 
-
-import static com.betacom.utilities.Mapper.buildEventiDTO;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +64,6 @@ public class EventiImpl implements IEventiServices {
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
         return Mapper.buildEventoDTO(e);
-    }
-    
-    @Override
-    public List<EventiDTO> list() {
-        log.debug("list");
-        List<Eventi> eV = repo.findAll();
-        return buildEventiDTO(eV);
     }
     
     

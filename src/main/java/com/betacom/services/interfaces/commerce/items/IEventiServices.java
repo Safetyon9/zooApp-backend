@@ -14,7 +14,6 @@ public interface IEventiServices {
 	
 	List<EventiDTO> findAll() throws Exception;
 	EventiDTO getById(Integer id) throws Exception;
-	List<EventiDTO> list();
-	
+
 }
 

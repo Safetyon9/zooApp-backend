@@ -78,7 +78,7 @@ public class EventiController {
 			Object r = new Object();
 			HttpStatus status = HttpStatus.OK;
 			try {
-				r= evE.list();
+				r= evE.findAll();
 			} catch (Exception e) {
 				r=e.getMessage();
 				status = HttpStatus.BAD_REQUEST;
