@@ -14,7 +14,6 @@ import lombok.ToString;
 @ToString
 public class ClientiDTO  {
     private Integer id;
-    private String email;
     private String nome;
     private String cognome;
     private String indirizzo;

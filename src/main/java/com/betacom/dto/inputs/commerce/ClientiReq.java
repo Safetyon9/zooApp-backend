@@ -7,11 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
 public class ClientiReq {
 	
 	private Integer Id;
-    private String email;
     private String nome;
     private String cognome;
     private String indirizzo;

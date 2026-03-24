@@ -1,7 +1,4 @@
 package com.betacom.utilities;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -51,7 +48,6 @@ public class Mapper {
 	public static ClientiDTO buildClienteDTO(Clienti c){
 	    return ClientiDTO.builder()
 	            .id(c.getId())
-	            .email(c.getEmail())
 	            .nome(c.getNome())
 	            .cognome(c.getCognome())
 	            .indirizzo(c.getIndirizzo())
@@ -189,14 +185,7 @@ public class Mapper {
 	public static CarrelliDTO buildCarrelliDTO(Carrelli carrelli) {
 		return CarrelliDTO.builder()
 		        .id(carrelli.getId())
-		        .cliente(ClientiDTO.builder()
-		                .id(carrelli.getCliente().getId())
-		                .email(carrelli.getCliente().getEmail())
-		                .nome(carrelli.getCliente().getNome())
-		                .cognome(carrelli.getCliente().getCognome())
-		                .indirizzo(carrelli.getCliente().getIndirizzo())
-		                //aggiungere altri campi cliente (?)
-		                .build())
+		        .cliente(buildClienteDTO(carrelli.getCliente()))
 		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
 		                .map(oc -> OggettiCarrelliDTO.builder()
 		                        .id(oc.getId())
