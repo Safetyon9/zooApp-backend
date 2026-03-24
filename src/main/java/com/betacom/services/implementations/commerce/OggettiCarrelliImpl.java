@@ -3,6 +3,7 @@ package com.betacom.services.implementations.commerce;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.OggettiCarrelliReq;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
@@ -30,11 +31,13 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 	private final IItemsRepository itemRepo;
 	private final IMessaggiServices msgS;
 	
+
+    @Transactional(rollbackFor = ZooException.class)
 	@Override
 	public void create(OggettiCarrelliReq req) throws Exception {
 		log.debug("create {}", req);
 		
-		Carrelli c = carrRepo.findById(req.getId())
+		Carrelli c = carrRepo.findById(req.getCarrelloId())
 				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "+ req.getCarrelloId()));
 		
 		Items item = itemRepo.findById(req.getItemId())
@@ -51,6 +54,8 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		
 	}
 
+
+    @Transactional(rollbackFor = ZooException.class)
 	@Override
 	public void update(OggettiCarrelliReq req) throws Exception {
 		log.debug("update {}", req);
@@ -68,6 +73,8 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		
 	}
 
+
+    @Transactional(rollbackFor = ZooException.class)
 	@Override
 	public void delete(Integer id) throws Exception {
 		log.debug("delete {}", id);

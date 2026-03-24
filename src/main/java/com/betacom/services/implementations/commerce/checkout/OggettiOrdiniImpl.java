@@ -9,8 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
+import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.items.Items;
+import com.betacom.persistence.repository.commerce.ICarrelliRepository;
+import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
+import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IOggettiOrdiniServices;
 import com.betacom.utilities.Mapper;
@@ -25,11 +31,20 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
 
     private final IOggettiOrdiniRepository ooR;
     private final IMessaggiServices msgS;
+    
+    private final IOrdiniRepository ordR;
+	private final IItemsRepository itemRepo;
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
     public void create(OggettiOrdiniReq req) throws ZooException {
         log.debug("create {}", req);
+        
+        Ordini o = ordR.findById(req.getOrdineId())
+				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "+ req.getOrdineId()));
+		
+		Items item = itemRepo.findById(req.getItemId())
+		        .orElseThrow(() -> new ZooException("item non trovato nel DB: " + req.getItemId()));
 
         OggettiOrdini oo = new OggettiOrdini();
         oo.setQuantita(req.getQuantita());

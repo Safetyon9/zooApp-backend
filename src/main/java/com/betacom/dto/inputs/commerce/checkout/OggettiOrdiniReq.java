@@ -19,5 +19,7 @@ public class OggettiOrdiniReq {
     private Integer quantita;
     private BigDecimal prezzoUnitario;
     private BigDecimal prezzoTotale;
+    private Integer ordineId;
+    private Integer itemId;
 
 }
