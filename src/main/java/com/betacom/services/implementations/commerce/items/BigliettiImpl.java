@@ -43,6 +43,9 @@ public class BigliettiImpl implements IBigliettiServices {
         
         if (req.getTipo() == null || req.getTipo().isBlank())
             throw new ZooException("Tipo obbligatorio");
+        if (req.getUrlImmagine() == null || req.getUrlImmagine().isBlank())
+            throw new ZooException("Immagine obbligatoria");
+        
         
         Biglietti b = new Biglietti();
 
@@ -71,7 +74,12 @@ public class BigliettiImpl implements IBigliettiServices {
 
         if (req.getTipo() == null || req.getTipo().isBlank())
             throw new ZooException("Tipo obbligatorio");
-
+        
+        if (req.getUrlImmagine() == null || req.getUrlImmagine().isBlank())
+            throw new ZooException("Immagine obbligatoria");
+        
+        
+        
         Biglietti b = bigliettiR.findById(req.getId())
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
