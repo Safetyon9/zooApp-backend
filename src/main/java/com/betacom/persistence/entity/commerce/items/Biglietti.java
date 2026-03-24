@@ -14,4 +14,5 @@ public class Biglietti extends Items{
 
 	@Column(nullable = false)
     private String tipo;
+	
 }
