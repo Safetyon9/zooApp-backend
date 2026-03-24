@@ -27,7 +27,6 @@ public class ClientiImpl implements IClientiServices {
     public void create(ClientiReq req) throws Exception {
         Clienti c = new Clienti();
 
-        c.setEmail(req.getEmail());
         c.setNome(req.getNome());
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
@@ -46,7 +45,6 @@ public class ClientiImpl implements IClientiServices {
         Clienti c = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
-        c.setEmail(req.getEmail());
         c.setNome(req.getNome());
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
