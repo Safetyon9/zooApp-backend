@@ -18,8 +18,6 @@ public class SpedizioniDTO {
 
     private String indirizzo;
 
-    private String corriere;
-
     private String trackingNumber;
 
     private BigDecimal costo;
@@ -29,4 +27,6 @@ public class SpedizioniDTO {
     private LocalDate dataAggiornamento;
 
     private Integer ordineId;
+    
+    private Integer corriereId;
 }

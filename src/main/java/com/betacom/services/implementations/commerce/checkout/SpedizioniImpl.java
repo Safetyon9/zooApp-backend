@@ -10,8 +10,10 @@ import com.betacom.dto.inputs.commerce.checkout.SpedizioniReq;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.enums.StatoSpedizione;
 import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
+import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -30,6 +32,7 @@ public class SpedizioniImpl implements ISpedizioniServices{
 	private final IMessaggiServices msgS;
 	
 	private final IOrdiniRepository ordR;
+	private final ICorrieriRepository corR;
 	
 	@Transactional (rollbackFor = ZooException.class)
 	@Override
@@ -38,18 +41,19 @@ public class SpedizioniImpl implements ISpedizioniServices{
 		
 	    Ordini ordine = ordR.findById(req.getOrdineId())
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+	    
+	    Corrieri corriere = corR.findById(req.getCorriereId())
+	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
 		
 		if (ordine.getIndirizzo() == null)
 	        throw new ZooException("Indirizzo non trovato.");
-	    if (req.getCorriere() == null)
-	        throw new ZooException("Corriere non trovato.");
 	    if (req.getCosto() == null)
 	        throw new ZooException("Costo non trovato.");
 	    if (req.getOrdineId() == null)
 	        throw new ZooException("Ordine collegato non trovato.");
 
 	    Spedizioni sped = new Spedizioni();
-	    sped.setCorriere(req.getCorriere());
+	    sped.setCorriere(corriere);
 	    sped.setTrackingNumber(req.getTrackingNumber());
 	    sped.setCosto(req.getCosto());
 	    sped.setOrdine(ordine);
@@ -64,6 +68,9 @@ public class SpedizioniImpl implements ISpedizioniServices{
 	public void update(SpedizioniReq req) throws ZooException {
 		log.debug("update {}", req);
 
+	    if (req.getId() == null)
+	        throw new ZooException("Id spedizione mancante");
+
 	    Spedizioni sped = speR.findById(req.getId())
 	            .orElseThrow(() -> new ZooException("Spedizione non trovata"));
 
@@ -73,8 +80,20 @@ public class SpedizioniImpl implements ISpedizioniServices{
 	    if (req.getStato() != null)
 	        sped.setStato(StatoSpedizione.valueOf(req.getStato().toUpperCase()));
 
+	    if (req.getCosto() != null)
+	        sped.setCosto(req.getCosto());
+
 	    if (req.getDataAggiornamento() != null)
 	        sped.setDataAggiornamento(req.getDataAggiornamento());
+
+	    if (req.getCorriereId() != null) {
+	        Corrieri corriere = corR.findById(req.getCorriereId())
+	                .orElseThrow(() -> new ZooException("Corriere non trovato"));
+
+	        sped.setCorriere(corriere);
+	    }
+	    
+	    //Possibilità di cambiare in dirizzo in fase non di attesa
 
 	    speR.save(sped);
 	}

@@ -2,6 +2,7 @@ package com.betacom.utilities;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -9,6 +10,7 @@ import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.dto.outputs.commerce.RecensioniDTO;
+import com.betacom.dto.outputs.commerce.checkout.CorrieriDTO;
 import com.betacom.dto.outputs.commerce.checkout.CouponsDTO;
 import com.betacom.dto.outputs.commerce.checkout.MetodiPagamentoDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
@@ -26,6 +28,7 @@ import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.OggettiCarrelli;
 import com.betacom.persistence.entity.commerce.Recensioni;
+import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
@@ -168,7 +171,7 @@ public class Mapper {
 	    return SpedizioniDTO.builder()
 	    		.id(s.getId())
                 .indirizzo(s.getIndirizzo())
-                .corriere(s.getCorriere())
+                .corriereId(s.getCorriere() != null ? s.getCorriere().getId() : null)
                 .trackingNumber(s.getTrackingNumber())
                 .costo(s.getCosto())
                 .stato(s.getStato().toString())
@@ -236,4 +239,12 @@ public class Mapper {
                 .dataFine(c.getDataFine())
                 .build();
 	}
+	
+	public static CorrieriDTO buildCorrieriDTO(Corrieri c) {
+		return CorrieriDTO.builder()
+				.id(c.getId())
+                .nome(c.getNome())
+                .build();
+	}
+
 }

@@ -32,9 +32,6 @@ public class Spedizioni {
 	@Column(nullable = false)
     private String indirizzo;
 
-    @Column(nullable = false)
-    private String corriere;
-
     @Column(nullable = true, unique = true)
     private String trackingNumber;
     
@@ -54,4 +51,8 @@ public class Spedizioni {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ordine_id")
     private Ordini ordine;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "corriere_id")
+    private Corrieri corriere;
 }
