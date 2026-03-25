@@ -11,7 +11,9 @@ import com.betacom.dto.inputs.commerce.items.BigliettiReq;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
+import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
+import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.services.interfaces.commerce.items.IBigliettiServices;
 import com.betacom.utilities.Mapper;
 
@@ -22,9 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 public class BigliettiImpl implements IBigliettiServices {
 
     private final IBigliettiRepository bigliettiR;
+    private final ITipiBigliettiRepository tipoRepo;
 
-    public BigliettiImpl(IBigliettiRepository bigliettiR) {
+    public BigliettiImpl(IBigliettiRepository bigliettiR,ITipiBigliettiRepository tipoRepo) {
         this.bigliettiR = bigliettiR;
+        this.tipoRepo = tipoRepo;
     }
 
     @Transactional(rollbackFor = ZooException.class)
@@ -41,8 +45,11 @@ public class BigliettiImpl implements IBigliettiServices {
         if (req.getPrezzo() == null || req.getPrezzo().compareTo(BigDecimal.ZERO) <= 0)
             throw new ZooException("Prezzo non valido");
         
-        if (req.getTipo() == null || req.getTipo().isBlank())
+        if (req.getTipoId() == null)
             throw new ZooException("Tipo obbligatorio");
+        
+        TipiBiglietti tipo = tipoRepo.findById(req.getTipoId())
+                .orElseThrow(() -> new ZooException("Tipo non valido"));
         
         if (req.getUrlImmagine() == null || req.getUrlImmagine().isBlank())
             throw new ZooException("Immagine obbligatoria");
@@ -54,7 +61,7 @@ public class BigliettiImpl implements IBigliettiServices {
         b.setDescrizione(req.getDescrizione());
         b.setUrlImmagine(req.getUrlImmagine());
         b.setPrezzo(req.getPrezzo());
-        b.setTipo(req.getTipo());
+        b.setTipo(tipo);
 
         bigliettiR.save(b);
     }
@@ -64,33 +71,31 @@ public class BigliettiImpl implements IBigliettiServices {
     public void update(BigliettiReq req) throws Exception {
         log.debug("update {}", req);
         
-        if (req.getId() == null || req.getId() <= 0)
-            throw new ZooException("Id non valido");
 
-        if (req.getNome() == null || req.getNome().isBlank())
-            throw new ZooException("Nome obbligatorio");
-
-        if (req.getPrezzo() == null || req.getPrezzo().compareTo(BigDecimal.ZERO) <= 0)
-            throw new ZooException("Prezzo non valido");
-
-        if (req.getTipo() == null || req.getTipo().isBlank())
-            throw new ZooException("Tipo obbligatorio");
-        
-        if (req.getUrlImmagine() == null || req.getUrlImmagine().isBlank())
-            throw new ZooException("Immagine obbligatoria");
-        
-        
-        
         Biglietti b = bigliettiR.findById(req.getId())
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
-        b.setNome(req.getNome());
-        b.setDescrizione(req.getDescrizione());
-        b.setUrlImmagine(req.getUrlImmagine());
-        b.setPrezzo(req.getPrezzo());
-        b.setTipo(req.getTipo());
+        
+        if (req.getId() == null || req.getId() <= 0)
+            throw new ZooException("Id non valido");
 
-        bigliettiR.save(b);
+        if (req.getNome() != null && !req.getNome().isBlank()) {
+            b.setNome(req.getNome());
+        }
+        if (req.getPrezzo() != null && req.getPrezzo().compareTo(BigDecimal.ZERO) > 0) {
+            b.setPrezzo(req.getPrezzo());
+        }
+        
+        if (req.getTipoId() != null) {
+            TipiBiglietti tipo = tipoRepo.findById(req.getTipoId())
+                    .orElseThrow(() -> new ZooException("Tipo non valido"));
+            b.setTipo(tipo);
+        }   
+        if (req.getUrlImmagine() != null && !req.getUrlImmagine().isBlank()) {
+            b.setUrlImmagine(req.getUrlImmagine());
+        }
+
+         bigliettiR.save(b);
     }
 
     @Transactional(rollbackFor = ZooException.class)

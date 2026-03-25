@@ -2,6 +2,8 @@ package com.betacom.persistence.entity.commerce.items;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @Table (name="biglietti")
 public class Biglietti extends Items{
 
-	@Column(nullable = false)
-    private String tipo;
-	
+	@ManyToOne
+	@JoinColumn(name = "tipo_id")
+	private TipiBiglietti tipo;
 }

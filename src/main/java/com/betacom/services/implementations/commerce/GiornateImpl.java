@@ -52,25 +52,21 @@ public class GiornateImpl implements IGiornateServices {
         if (req.getId() == null || req.getId() <= 0)
             throw new Exception("Id giornata non valido");
 
-        if (req.getData() == null)
-            throw new Exception("Data obbligatoria");
-
-        if (req.getEventoId() == null || req.getEventoId() <= 0)
-            throw new Exception("EventoId non valido");
-
         Giornate g = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Giornata non trovata"));
 
-        g.setData(req.getData());
+        if (req.getData() != null) {
+            g.setData(req.getData());
+        }
 
-        Eventi e = evE.findById(req.getEventoId())
-                .orElseThrow(() -> new Exception("Evento non trovato"));
-
-        g.setEvento(e);
+        if (req.getEventoId() != null && req.getEventoId() > 0) {
+            Eventi e = evE.findById(req.getEventoId())
+                    .orElseThrow(() -> new Exception("Evento non trovato"));
+            g.setEvento(e);
+        }
 
         repo.save(g);
     }
-
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Integer id) throws Exception {

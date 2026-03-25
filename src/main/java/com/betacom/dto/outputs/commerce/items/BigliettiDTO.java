@@ -12,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 
 public class BigliettiDTO extends ItemsDTO {
 
-    private String tipo;
-
+	private Integer tipoId;
+	private String tipoNome;
 }
