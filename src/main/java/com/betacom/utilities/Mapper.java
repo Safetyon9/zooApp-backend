@@ -113,6 +113,7 @@ public class Mapper {
 				.nome(o.getNome())
 				.cognome(o.getCognome())
 				.indirizzo(o.getIndirizzo())
+				.stato(o.getStato())
 				.dataOrdine(o.getDataOrdine())
 				.build();
 		
