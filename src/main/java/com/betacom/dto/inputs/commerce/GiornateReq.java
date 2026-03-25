@@ -12,7 +12,7 @@ import lombok.ToString;
 
 public class GiornateReq {
 
-	private Integer Id;
+	private Integer id;
     private LocalDate data;
     private Integer eventoId;
 }
