@@ -1,4 +1,7 @@
 package com.betacom.utilities;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -84,6 +87,21 @@ public class Mapper {
                 .prezzoTotale(oo.getPrezzoTotale())
                 .build();
     }
+	
+	public static List<OggettiOrdiniDTO> buildOgettiOrdiniDTO(List<OggettiOrdini> lO) {
+	    return lO.stream()
+	            .map(oo -> OggettiOrdiniDTO.builder()
+	                    .id(oo.getId())
+	                    .itemId(oo.getItem().getId())
+	                    .nomeItem(oo.getItem().getNome())
+	                    .quantita(oo.getQuantita())
+	                    .prezzoUnitario(oo.getPrezzoUnitario())
+	                    .prezzoTotale(oo.getPrezzoTotale())
+	                    .build()
+	            )
+	            .collect(Collectors.toList());
+	}
+
 	
 	public static OrdiniDTO buildOrdiniDTO(Ordini o) {
 		return OrdiniDTO.builder()

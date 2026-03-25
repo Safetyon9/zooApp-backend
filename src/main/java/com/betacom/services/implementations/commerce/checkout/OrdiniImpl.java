@@ -45,6 +45,7 @@ public class OrdiniImpl implements IOrdiniServices {
         o.setIndirizzo(req.getIndirizzo() != null ? req.getIndirizzo() : cliente.getIndirizzo());
         o.setDataOrdine(LocalDateTime.now());
         o.setStato(StatoOrdine.ORDINATO);
+        
 
 
         repoO.save(o);
