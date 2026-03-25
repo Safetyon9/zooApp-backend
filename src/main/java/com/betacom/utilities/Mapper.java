@@ -130,7 +130,6 @@ public class Mapper {
 	public static ProdottiDTO buildProdottiDTO(Prodotti p) {
 		return ProdottiDTO.builder()
                 .id(p.getId())
-                .itemId(p.getId())
                 .nome(p.getNome())
                 .descrizione(p.getDescrizione())
                 .prezzo(p.getPrezzo())
