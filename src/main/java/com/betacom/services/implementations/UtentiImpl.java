@@ -14,8 +14,6 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
-import com.betacom.utilities.Utils;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +30,7 @@ public class UtentiImpl implements IUtentiServices {
     public void create (UtentiReq req){
         log.debug("create {}", req);
 
-        if (repoU.findByUserName(req.getUserName()).isPresent()) {
+        if (repoU.findByUserNameIgnoreCase(req.getUserName()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
         }
         
