@@ -19,6 +19,8 @@ public class PagamentiDTO {
     private BigDecimal importo;
 
     private String stato;
+    
+    private LocalDateTime dataCreazione;
 
     private LocalDateTime dataEsecuzione;
 

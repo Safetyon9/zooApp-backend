@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.commerce.checkout.CorrieriReq;
-import com.betacom.dto.inputs.commerce.items.CategorieReq;
 import com.betacom.dto.outputs.commerce.checkout.CorrieriDTO;
-import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;

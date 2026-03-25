@@ -1,5 +1,8 @@
 package com.betacom.services.implementations.commerce.checkout;
 
+import static com.betacom.utilities.Utils.stringToDate;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,8 +62,6 @@ public class PagamentiImpl implements IPagamentiServices{
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
 		Coupons coupon = couR.findById(req.getCouponId())
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
-	          
-	            
 		
 		Pagamenti pag = new Pagamenti();
 		pag.setImporto(req.getImporto());
@@ -83,8 +84,8 @@ public class PagamentiImpl implements IPagamentiServices{
 		
 		Pagamenti p = pag.get();
 
-		if (req.getDataEsecuzione() != null)
-			p.setDataEsecuzione(req.getDataEsecuzione());
+		p.setDataEsecuzione(LocalDateTime.now());
+		
 		if (req.getStato() != null)
 			p.setStato(StatoPagamento.valueOf(req.getStato().toUpperCase()));
 		
