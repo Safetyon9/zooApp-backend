@@ -29,11 +29,15 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void create(UtentiReq req){
+    public void create (UtentiReq req){
         log.debug("create {}", req);
 
         if (repoU.findByUserName(req.getUserName()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
+        }
+        
+        if (repoU.findByEmail(req.getEmail()).isPresent()) {
+            throw new ZooException(msgS.get("email_exists"));
         }
 
         Utenti u = new Utenti();
