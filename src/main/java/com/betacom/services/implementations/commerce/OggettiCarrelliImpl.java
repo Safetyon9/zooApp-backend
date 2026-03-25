@@ -17,6 +17,7 @@ import com.betacom.persistence.repository.commerce.IOggettiCarrelliRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.IOggettiCarrelliServices;
 import com.betacom.utilities.Mapper;
+import com.betacom.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +46,9 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		
 		OggettiCarrelli oggettiCarrelli = new OggettiCarrelli();
 		
-		oggettiCarrelli.setPrezzoTotale(req.getPrezzoTotale());
+		oggettiCarrelli.setPrezzoUnitario(req.getPrezzoUnitario());
 		oggettiCarrelli.setQuantita(req.getQuantita());
+		oggettiCarrelli.setPrezzoTotale(Utils.calcolaPrezzoTotale(req.getQuantita(), req.getPrezzoUnitario()));
 		oggettiCarrelli.setCarrello(c);
 		oggettiCarrelli.setItem(item);
 		

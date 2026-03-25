@@ -14,8 +14,6 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
-
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +27,15 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void create(UtentiReq req){
+    public void create (UtentiReq req){
         log.debug("create {}", req);
 
-        if (repoU.findByUserName(req.getUserName()).isPresent()) {
+        if (repoU.findByUserNameIgnoreCase(req.getUserName()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
+        }
+        
+        if (repoU.findByEmail(req.getEmail()).isPresent()) {
+            throw new ZooException(msgS.get("email_exists"));
         }
 
         Utenti u = new Utenti();
@@ -52,21 +54,28 @@ public class UtentiImpl implements IUtentiServices {
 
         Utenti u = repoU.findById(req.getId())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
-
-        u.setUserName(req.getUserName());
-        u.setEmail(req.getEmail());
-        u.setPwd(req.getPassword());
-        u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        
+        if(req.getUserName() != null)
+        	u.setUserName(req.getUserName());
+        
+        if(req.getEmail() != null)
+        	u.setEmail(req.getEmail());
+        
+        if(req.getPassword() != null)
+        	u.setPwd(req.getPassword());
+        
+        if(req.getRole() != null)
+        	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
 
         repoU.save(u);
     }
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void delete(String userName) throws ZooException {
-        log.debug("delete {}", userName);
+    public void delete(Integer id) throws ZooException {
+        log.debug("delete {}", id);
 
-        Utenti u = repoU.findByUserName(userName)
+        Utenti u = repoU.findById(id)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         repoU.delete(u);
     }
@@ -84,7 +93,7 @@ public class UtentiImpl implements IUtentiServices {
     public UtentiDTO getByUserName(String userName) throws ZooException {
         log.debug("getByUserName {}", userName);
 
-        Utenti u = repoU.findByUserName(userName)
+        Utenti u = repoU.findByUserNameIgnoreCase(userName)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
         return Mapper.buildUtentiDTO(u);

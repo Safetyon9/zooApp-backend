@@ -33,6 +33,12 @@ public class UtentiController {
 	public ResponseEntity<Resp> create(@RequestBody(required = true)  UtentiReq req){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
+		
+		 if (!req.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+		        r.setMsg(msgS.get("email_invalid"));
+		        return ResponseEntity.badRequest().body(r);
+		    }
+		 
 		try {
 			utS.create(req);
 			r.setMsg(msgS.get("rest_created"));
@@ -58,12 +64,12 @@ public class UtentiController {
 		return ResponseEntity.status(status).body(r);		
 	}
 
-	@DeleteMapping("/delete/{userName}")
-	public ResponseEntity<Resp> delete(@PathVariable(required = true)  String userName){
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Resp> delete(@PathVariable(required = true)  Integer id){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			utS.delete(userName);
+			utS.delete(id);
 			r.setMsg(msgS.get("rest_deleted"));
 		} catch (Exception e) {
 			r.setMsg(e.getMessage());

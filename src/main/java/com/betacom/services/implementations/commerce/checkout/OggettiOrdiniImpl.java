@@ -9,17 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.exceptions.ZooException;
-import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Items;
-import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IOggettiOrdiniServices;
 import com.betacom.utilities.Mapper;
+import com.betacom.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +48,7 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         OggettiOrdini oo = new OggettiOrdini();
         oo.setQuantita(req.getQuantita());
         oo.setPrezzoUnitario(req.getPrezzoUnitario());
+        oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(req.getQuantita(), req.getPrezzoUnitario()));
         oo.setPrezzoTotale(req.getPrezzoTotale());
 
         ooR.save(oo);

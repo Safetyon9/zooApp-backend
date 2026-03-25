@@ -10,6 +10,7 @@ import lombok.ToString;
 @Builder
 @ToString
 public class CategorieDTO {
+	
 	private Integer id;
 
     private String nome;

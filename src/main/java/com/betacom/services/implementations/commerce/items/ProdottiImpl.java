@@ -9,15 +9,12 @@ import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.items.Categorie;
-import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
-import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.items.IProdottiServices;
 import com.betacom.utilities.Mapper;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +41,11 @@ public class ProdottiImpl implements IProdottiServices {
         }
 
         Prodotti p = new Prodotti();
+        p.setNome(req.getNome());
+        p.setDescrizione(req.getDescrizione());
+        p.setUrlImmagine(req.getUrlImmagine());
+        p.setPrezzo(req.getPrezzo());
+
         p.setDimensioni(req.getDimensioni());
         p.setPeso(req.getPeso());
         p.setStock(req.getStock());
@@ -60,13 +62,19 @@ public class ProdottiImpl implements IProdottiServices {
 
         Prodotti p = repoP.findBySku(req.getSku())
                 .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
-        
+
         Categorie categoria = catR.findById(req.getCategoriaId())
                 .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
 
-        p.setDimensioni(req.getDimensioni());
-        p.setPeso(req.getPeso());
-        p.setStock(req.getStock());
+        if (req.getNome() != null) p.setNome(req.getNome());
+        if (req.getDescrizione() != null) p.setDescrizione(req.getDescrizione());
+        if (req.getUrlImmagine() != null) p.setUrlImmagine(req.getUrlImmagine());
+        if (req.getPrezzo() != null) p.setPrezzo(req.getPrezzo());
+
+        if (req.getDimensioni() != null) p.setDimensioni(req.getDimensioni());
+        if (req.getPeso() != null) p.setPeso(req.getPeso());
+        if (req.getStock() != null) p.setStock(req.getStock());
+        if (req.getSku() != null) p.setSku(req.getSku());
         p.setCategoria(categoria);
 
         repoP.save(p);

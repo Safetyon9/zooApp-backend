@@ -10,9 +10,10 @@ public interface IUtentiServices {
 
     void create(UtentiReq req) throws ZooException;
     void update(UtentiReq req) throws ZooException;
-    void delete(String userName) throws ZooException;
+    void delete(Integer id) throws ZooException;
 
     List<UtentiDTO> list() throws ZooException;
 
     UtentiDTO getByUserName(String userName) throws ZooException;
+	
 }

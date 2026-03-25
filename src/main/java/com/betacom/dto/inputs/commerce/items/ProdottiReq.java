@@ -10,12 +10,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProdottiReq {
+	private Integer itemId;
+	private String nome;
+    private String descrizione;
+    private String urlImmagine;
+    private BigDecimal prezzo;
 
-    private Integer itemId;
     private BigDecimal dimensioni;
     private BigDecimal peso;
     private Integer stock;
     private Long sku;
     private Integer categoriaId;
-
 }
