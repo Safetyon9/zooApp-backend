@@ -33,6 +33,12 @@ public class UtentiController {
 	public ResponseEntity<Resp> create(@RequestBody(required = true)  UtentiReq req){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
+		
+		 if (!req.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+		        r.setMsg(msgS.get("email_invalid"));
+		        return ResponseEntity.badRequest().body(r);
+		    }
+		 
 		try {
 			utS.create(req);
 			r.setMsg(msgS.get("rest_created"));
