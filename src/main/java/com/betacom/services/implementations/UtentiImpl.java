@@ -54,10 +54,17 @@ public class UtentiImpl implements IUtentiServices {
 
         Utenti u = repoU.findById(req.getId())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
-
-        u.setUserName(req.getUserName());
+        
+        if(req.getUserName() != null)
+        	u.setUserName(req.getUserName());
+        
+        if(req.getEmail() != null)
         u.setEmail(req.getEmail());
+        
+        if(req.getPassword() != null)
         u.setPwd(req.getPassword());
+        
+        if(req.getRole() != null)
         u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
 
         repoU.save(u);
