@@ -46,7 +46,7 @@ public class Mapper {
 	            .descrizione(b.getDescrizione())
 	            .urlImmagine(b.getUrlImmagine())
 	            .prezzo(b.getPrezzo())
-	            .tipo(b.getTipo())
+	            .tipoId(b.getTipo() != null ? b.getTipo().getId() : null)
 	            .build();
 	}
 
