@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +16,6 @@ import lombok.Setter;
 @Table (name="prodotti")
 public class Prodotti extends Items{
 	
-	@Column(nullable = true)
-    private String categoria;
-	
 	@Column(nullable = false)
     private Integer stock;
 	
@@ -24,8 +23,12 @@ public class Prodotti extends Items{
     private Long sku;
 	
 	@Column(nullable = true, precision = 10, scale = 2)
-    private BigDecimal peso;
+    private BigDecimal peso;	//kg
 	
 	@Column(nullable = true, precision = 10, scale = 2)
-    private BigDecimal dimensioni;
+    private BigDecimal dimensioni;	//volume cm^3
+	
+	@ManyToOne
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categorie categoria;
 }

@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
+import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.items.IProdottiServices;
@@ -26,15 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 public class ProdottiImpl implements IProdottiServices {
 
     private final IProdottiRepository repoP;
-    private final IItemsRepository repoItems;
     private final IMessaggiServices msgS;
+    private final ICategorieRepository catR;
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
     public void create(ProdottiReq req) {
         log.debug("create {}", req);
-
-        Items item = repoItems.findById(req.getItemId())
+        
+        Categorie categoria = catR.findById(req.getCategoriaId())
                 .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
 
         if (repoP.findBySku(req.getSku()).isPresent()) {
@@ -46,7 +48,7 @@ public class ProdottiImpl implements IProdottiServices {
         p.setPeso(req.getPeso());
         p.setStock(req.getStock());
         p.setSku(req.getSku());
-        p.setCategoria(req.getCategoria());
+        p.setCategoria(categoria);
 
         repoP.save(p);
     }
@@ -58,11 +60,14 @@ public class ProdottiImpl implements IProdottiServices {
 
         Prodotti p = repoP.findBySku(req.getSku())
                 .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
+        
+        Categorie categoria = catR.findById(req.getCategoriaId())
+                .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
 
         p.setDimensioni(req.getDimensioni());
         p.setPeso(req.getPeso());
         p.setStock(req.getStock());
-        p.setCategoria(req.getCategoria());
+        p.setCategoria(categoria);
 
         repoP.save(p);
     }

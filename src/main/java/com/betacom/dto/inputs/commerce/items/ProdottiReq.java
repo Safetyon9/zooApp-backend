@@ -16,6 +16,6 @@ public class ProdottiReq {
     private BigDecimal peso;
     private Integer stock;
     private Long sku;
-    private String categoria;
+    private Integer categoriaId;
 
 }

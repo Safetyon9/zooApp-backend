@@ -22,6 +22,6 @@ public class ProdottiDTO {
     private BigDecimal peso;
     private Integer stock;
     private Long sku;
-    private String categoria;
+    private Integer categoriaId;
 
 }
