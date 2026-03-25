@@ -59,10 +59,10 @@ public class UtentiImpl implements IUtentiServices {
         	u.setUserName(req.getUserName());
         
         if(req.getEmail() != null)
-        u.setEmail(req.getEmail());
+        	u.setEmail(req.getEmail());
         
         if(req.getPassword() != null)
-        u.setPwd(req.getPassword());
+        	u.setPwd(req.getPassword());
         
         if(req.getRole() != null)
         u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
