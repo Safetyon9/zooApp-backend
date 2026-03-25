@@ -19,4 +19,21 @@ public class Utils {
 			throw new ZooException("Data Invalida.");
 		}
 	}
+	
+	public static String stringFormatter(String s) {
+		if (s == null) {
+	        return null;
+	    }
+
+	    String trimmed = s.trim();
+	    if (trimmed.isEmpty()) {
+	        return trimmed;
+	    }
+
+	    String inizio = trimmed.substring(0, 1).toUpperCase();
+	    String fine  = trimmed.substring(1).toLowerCase();
+
+	    return inizio + fine;
+	}
+	
 }
