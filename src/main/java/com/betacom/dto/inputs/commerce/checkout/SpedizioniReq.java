@@ -14,8 +14,6 @@ public class SpedizioniReq {
 
 	private Integer id;
 
-    private String indirizzo;
-
     private String corriere;
 
     private String trackingNumber;

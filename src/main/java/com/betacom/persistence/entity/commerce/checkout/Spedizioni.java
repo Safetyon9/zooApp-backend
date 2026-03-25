@@ -35,7 +35,7 @@ public class Spedizioni {
     @Column(nullable = false)
     private String corriere;
 
-    @Column(nullable = true)
+    @Column(nullable = true, unique = true)
     private String trackingNumber;
     
     @Column(nullable = false, precision = 10, scale = 2)

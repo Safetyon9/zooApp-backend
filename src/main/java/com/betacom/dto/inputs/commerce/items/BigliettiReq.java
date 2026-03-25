@@ -16,5 +16,6 @@ public class BigliettiReq {
     private String urlImmagine;
     private BigDecimal prezzo;
 
-    private String tipo;
+    private Integer tipoId;
+    //test
 }
