@@ -18,8 +18,6 @@ public class PagamentiReq {
 
     private String stato;
 
-    private LocalDateTime dataEsecuzione;
-
     private Integer ordineId;
 
     private Integer metodoPagamentoId;
