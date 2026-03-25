@@ -14,6 +14,7 @@ import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
+import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
@@ -30,6 +31,7 @@ import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
+import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 
 public class Mapper {
@@ -64,8 +66,13 @@ public class Mapper {
 	            .dataFine(e.getDataFine())
 	            .build();
 	}
-
 	
+	public static CategorieDTO buildCategorieDTO(Categorie c){
+	    return CategorieDTO.builder()
+	            .id(c.getId())
+	            .nome(c.getNome())
+	            .build();
+	}
 
 	public static OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()

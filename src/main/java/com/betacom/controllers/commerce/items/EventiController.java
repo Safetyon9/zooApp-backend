@@ -24,67 +24,66 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/rest/eventi")
 public class EventiController {
 
-		
-		private final IMessaggiServices    msgS;
-		private final IEventiServices    evE;
-		
-		@PostMapping("/create")
-		public ResponseEntity<Resp> create(@RequestBody(required = true)  EventiReq req){
-			log.debug("create controller {}", req);
-			Resp r = new Resp();
-			HttpStatus status = HttpStatus.OK;
-			try {
-				evE.create(req);
-				r.setMsg(msgS.get("rest_created"));
-			} catch (Exception e) {
-				r.setMsg(e.getMessage());
-				status = HttpStatus.BAD_REQUEST;
-			}
-			return ResponseEntity.status(status).body(r);		
+	private final IMessaggiServices msgS;
+	private final IEventiServices evE;
+	
+	@PostMapping("/create")
+	public ResponseEntity<Resp> create(@RequestBody(required = true) EventiReq req){
+		log.debug("create controller {}", req);
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			evE.create(req);
+			r.setMsg(msgS.get("rest_created"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
 		}
-		
-		@PutMapping("/update")
-		public ResponseEntity<Resp> update(@RequestBody(required = true)  EventiReq req){
-			Resp r = new Resp();
-			HttpStatus status = HttpStatus.OK;
-			try {
-				evE.update(req);
-				r.setMsg(msgS.get("rest_updated"));
-			} catch (Exception e) {
-				r.setMsg(e.getMessage());
-				status = HttpStatus.BAD_REQUEST;
-			}
-			return ResponseEntity.status(status).body(r);		
-		}
-
-		@DeleteMapping("/delete/{id}")
-		public ResponseEntity<Resp> delete(@PathVariable(required = true)  Integer id){
-			Resp r = new Resp();
-			HttpStatus status = HttpStatus.OK;
-			try {
-				evE.delete(id);
-				r.setMsg(msgS.get("rest_deleted"));
-			} catch (Exception e) {
-				r.setMsg(e.getMessage());
-				status = HttpStatus.BAD_REQUEST;
-			}
-			return ResponseEntity.status(status).body(r);		
-		}
-
-		
-		@GetMapping("/list")
-		public ResponseEntity<Object> list(){
-			Object r = new Object();
-			HttpStatus status = HttpStatus.OK;
-			try {
-				r= evE.findAll();
-			} catch (Exception e) {
-				r=e.getMessage();
-				status = HttpStatus.BAD_REQUEST;
-			}
-			return ResponseEntity.status(status).body(r);
-			
-		}
+		return ResponseEntity.status(status).body(r);		
 	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<Resp> update(@RequestBody(required = true) EventiReq req){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			evE.update(req);
+			r.setMsg(msgS.get("rest_updated"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);		
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Resp> delete(@PathVariable(required = true) Integer id){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			evE.delete(id);
+			r.setMsg(msgS.get("rest_deleted"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);		
+	}
+
+	
+	@GetMapping("/list")
+	public ResponseEntity<Object> list(){
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r= evE.findAll();
+		} catch (Exception e) {
+			r=e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+}
 
 
