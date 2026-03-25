@@ -1,5 +1,7 @@
 package com.betacom.persistence.entity.commerce;
 
+import java.math.BigDecimal;
+
 import com.betacom.persistence.entity.commerce.items.Items;
 
 import jakarta.persistence.Column;
@@ -27,8 +29,11 @@ public class OggettiCarrelli {
 	@Column (nullable =false)
 	private Integer quantita;
 	
+	@Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal prezzoUnitario;
+	
 	@Column (nullable =false)
-	private Integer prezzoTotale;
+	private BigDecimal prezzoTotale;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carrello_id", referencedColumnName = "id", nullable = false)

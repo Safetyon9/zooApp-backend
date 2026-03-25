@@ -1,5 +1,6 @@
 package com.betacom.utilities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -34,6 +35,14 @@ public class Utils {
 	    String fine  = trimmed.substring(1).toLowerCase();
 
 	    return inizio + fine;
+	}
+	
+	public static BigDecimal calcolaPrezzoTotale(Integer quantita, BigDecimal prezzoUnitario) {
+	    
+		BigDecimal q = BigDecimal.valueOf(quantita);
+		
+	    return q.multiply(prezzoUnitario);
+
 	}
 	
 }
