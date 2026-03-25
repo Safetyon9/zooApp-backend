@@ -40,16 +40,15 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         log.debug("create {}", req);
         
         Ordini o = ordR.findById(req.getOrdineId())
-				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "+ req.getOrdineId()));
+				.orElseThrow(() -> new ZooException("ordine non trovato nel DB: "+ req.getOrdineId()));
 		
 		Items item = itemRepo.findById(req.getItemId())
 		        .orElseThrow(() -> new ZooException("item non trovato nel DB: " + req.getItemId()));
 
         OggettiOrdini oo = new OggettiOrdini();
         oo.setQuantita(req.getQuantita());
-        oo.setPrezzoUnitario(req.getPrezzoUnitario());
-        oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(req.getQuantita(), req.getPrezzoUnitario()));
-        oo.setPrezzoTotale(req.getPrezzoTotale());
+        oo.setPrezzoUnitario(item.getPrezzo());
+        oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(oo.getQuantita(),oo.getPrezzoUnitario()));
 
         ooR.save(oo);
     }
@@ -63,8 +62,6 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
                 .orElseThrow(() -> new ZooException(msgS.get("oggord_ntfnd")));
 
         oo.setQuantita(req.getQuantita());
-        oo.setPrezzoUnitario(req.getPrezzoUnitario());
-        oo.setPrezzoTotale(req.getPrezzoTotale());
 
         ooR.save(oo);
     }

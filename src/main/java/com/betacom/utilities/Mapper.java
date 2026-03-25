@@ -88,19 +88,13 @@ public class Mapper {
                 .quantita(oo.getQuantita())
                 .prezzoUnitario(oo.getPrezzoUnitario())
                 .prezzoTotale(oo.getPrezzoTotale())
+                .ordineId(oo.getOrdine()!= null ? oo.getOrdine().getId() : null)
                 .build();
     }
 	
 	public static List<OggettiOrdiniDTO> buildOgettiOrdiniDTO(List<OggettiOrdini> lO) {
 	    return lO.stream()
-	            .map(oo -> OggettiOrdiniDTO.builder()
-	                    .id(oo.getId())
-	                    .itemId(oo.getItem().getId())
-	                    .nomeItem(oo.getItem().getNome())
-	                    .quantita(oo.getQuantita())
-	                    .prezzoUnitario(oo.getPrezzoUnitario())
-	                    .prezzoTotale(oo.getPrezzoTotale())
-	                    .build()
+	            .map(oo -> buildOgettiOrdiniDTO(oo)
 	            )
 	            .collect(Collectors.toList());
 	}
