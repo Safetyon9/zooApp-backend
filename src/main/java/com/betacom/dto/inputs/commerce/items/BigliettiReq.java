@@ -9,7 +9,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BigliettiReq extends ItemsReq {
+public class BigliettiReq {
+	private Integer itemId;
+	private String nome;
+    private String descrizione;
+    private String urlImmagine;
+    private BigDecimal prezzo;
 
-	  private String tipo;
+    private String tipo;
 }

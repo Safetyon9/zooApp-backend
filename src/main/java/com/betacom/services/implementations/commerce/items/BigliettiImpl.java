@@ -64,7 +64,7 @@ public class BigliettiImpl implements IBigliettiServices {
     public void update(BigliettiReq req) throws Exception {
         log.debug("update {}", req);
         
-        if (req.getId() == null || req.getId() <= 0)
+        if (req.getItemId() == null || req.getItemId() <= 0)
             throw new ZooException("Id non valido");
 
         if (req.getNome() == null || req.getNome().isBlank())
@@ -81,7 +81,7 @@ public class BigliettiImpl implements IBigliettiServices {
         
         
         
-        Biglietti b = bigliettiR.findById(req.getId())
+        Biglietti b = bigliettiR.findById(req.getItemId())
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
         b.setNome(req.getNome());
