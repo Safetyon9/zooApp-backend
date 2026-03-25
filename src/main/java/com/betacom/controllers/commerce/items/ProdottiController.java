@@ -58,12 +58,12 @@ public class ProdottiController {
         return ResponseEntity.status(status).body(r);
     }
 
-    @DeleteMapping("/delete/{codiceProdotto}")
-    public ResponseEntity<Resp> delete(@PathVariable(required = true) Long codiceProdotto) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Resp> delete(@PathVariable(required = true) Integer id) {
         Resp r = new Resp();
         HttpStatus status = HttpStatus.OK;
         try {
-            prodS.delete(codiceProdotto);
+            prodS.delete(id);
             r.setMsg(msgS.get("rest_deleted"));
         } catch (Exception e) {
             r.setMsg(e.getMessage());

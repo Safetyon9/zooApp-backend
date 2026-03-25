@@ -60,12 +60,10 @@ public class ProdottiImpl implements IProdottiServices {
     public void update(ProdottiReq req) throws ZooException {
         log.debug("update {}", req);
 
-        Prodotti p = repoP.findBySku(req.getSku())
+        Prodotti p = repoP.findById(req.getItemId())
                 .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
 
-        Categorie categoria = catR.findById(req.getCategoriaId())
-                .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
-
+        
         if (req.getNome() != null) p.setNome(req.getNome());
         if (req.getDescrizione() != null) p.setDescrizione(req.getDescrizione());
         if (req.getUrlImmagine() != null) p.setUrlImmagine(req.getUrlImmagine());
@@ -75,19 +73,24 @@ public class ProdottiImpl implements IProdottiServices {
         if (req.getPeso() != null) p.setPeso(req.getPeso());
         if (req.getStock() != null) p.setStock(req.getStock());
         if (req.getSku() != null) p.setSku(req.getSku());
-        p.setCategoria(categoria);
+        
+        if (req.getCategoriaId() != null) {
+            Categorie categoria = catR.findById(req.getCategoriaId())
+                    .orElseThrow(() -> new ZooException(msgS.get("item_ntfnd")));
+            p.setCategoria(categoria);
+        }
 
         repoP.save(p);
     }
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void delete(Long sku) throws ZooException {
-        log.debug("delete sku={}", sku);
+    public void delete(Integer id) throws ZooException {
+        log.debug("delete id={}", id);
 
-        Prodotti p = repoP.findBySku(sku)
+        Prodotti p = repoP.findById(id)
                 .orElseThrow(() -> new ZooException(msgS.get("prd_ntfnd")));
-        repoP.delete(p);
+        p.setDeleted(true);
     }
 
     @Override

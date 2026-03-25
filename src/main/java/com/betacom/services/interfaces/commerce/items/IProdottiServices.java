@@ -10,7 +10,7 @@ public interface IProdottiServices {
 
     void create(ProdottiReq req) throws ZooException;
     void update(ProdottiReq req) throws ZooException;
-    void delete(Long sku) throws ZooException;
+    void delete(Integer id) throws ZooException;
 
     List<ProdottiDTO> list() throws ZooException;
 
@@ -23,4 +23,5 @@ public interface IProdottiServices {
             String categoria,
             Integer stock
     ) throws ZooException;
+	
 }

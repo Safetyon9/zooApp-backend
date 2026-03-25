@@ -19,6 +19,9 @@ public class Prodotti extends Items{
 	@Column(nullable = false)
     private Integer stock;
 	
+	@Column(nullable = false)
+    private boolean deleted = false;
+	
 	@Column(nullable = false, unique = true)
     private Long sku;
 	

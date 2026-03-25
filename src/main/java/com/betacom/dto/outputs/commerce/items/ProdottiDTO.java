@@ -14,7 +14,6 @@ import lombok.ToString;
 public class ProdottiDTO {
 
     private Integer id;
-    private Integer itemId;
     private String nome;
     private String descrizione;
     private BigDecimal prezzo;
