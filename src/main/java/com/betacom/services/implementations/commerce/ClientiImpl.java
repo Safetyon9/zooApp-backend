@@ -59,32 +59,32 @@ public class ClientiImpl implements IClientiServices {
         if (req.getId() == null || req.getId() <= 0)
             throw new Exception("Id cliente non valido");
 
-        if (req.getNome() == null || req.getNome().isBlank())
-            throw new Exception("Nome obbligatorio");
-
-        if (req.getCognome() == null || req.getCognome().isBlank())
-            throw new Exception("Cognome obbligatorio");
-
-        if (req.getIndirizzo() == null || req.getIndirizzo().isBlank())
-            throw new Exception("Indirizzo obbligatorio");
-
-        if (req.getUtenteId() == null || req.getUtenteId() <= 0)
-            throw new Exception("UtenteId non valido");
-
         Clienti c = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Cliente non trovato"));
 
-        Utenti u = utentiRepo.findById(req.getUtenteId())
-                .orElseThrow(() -> new Exception("Utente non trovato"));
+        if (req.getNome() != null && !req.getNome().isBlank()) {
+            c.setNome(req.getNome());
+        }
 
-        c.setNome(req.getNome());
-        c.setCognome(req.getCognome());
-        c.setIndirizzo(req.getIndirizzo());
-        c.setUtente(u);
+        if (req.getCognome() != null && !req.getCognome().isBlank()) {
+            c.setCognome(req.getCognome());
+        }
+
+        if (req.getIndirizzo() != null && !req.getIndirizzo().isBlank()) {
+            c.setIndirizzo(req.getIndirizzo());
+        }
+
+        if (req.getUtenteId() != null && req.getUtenteId() > 0) {
+        	
+            Utenti u = utentiRepo.findById(req.getUtenteId())
+            		
+                    .orElseThrow(() -> new Exception("Utente non trovato"));
+            c.setUtente(u);
+        }
 
         repo.save(c);
     }
-
+    
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Integer id) throws Exception {
