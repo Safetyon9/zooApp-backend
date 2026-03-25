@@ -161,6 +161,7 @@ public class Mapper {
 	            .id(p.getId())
 	            .importo(p.getImporto())
 	            .stato(p.getStato().toString())
+	            .dataCreazione(p.getDataCreazione())
 	            .dataEsecuzione(p.getDataEsecuzione())
 	            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
 	            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
