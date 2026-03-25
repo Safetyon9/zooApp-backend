@@ -65,7 +65,7 @@ public class UtentiImpl implements IUtentiServices {
         	u.setPwd(req.getPassword());
         
         if(req.getRole() != null)
-        u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
 
         repoU.save(u);
     }
