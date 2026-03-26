@@ -41,8 +41,8 @@ public class Clienti {
 	private String indirizzo;	
 	
 	@OneToOne
-	@JoinColumn(name = "utente_id",referencedColumnName ="id", nullable = false, unique = true)
-	private Utenti utente;
+    @JoinColumn(name = "utente_user_name", referencedColumnName = "userName", nullable = false, unique = true)
+    private Utenti utente;
 	
 	@OneToOne(
 			mappedBy = "cliente",

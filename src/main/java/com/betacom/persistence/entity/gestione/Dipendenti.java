@@ -43,7 +43,7 @@ public class Dipendenti {
 			optional = false,
 			fetch = FetchType.LAZY
 			)
-    @JoinColumn(name="utente_id", referencedColumnName="id", unique = true)
+	@JoinColumn(name = "utente_user_name", referencedColumnName = "userName", nullable = false, unique = true)
     private Utenti utente;
     
 	@OneToMany(mappedBy = "dipendente")

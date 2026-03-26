@@ -24,7 +24,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
 @Table (
 		name="utenti",
@@ -36,11 +35,8 @@ import lombok.Setter;
 public class Utenti {
 
 	@Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer id;
-	
-	@Column(nullable = false, unique=true)
-	private String userName;
+    @Column(nullable = false, unique = true)
+    private String userName;
 	
 	@Column(nullable = false)
 	private String pwd;

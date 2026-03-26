@@ -66,11 +66,11 @@ public class UtentiController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Resp> delete(@PathVariable(required = true)  Integer id){
+	public ResponseEntity<Resp> delete(@PathVariable(required = true)  String username){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			utS.delete(id);
+			utS.delete(username);
 			r.setMsg(msgS.get("rest_deleted"));
 		} catch (Exception e) {
 			r.setMsg(e.getMessage());

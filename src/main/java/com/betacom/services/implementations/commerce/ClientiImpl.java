@@ -37,10 +37,10 @@ public class ClientiImpl implements IClientiServices {
         if (req.getIndirizzo() == null || req.getIndirizzo().isBlank())
             throw new Exception("Indirizzo obbligatorio");
 
-        if (req.getUtenteId() == null || req.getUtenteId() <= 0)
+        if (req.getUtenteUsername() == null)
             throw new Exception("UtenteId non valido");
 
-        Utenti u = utentiRepo.findById(req.getUtenteId())
+        Utenti u = utentiRepo.findByUserName(req.getUtenteUsername())
                 .orElseThrow(() -> new Exception("Utente non trovato"));
 
         Clienti c = new Clienti();
@@ -74,9 +74,9 @@ public class ClientiImpl implements IClientiServices {
             c.setIndirizzo(req.getIndirizzo());
         }
 
-        if (req.getUtenteId() != null && req.getUtenteId() > 0) {
+        if (req.getUtenteUsername() != null) {
         	
-            Utenti u = utentiRepo.findById(req.getUtenteId())
+            Utenti u = utentiRepo.findByUserName(req.getUtenteUsername())
             		
                     .orElseThrow(() -> new Exception("Utente non trovato"));
             c.setUtente(u);

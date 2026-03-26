@@ -32,7 +32,7 @@ public class UtentiImpl implements IUtentiServices {
     public void create (UtentiReq req){
         log.debug("create {}", req);
 
-        if (repoU.findByUserNameIgnoreCase(req.getUserName()).isPresent()) {
+        if (repoU.findByUserName(req.getUserName()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
         }
         
@@ -54,7 +54,7 @@ public class UtentiImpl implements IUtentiServices {
     public void update(UtentiReq req) throws ZooException {
         log.debug("update {}", req);
 
-        Utenti u = repoU.findById(req.getId())
+        Utenti u = repoU.findByUserName(req.getUserName())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
         
         if(req.getUserName() != null)
@@ -74,10 +74,10 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void delete(Integer id) throws ZooException {
-        log.debug("delete {}", id);
+    public void delete(String username) throws ZooException {
+        log.debug("delete {}", username);
 
-        Utenti u = repoU.findById(id)
+        Utenti u = repoU.findByUserName(username)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         repoU.delete(u);
     }
@@ -95,7 +95,7 @@ public class UtentiImpl implements IUtentiServices {
     public UtentiDTO getByUserName(String userName) throws ZooException {
         log.debug("getByUserName {}", userName);
 
-        Utenti u = repoU.findByUserNameIgnoreCase(userName)
+        Utenti u = repoU.findByUserName(userName)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
         return Mapper.buildUtentiDTO(u);
@@ -104,7 +104,7 @@ public class UtentiImpl implements IUtentiServices {
     @Override
     public LoginDTO login(LoginReq req) throws ZooException {
         log.debug("delete {}", req);
-        Utenti utente = repoU.findByUserNameIgnoreCase(req.getUsername())
+        Utenti utente = repoU.findByUserName(req.getUsername())
                 .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
 
         if(!utente.getPwd().equals(req.getPwd()))

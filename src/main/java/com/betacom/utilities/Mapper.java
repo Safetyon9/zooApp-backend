@@ -59,7 +59,7 @@ public class Mapper {
 	            .nome(c.getNome())
 	            .cognome(c.getCognome())
 	            .indirizzo(c.getIndirizzo())
-	            .utenteId(c.getUtente() != null ? c.getUtente().getId() : null)
+	            .utenteUsername(c.getUtente() != null ? c.getUtente().getUserName() : null)
 	            .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
 	            .build();
 	}
@@ -142,7 +142,6 @@ public class Mapper {
 	
 	public static UtentiDTO buildUtentiDTO(Utenti u) {
 		return UtentiDTO.builder()
-			    .id(u.getId())
 			    .userName(u.getUserName())
 			    .email(u.getEmail())
 			    .role(u.getRole().name())
