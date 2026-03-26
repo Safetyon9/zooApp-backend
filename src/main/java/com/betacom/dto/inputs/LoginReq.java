@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class LoginReq {
-    private String userName;
+    private String username;
     private String pwd;
 }
