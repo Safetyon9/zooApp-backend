@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.commerce.LoginReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -112,6 +112,7 @@ public class UtentiController {
         Object r = new Object();
         HttpStatus status = HttpStatus.OK;
         try {
+        	log.debug(req.getUsername());
             r = utS.login(req);
         } catch (Exception e) {
             r = new Resp();

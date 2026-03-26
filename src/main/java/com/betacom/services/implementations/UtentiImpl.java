@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.commerce.LoginReq;
+import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.UtentiDTO;
-import com.betacom.dto.outputs.commerce.LoginDTO;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
@@ -103,12 +103,12 @@ public class UtentiImpl implements IUtentiServices {
     
     @Override
     public LoginDTO login(LoginReq req) throws ZooException {
-        log.debug("delete {}", req);
+        log.debug("login {}", req);
         Utenti utente = repoU.findByUserName(req.getUsername())
-                .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
+                .orElseThrow(() -> new ZooException(msgS.get("login_invalid1"+ req.getUsername())));
 
         if(!utente.getPwd().equals(req.getPwd()))
-            throw new ZooException(msgS.get("login_invalid"));
+            throw new ZooException(msgS.get("login_invaliddd"));
 
         return LoginDTO.builder()
                 .id(utente.getUserName())

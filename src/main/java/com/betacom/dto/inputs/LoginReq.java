@@ -1,4 +1,4 @@
-package com.betacom.dto.inputs.commerce;
+package com.betacom.dto.inputs;
 
 import lombok.Getter;
 import lombok.Setter;

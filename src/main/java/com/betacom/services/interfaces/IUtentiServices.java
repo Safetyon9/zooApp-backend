@@ -2,10 +2,10 @@ package com.betacom.services.interfaces;
 
 import java.util.List;
 
+import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.commerce.LoginReq;
+import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.UtentiDTO;
-import com.betacom.dto.outputs.commerce.LoginDTO;
 import com.betacom.exceptions.ZooException;
 
 public interface IUtentiServices {
