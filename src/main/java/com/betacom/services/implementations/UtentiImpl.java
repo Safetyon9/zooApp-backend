@@ -104,8 +104,8 @@ public class UtentiImpl implements IUtentiServices {
     @Override
     public LoginDTO login(LoginReq req) throws ZooException {
         log.debug("login {}", req);
-        Utenti utente = repoU.findByUserName(req.getUsername())
-                .orElseThrow(() -> new ZooException(msgS.get("login_invalid1"+ req.getUsername())));
+        Utenti utente = repoU.findByUserName(req.getUserName())
+                .orElseThrow(() -> new ZooException(msgS.get("login_invalid1"+ req.getUserName())));
 
         if(!utente.getPwd().equals(req.getPwd()))
             throw new ZooException(msgS.get("login_invaliddd"));

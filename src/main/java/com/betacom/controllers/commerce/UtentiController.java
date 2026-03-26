@@ -112,7 +112,7 @@ public class UtentiController {
         Object r = new Object();
         HttpStatus status = HttpStatus.OK;
         try {
-        	log.debug(req.getUsername());
+        	log.debug(req.getUserName());
             r = utS.login(req);
         } catch (Exception e) {
             r = new Resp();
