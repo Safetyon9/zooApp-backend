@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.LoginReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -103,4 +104,19 @@ public class UtentiController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody(required = true) LoginReq req){
+        Object r = new Object();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            r = utS.login(req);
+        } catch (Exception e) {
+            r = new Resp();
+            ((Resp) r).setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
+
 }
