@@ -17,6 +17,8 @@ public interface IUtentiServices {
     List<UtentiDTO> list() throws ZooException;
 
     UtentiDTO getByUserName(String userName) throws ZooException;
-	LoginDTO login(LoginReq req) throws ZooException;
+    
+    LoginDTO login(LoginReq req) throws ZooException;
+	
 	
 }

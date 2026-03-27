@@ -16,6 +16,7 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,25 +30,27 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void create (UtentiReq req){
-        log.debug("create {}", req);
+    public void create (UtentiReq Ureq){
+        log.debug("create {}", Ureq);
 
-        if (repoU.findByUserName(req.getUsername()).isPresent()) {
+        if (repoU.findByUserName(Ureq.getUsername()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
         }
         
-        if (repoU.findByEmail(req.getEmail()).isPresent()) {
+        if (repoU.findByEmail(Ureq.getEmail()).isPresent()) {
             throw new ZooException(msgS.get("email_exists"));
         }
 
         Utenti u = new Utenti();
-        u.setUserName(req.getUsername());
-        u.setEmail(req.getEmail());
-        u.setPwd(req.getPwd());
-        u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        u.setUserName(Ureq.getUsername());
+        u.setEmail(Ureq.getEmail());
+        u.setPwd(Ureq.getPwd());
+        u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
 
         repoU.save(u);
     }
+    
+    
 
     @Transactional(rollbackFor = ZooException.class)
     @Override

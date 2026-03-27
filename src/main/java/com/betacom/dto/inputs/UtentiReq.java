@@ -9,7 +9,6 @@ import lombok.ToString;
 @ToString
 public class UtentiReq {
 
-	private Integer id;
     private String username;
     private String email;
     private String pwd;
