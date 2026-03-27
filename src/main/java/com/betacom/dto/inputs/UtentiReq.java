@@ -10,9 +10,9 @@ import lombok.ToString;
 public class UtentiReq {
 
 	private Integer id;
-    private String userName;
+    private String username;
     private String email;
-    private String password;
+    private String pwd;
     private String role;   
 
 }

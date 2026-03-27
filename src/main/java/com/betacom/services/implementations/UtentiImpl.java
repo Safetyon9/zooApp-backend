@@ -32,7 +32,7 @@ public class UtentiImpl implements IUtentiServices {
     public void create (UtentiReq req){
         log.debug("create {}", req);
 
-        if (repoU.findByUserName(req.getUserName()).isPresent()) {
+        if (repoU.findByUserName(req.getUsername()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
         }
         
@@ -41,9 +41,9 @@ public class UtentiImpl implements IUtentiServices {
         }
 
         Utenti u = new Utenti();
-        u.setUserName(req.getUserName());
+        u.setUserName(req.getUsername());
         u.setEmail(req.getEmail());
-        u.setPwd(req.getPassword());
+        u.setPwd(req.getPwd());
         u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
 
         repoU.save(u);
@@ -54,17 +54,17 @@ public class UtentiImpl implements IUtentiServices {
     public void update(UtentiReq req) throws ZooException {
         log.debug("update {}", req);
 
-        Utenti u = repoU.findByUserName(req.getUserName())
+        Utenti u = repoU.findByUserName(req.getUsername())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
         
-        if(req.getUserName() != null)
-        	u.setUserName(req.getUserName());
+        if(req.getUsername() != null)
+        	u.setUserName(req.getUsername());
         
         if(req.getEmail() != null)
         	u.setEmail(req.getEmail());
         
-        if(req.getPassword() != null)
-        	u.setPwd(req.getPassword());
+        if(req.getPwd() != null)
+        	u.setPwd(req.getPwd());
         
         if(req.getRole() != null)
         	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
@@ -105,10 +105,10 @@ public class UtentiImpl implements IUtentiServices {
     public LoginDTO login(LoginReq req) throws ZooException {
         log.debug("login {}", req);
         Utenti utente = repoU.findByUserName(req.getUsername())
-                .orElseThrow(() -> new ZooException(msgS.get("login_invalid"+ req.getUsername())));
+                .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
 
         if(!utente.getPwd().equals(req.getPwd()))
-            throw new ZooException(msgS.get("login_invaliddd"));
+            throw new ZooException(msgS.get("login_invalid"));
 
         return LoginDTO.builder()
                 .username(utente.getUserName())
