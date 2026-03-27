@@ -46,6 +46,9 @@ public class Clienti {
 	@Column (nullable = false)
 	private String cap;
 	
+	@Column (nullable = false)
+	private String provinca;
+	
 	@Column (nullable = false,
 			length = 20)
 	private String telefono;

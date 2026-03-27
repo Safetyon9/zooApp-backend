@@ -17,4 +17,6 @@ public class ClientiReq {
     private String comune;
     private String cap;
 	private String telefono; 
+	private String provincia;
+
 }

@@ -149,6 +149,7 @@ public class UtentiImpl implements IUtentiServices {
         c.setCap(Creq.getCap());
         c.setComune(Creq.getComune());
         c.setTelefono(Creq.getTelefono());
+        c.setProvinca(Creq.getProvincia());
         
         c.setUtente(u); 
         u.setCliente(c);

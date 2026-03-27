@@ -50,6 +50,7 @@ public class ClientiImpl implements IClientiServices {
         c.setCap(req.getCap());
         c.setCognome(req.getComune());
         c.setTelefono(req.getTelefono());
+        c.setProvinca(req.getProvincia());
         
         c.setUtente(u);
 

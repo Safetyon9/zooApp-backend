@@ -20,6 +20,13 @@ public class RegisterDTO {
     private String nome;
     private String cognome;
     private String indirizzo;
+	private String provincia;
+	private String comune;
+	private String cap;
+	private String telefono;
+
+
+
     
     private Integer carrelloId;
 }

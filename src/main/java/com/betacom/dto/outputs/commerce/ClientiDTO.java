@@ -20,6 +20,7 @@ public class ClientiDTO  {
     private String comune;
     private String cap;
 	private String telefono; 
+	private String provincia;
     private String utenteUsername;
     private Integer carrelloId;
     private List<OrdiniDTO> ordini;
