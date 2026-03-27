@@ -47,6 +47,10 @@ public class ClientiImpl implements IClientiServices {
         c.setNome(req.getNome());
         c.setCognome(req.getCognome());
         c.setIndirizzo(req.getIndirizzo());
+        c.setCap(req.getCap());
+        c.setCognome(req.getComune());
+        c.setTelefono(req.getTelefono());
+        
         c.setUtente(u);
 
         repo.save(c);
@@ -72,6 +76,18 @@ public class ClientiImpl implements IClientiServices {
 
         if (req.getIndirizzo() != null && !req.getIndirizzo().isBlank()) {
             c.setIndirizzo(req.getIndirizzo());
+        }
+        
+        if (req.getComune() != null && !req.getComune().isBlank()) {
+            c.setComune(req.getComune());
+        }
+        
+        if (req.getCap() != null && !req.getCap().isBlank()) {
+            c.setCap(req.getCap());
+        }
+        
+        if (req.getTelefono() != null && !req.getTelefono().isBlank()) {
+            c.setTelefono(req.getTelefono());
         }
 
         if (req.getUtenteUsername() != null) {
@@ -102,7 +118,7 @@ public class ClientiImpl implements IClientiServices {
     public List<ClientiDTO> findAll() throws Exception {
         return repo.findAll()
                 .stream()
-                .map(Mapper::buildClienteDTO)
+                .map(o -> Mapper.buildClienteDTO(o))
                 .toList();
     }
 

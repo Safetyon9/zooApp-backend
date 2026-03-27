@@ -7,12 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
+import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.services.implementations.commerce.ClientiImpl;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
@@ -25,7 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UtentiImpl implements IUtentiServices {
 
-    private final IUtentiRepository repoU;
+    private final ClientiImpl implC;
+	private final IUtentiRepository repoU;
+    private final IClientiRepository repoC;
+
     private final IMessaggiServices msgS;
 
     @Transactional(rollbackFor = ZooException.class)
@@ -117,5 +125,35 @@ public class UtentiImpl implements IUtentiServices {
                 .username(utente.getUserName())
                 .ruolo(utente.getRole().toString())
                 .build();
+    }
+
+
+
+    @Override
+    @Transactional(rollbackFor = ZooException.class)
+    public RegisterDTO register(UtentiReq Ureq, ClientiReq Creq) throws ZooException {
+        log.debug("register {} {}", Ureq, Creq);
+
+        Utenti u = new Utenti();
+        u.setUserName(Ureq.getUsername());
+        u.setEmail(Ureq.getEmail());
+        u.setPwd(Ureq.getPwd());
+        u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+
+        u = repoU.save(u);
+
+        Clienti c = new Clienti();
+        c.setNome(Creq.getNome());
+        c.setCognome(Creq.getCognome());
+        c.setIndirizzo(Creq.getIndirizzo());
+        c.setCap(Creq.getCap());
+        c.setComune(Creq.getComune());
+        c.setTelefono(Creq.getTelefono());
+        
+        c.setUtente(u); 
+        u.setCliente(c);
+        c = repoC.save(c);
+
+        return Mapper.buildRegisterDTO(c, u);
     }
 }

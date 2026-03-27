@@ -2,7 +2,7 @@ package com.betacom.utilities;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
@@ -59,8 +59,25 @@ public class Mapper {
 	            .nome(c.getNome())
 	            .cognome(c.getCognome())
 	            .indirizzo(c.getIndirizzo())
+	            .comune(c.getComune())
+	            .cap(c.getCap())
+	            .telefono(c.getTelefono())
 	            .utenteUsername(c.getUtente() != null ? c.getUtente().getUserName() : null)
 	            .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
+	            .build();
+	}
+	
+	public static RegisterDTO buildRegisterDTO(Clienti c, Utenti u) {
+		return RegisterDTO.builder()
+				.id(c.getId())
+	            .nome(c.getNome())
+	            .cognome(c.getCognome())
+	            .indirizzo(c.getIndirizzo())
+	            .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
+	            .userName(u.getUserName())
+			    .email(u.getEmail())
+			    .role(u.getRole().name())
+	            
 	            .build();
 	}
 	

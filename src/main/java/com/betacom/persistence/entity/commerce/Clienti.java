@@ -40,6 +40,16 @@ public class Clienti {
 	@Column (nullable =false)
 	private String indirizzo;	
 	
+	@Column (nullable = false)
+	private String comune;
+	
+	@Column (nullable = false)
+	private String cap;
+	
+	@Column (nullable = false,
+			length = 20)
+	private String telefono;
+	
 	@OneToOne
     @JoinColumn(name = "utente_user_name", referencedColumnName = "userName", nullable = false, unique = true)
     private Utenti utente;

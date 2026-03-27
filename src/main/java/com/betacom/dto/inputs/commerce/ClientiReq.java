@@ -14,4 +14,7 @@ public class ClientiReq {
     private String cognome;
     private String indirizzo;
     private String utenteUsername;
+    private String comune;
+    private String cap;
+	private String telefono; 
 }

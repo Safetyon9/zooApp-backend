@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.inputs.LoginReq;
+import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.response.Resp;
+import com.betacom.services.implementations.UtentiImpl;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 
@@ -121,5 +124,20 @@ public class UtentiController {
         }
         return ResponseEntity.status(status).body(r);
     }
+	
+	@PostMapping("/register")
+	public ResponseEntity<Object> register(@RequestBody RegisterReq req) {
+	    Object r;
+	    HttpStatus status = HttpStatus.OK;
+	    try {
+	        log.debug("Register.... {}", req);
+	        r = utS.register(req.getUtente(), req.getCliente());
+	    } catch (Exception e) {
+	        r = new Resp();
+	        ((Resp) r).setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+	    return ResponseEntity.status(status).body(r);
+	}
 
 }
