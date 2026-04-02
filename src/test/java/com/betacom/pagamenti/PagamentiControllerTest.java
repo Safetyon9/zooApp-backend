@@ -120,4 +120,56 @@ public class PagamentiControllerTest {
         Assertions.assertThat(r.getMsg()).isEqualTo("Pagamento non trovato");
     }
 
+    @Test
+    @Order(5)
+    public void updatePagamentoTest() {
+
+        log.debug("update pagamento");
+
+        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
+        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+
+        PagamentiReq req = new PagamentiReq();
+        req.setOrdineId(ordine.getId());
+        req.setMetodoPagamentoId(metodo.getId());
+        req.setImporto(BigDecimal.valueOf(200));
+        req.setStato("IN_ATTESA");
+
+        pagC.create(req);
+        PagamentiReq updateReq = new PagamentiReq();
+        updateReq.setOrdineId(ordine.getId());
+        updateReq.setImporto(BigDecimal.valueOf(250));
+        updateReq.setStato("PAGATO");
+
+        ResponseEntity<Resp> resp = pagC.update(updateReq);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        Resp r = resp.getBody();
+        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+    }
+
+    @Test
+    @Order(6)
+    public void deletePagamentoTest() {
+
+        log.debug("delete pagamento");
+
+        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
+        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+
+        PagamentiReq req = new PagamentiReq();
+        req.setOrdineId(ordine.getId());
+        req.setMetodoPagamentoId(metodo.getId());
+        req.setImporto(BigDecimal.valueOf(300));
+        req.setStato("IN_ATTESA");
+
+        pagC.create(req);
+
+        ResponseEntity<Resp> resp = pagC.delete(req.getOrdineId());
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        Resp r = resp.getBody();
+        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+    }
+
 }

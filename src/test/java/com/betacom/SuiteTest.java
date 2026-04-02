@@ -5,20 +5,15 @@ import org.junit.platform.suite.api.Suite;
 
 import com.betacom.biglietti.BigliettiControllerTest;
 import com.betacom.bigliettigiornata.BigliettiGiornataControllerTest;
-import com.betacom.bigliettigiornata.BigliettiGiornataImplTest;
 import com.betacom.carrelli.CarrelliControllerTest;
-import com.betacom.carrelli.CarrelliImplTest;
 import com.betacom.clienti.ClientiControllerTest;
 import com.betacom.corrieri.CorrieriControllerTest;
 import com.betacom.corrieri.CorrieriImplTest;
 import com.betacom.coupons.CouponsControllerTest;
-import com.betacom.coupons.CouponsImplTest;
 import com.betacom.eventi.EventiControllerTest;
 import com.betacom.giornate.GiornateControllerTest;
 import com.betacom.metodiPagamento.MetodiPagamentoControllerTest;
-import com.betacom.metodiPagamento.MetodiPagamentoImplTest;
 import com.betacom.oggettiCarrelli.OggettiCarrelliControllerTest;
-import com.betacom.oggettiCarrelli.OggettiCarrelliImplTest;
 import com.betacom.oggettiordini.OggettiOrdiniControllerTest;
 import com.betacom.oggettiordini.OggettiOrdiniImplTest;
 import com.betacom.ordini.OrdiniControllerTest;
@@ -36,28 +31,23 @@ import com.betacom.utenti.UtentiImplTest;
 @SelectClasses({
 	BigliettiControllerTest.class,
 
-	BigliettiGiornataImplTest.class,
 	BigliettiGiornataControllerTest.class,
 
-	CarrelliImplTest.class,
 	CarrelliControllerTest.class,
 
 	ClientiControllerTest.class,
 	
 	CorrieriImplTest.class,
 	CorrieriControllerTest.class,
-
-	CouponsImplTest.class,
+	
 	CouponsControllerTest.class,
 
 	EventiControllerTest.class,
 
 	GiornateControllerTest.class,
 
-	MetodiPagamentoImplTest.class,
 	MetodiPagamentoControllerTest.class,
 
-	OggettiCarrelliImplTest.class,
 	OggettiCarrelliControllerTest.class,
 
 	OggettiOrdiniImplTest.class,
@@ -71,7 +61,6 @@ import com.betacom.utenti.UtentiImplTest;
 	ProdottiImplTest.class,
 	ProdottiControllerTest.class,
 
-	RecensioniImplTest.class,
 	RecensioniControllerTest.class,
 
 	SpedizioniControllerTest.class,

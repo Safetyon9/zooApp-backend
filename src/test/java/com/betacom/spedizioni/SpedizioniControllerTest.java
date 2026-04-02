@@ -3,6 +3,7 @@ package com.betacom.spedizioni;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,10 +20,12 @@ import com.betacom.dto.inputs.commerce.checkout.SpedizioniReq;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
 
@@ -47,6 +50,9 @@ public class SpedizioniControllerTest {
     
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+    private ISpedizioniRepository speR;
 
     @Test
     @Order(1)
@@ -113,5 +119,54 @@ public class SpedizioniControllerTest {
         ResponseEntity<?> resp = spedC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         Assertions.assertThat(resp.getBody()).isEqualTo("Spedizione non trovata");
+    }
+    
+    @Test
+    @Order(5)
+    public void updateSpedizioneTest() {
+        log.debug("update spedizione test");
+
+        Spedizioni sped = speR.findAll().get(0);
+
+        SpedizioniReq req = new SpedizioniReq();
+        req.setId(sped.getId());
+        req.setTrackingNumber("TRACK789");
+        req.setCosto(BigDecimal.valueOf(20));
+
+        ResponseEntity<Resp> resp = spedC.update(req);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        Resp r = resp.getBody();
+        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+
+        SpedizioniDTO updated = (SpedizioniDTO) spedC.findById(sped.getId()).getBody();
+        Assertions.assertThat(updated.getTrackingNumber()).isEqualTo("TRACK789");
+        Assertions.assertThat(updated.getCosto()).isEqualTo(BigDecimal.valueOf(20));
+    }
+    
+    @Test
+    @Order(6)
+    public void deleteSpedizioneTest() {
+        log.debug("delete spedizione test");
+
+        Spedizioni sped = speR.findAll().get(0);
+        ResponseEntity<Resp> resp = spedC.delete(sped.getId());
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        Resp r = resp.getBody();
+        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+
+        ResponseEntity<?> respNotFound = spedC.findById(sped.getId());
+        assertEquals(HttpStatus.BAD_REQUEST, respNotFound.getStatusCode());
+        Assertions.assertThat(respNotFound.getBody()).isEqualTo("Spedizione non trovata");
+    }
+    
+    @Test
+    @Order(7)
+    public void listSpedizioniTest() {
+        log.debug("list spedizioni test");
+
+        List<SpedizioniDTO> list = (List<SpedizioniDTO>) spedC.list().getBody();
+        Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
+        list.forEach(s -> log.debug(s.toString()));
     }
 }
