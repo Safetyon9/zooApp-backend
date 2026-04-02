@@ -1,5 +1,5 @@
 package com.betacom.utenti;
 
-public class utentiImplTest {
+public class UtentiImplTest {
 
 }
