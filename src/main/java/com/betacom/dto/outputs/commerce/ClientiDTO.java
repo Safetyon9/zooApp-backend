@@ -17,7 +17,11 @@ public class ClientiDTO  {
     private String nome;
     private String cognome;
     private String indirizzo;
-    private Integer utenteId;
+    private String comune;
+    private String cap;
+	private String telefono; 
+	private String provincia;
+    private String utenteUsername;
     private Integer carrelloId;
     private List<OrdiniDTO> ordini;
 }

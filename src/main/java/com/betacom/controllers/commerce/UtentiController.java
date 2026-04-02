@@ -2,6 +2,7 @@ package com.betacom.controllers.commerce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.dto.inputs.LoginReq;
+import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.response.Resp;
+import com.betacom.services.implementations.UtentiImpl;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 
@@ -23,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("rest/utente")
 public class UtentiController {
 
@@ -65,11 +71,11 @@ public class UtentiController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Resp> delete(@PathVariable(required = true)  Integer id){
+	public ResponseEntity<Resp> delete(@PathVariable(required = true)  String username){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			utS.delete(id);
+			utS.delete(username);
 			r.setMsg(msgS.get("rest_deleted"));
 		} catch (Exception e) {
 			r.setMsg(e.getMessage());
@@ -103,4 +109,35 @@ public class UtentiController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody(required = true) LoginReq req){
+        Object r = new Object();
+        HttpStatus status = HttpStatus.OK;
+        try {
+        	log.debug(req.getUsername());
+            r = utS.login(req);
+        } catch (Exception e) {
+            r = new Resp();
+            ((Resp) r).setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
+	
+	@PostMapping("/register")
+	public ResponseEntity<Object> register(@RequestBody RegisterReq req) {
+	    Object r;
+	    HttpStatus status = HttpStatus.OK;
+	    try {
+	        log.debug("Register.... {}", req);
+	        r = utS.register(req.getUtente(), req.getCliente());
+	    } catch (Exception e) {
+	        r = new Resp();
+	        ((Resp) r).setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+	    return ResponseEntity.status(status).body(r);
+	}
+
 }

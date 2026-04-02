@@ -5,15 +5,23 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.ClientiReq;
+import com.betacom.dto.outputs.LoginDTO;
+import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.services.implementations.commerce.ClientiImpl;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,47 +30,52 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UtentiImpl implements IUtentiServices {
 
-    private final IUtentiRepository repoU;
+    private final ClientiImpl implC;
+	private final IUtentiRepository repoU;
+    private final IClientiRepository repoC;
+
     private final IMessaggiServices msgS;
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void create (UtentiReq req){
-        log.debug("create {}", req);
+    public void create (UtentiReq Ureq){
+        log.debug("create {}", Ureq);
 
-        if (repoU.findByUserNameIgnoreCase(req.getUserName()).isPresent()) {
+        if (repoU.findByUserName(Ureq.getUsername()).isPresent()) {
             throw new ZooException(msgS.get("user_exists"));
         }
         
-        if (repoU.findByEmail(req.getEmail()).isPresent()) {
+        if (repoU.findByEmail(Ureq.getEmail()).isPresent()) {
             throw new ZooException(msgS.get("email_exists"));
         }
 
         Utenti u = new Utenti();
-        u.setUserName(req.getUserName());
-        u.setEmail(req.getEmail());
-        u.setPwd(req.getPassword());
-        u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        u.setUserName(Ureq.getUsername());
+        u.setEmail(Ureq.getEmail());
+        u.setPwd(Ureq.getPwd());
+        u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
 
         repoU.save(u);
     }
+    
+    
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
     public void update(UtentiReq req) throws ZooException {
         log.debug("update {}", req);
 
-        Utenti u = repoU.findById(req.getId())
+        Utenti u = repoU.findByUserName(req.getUsername())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
         
-        if(req.getUserName() != null)
-        	u.setUserName(req.getUserName());
+        if(req.getUsername() != null)
+        	u.setUserName(req.getUsername());
         
         if(req.getEmail() != null)
         	u.setEmail(req.getEmail());
         
-        if(req.getPassword() != null)
-        	u.setPwd(req.getPassword());
+        if(req.getPwd() != null)
+        	u.setPwd(req.getPwd());
         
         if(req.getRole() != null)
         	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
@@ -72,10 +85,10 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void delete(Integer id) throws ZooException {
-        log.debug("delete {}", id);
+    public void delete(String username) throws ZooException {
+        log.debug("delete {}", username);
 
-        Utenti u = repoU.findById(id)
+        Utenti u = repoU.findByUserName(username)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         repoU.delete(u);
     }
@@ -93,9 +106,55 @@ public class UtentiImpl implements IUtentiServices {
     public UtentiDTO getByUserName(String userName) throws ZooException {
         log.debug("getByUserName {}", userName);
 
-        Utenti u = repoU.findByUserNameIgnoreCase(userName)
+        Utenti u = repoU.findByUserName(userName)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
         return Mapper.buildUtentiDTO(u);
+    }
+    
+    @Override
+    public LoginDTO login(LoginReq req) throws ZooException {
+        log.debug("login {}", req);
+        Utenti utente = repoU.findByUserName(req.getUsername())
+                .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
+
+        if(!utente.getPwd().equals(req.getPwd()))
+            throw new ZooException(msgS.get("login_invalid"));
+
+        return LoginDTO.builder()
+                .username(utente.getUserName())
+                .ruolo(utente.getRole().toString())
+                .build();
+    }
+
+
+
+    @Override
+    @Transactional(rollbackFor = ZooException.class)
+    public RegisterDTO register(UtentiReq Ureq, ClientiReq Creq) throws ZooException {
+        log.debug("register {} {}", Ureq, Creq);
+
+        Utenti u = new Utenti();
+        u.setUserName(Ureq.getUsername());
+        u.setEmail(Ureq.getEmail());
+        u.setPwd(Ureq.getPwd());
+        u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+
+        u = repoU.save(u);
+
+        Clienti c = new Clienti();
+        c.setNome(Creq.getNome());
+        c.setCognome(Creq.getCognome());
+        c.setIndirizzo(Creq.getIndirizzo());
+        c.setCap(Creq.getCap());
+        c.setComune(Creq.getComune());
+        c.setTelefono(Creq.getTelefono());
+        c.setProvinca(Creq.getProvincia());
+        
+        c.setUtente(u); 
+        u.setCliente(c);
+        c = repoC.save(c);
+
+        return Mapper.buildRegisterDTO(c, u);
     }
 }

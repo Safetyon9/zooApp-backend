@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 public class UtentiDTO {
 
-    private Integer id;
     private String userName;
     private String email;
-    private String role;   // es. "USER", "ADMIN"
+    private String role;   
+    
 
 }
