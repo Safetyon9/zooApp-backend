@@ -35,7 +35,7 @@ public class ProdottiControllerTest {
 	public void findByCodiceOK() {
 		log.debug("Test findByCodice OK");
 		ResponseEntity<?> resp = prodC.findByCodice(1001L);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
 		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
 		Assertions.assertThat(prod.getSku()).isEqualTo(1001L);
 	}
@@ -57,7 +57,7 @@ public class ProdottiControllerTest {
 		req.setSku(1001L);
 		req.setNome("Test Prodotto Nuovissimo");
 		req.setDescrizione("Descrizione test");
-		req.setUrlImmagine("http://test.img");
+		req.setUrlImmagine("test.img");
 		req.setPrezzo(new BigDecimal("19.99"));
 		req.setDimensioni(new BigDecimal("10.5"));
 		req.setPeso(new BigDecimal("1.2"));
@@ -124,8 +124,8 @@ public class ProdottiControllerTest {
 		log.debug("Test list prodotti");
 		ResponseEntity<?> resp = prodC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		List<ProdottiDTO> lista = (List<ProdottiDTO>) resp.getBody();
-		Assertions.assertThat(lista).isNotEmpty();
-		lista.forEach(p -> log.debug(p.toString()));
+		List<ProdottiDTO> listP = (List<ProdottiDTO>) resp.getBody();
+		Assertions.assertThat(listP).isNotEmpty();
+		listP.forEach(p -> log.debug(p.toString()));
 	}
 }
