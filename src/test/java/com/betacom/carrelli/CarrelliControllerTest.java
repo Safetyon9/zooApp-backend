@@ -13,19 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
-<<<<<<< HEAD
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
-=======
 import com.betacom.persistence.entity.commerce.Carrelli;
-import com.betacom.persistence.entity.commerce.Clienti;
-import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
->>>>>>> 8a42562a09e89c62b6b006f33b49bd9b2814fbb9
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
@@ -37,70 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CarrelliControllerTest {
 
-<<<<<<< HEAD
-	@Autowired
-	private CarrelliController carrelliC;
-
-	@Autowired
-	private IClientiRepository clRepo;
-
-	@Autowired
-	private IUtentiRepository utRepo;
-
-	@Test
-	@Order(1)
-	public void createCarrello() {
-		Clienti cliente = TestDataFactory.creaClienteValido(clRepo, utRepo);
-		log.debug("Create carrello");
-		
-		CarrelliReq req = new CarrelliReq();
-		req.setClienteId(cliente.getId());
-
-		ResponseEntity<Resp> resp = carrelliC.create(req);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp) resp.getBody();
-
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
-	}
-
-	@Test
-	@Order(2)
-	public void getById() {
-		log.debug("getById test");
-		ResponseEntity<?> resp = carrelliC.getById(1);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		CarrelliDTO dto = (CarrelliDTO) resp.getBody();
-		Assertions.assertThat(dto.getCliente().getNome()).isEqualTo("Mario");
-	}
-
-	@Test
-	@Order(3)
-	public void list() {
-		log.debug("Test list carrelli");
-
-		ResponseEntity<?> resp = carrelliC.list();
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Object body = resp.getBody();
-
-		List<CarrelliDTO> lC = (List<CarrelliDTO>) body;
-
-		Assertions.assertThat(lC.size()).isGreaterThanOrEqualTo(0);
-		lC.forEach(c -> log.debug(c.toString()));
-	}
-
-	@Test
-	@Order(4)
-	public void delete() {
-		log.debug("delete carrello");
-
-		ResponseEntity<Resp> resp = carrelliC.delete(1);
-
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp) resp.getBody();
-		log.debug(r.getMsg());
-		assert r.getMsg().equals("rest_deleted");
-	}
-=======
     @Autowired
     private CarrelliController carrelliC;
 
@@ -185,5 +115,4 @@ public class CarrelliControllerTest {
         List<CarrelliDTO> list = (List<CarrelliDTO>) resp.getBody();
         Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }
->>>>>>> 8a42562a09e89c62b6b006f33b49bd9b2814fbb9
 }
