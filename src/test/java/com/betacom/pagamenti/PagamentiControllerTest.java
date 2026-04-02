@@ -3,6 +3,7 @@ package com.betacom.pagamenti;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -168,6 +169,18 @@ public class PagamentiControllerTest {
 
         Resp r = resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+    }
+    
+    @Test
+    @Order(7)
+    public void listPagamentiTest() {
+        log.debug("list pagamenti");
+
+        ResponseEntity<?> resp = pagC.list();
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        List<PagamentiDTO> list = (List<PagamentiDTO>) resp.getBody();
+        Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }
 
 }
