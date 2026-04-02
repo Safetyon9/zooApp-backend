@@ -12,6 +12,8 @@ import com.betacom.persistence.entity.commerce.checkout.*;
 import com.betacom.persistence.repository.*;
 import com.betacom.persistence.repository.commerce.*;
 import com.betacom.persistence.repository.commerce.checkout.*;
+import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
+import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 public class TestDataFactory {
 
@@ -98,5 +100,11 @@ public class TestDataFactory {
         s.setDataAggiornamento(LocalDate.now());
 
         return speR.save(s);
+    }
+
+    public static TipiBiglietti creaTipoBigliettoValido(ITipiBigliettiRepository tipiR) {
+        TipiBiglietti t = new TipiBiglietti();
+        t.setNome("Standard");
+        return tipiR.save(t);
     }
 }
