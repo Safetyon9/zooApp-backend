@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.GiornateController;
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.response.Resp;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,19 +30,24 @@ import lombok.extern.slf4j.Slf4j;
 public class GiornateControllerTest {
 	@Autowired
 	private GiornateController giornateC;
-	
+
+	@Autowired
+	private IEventiRepository evRepo;
+
 	@Test
-	@Order(1)		
+	@Order(1)
 	public void createGiornata() {
+		TestDataFactory.creaEventoValido(evRepo);
+
 		log.debug("Create giornata");
 		GiornateReq req = new GiornateReq();
 		req.setData(LocalDate.now());
 		req.setEventoId(1);
-		
+
 		ResponseEntity<Resp> resp = giornateC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		
+		Resp r = (Resp) resp.getBody();
+
 		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
 	}
 

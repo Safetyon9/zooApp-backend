@@ -107,4 +107,19 @@ public class TestDataFactory {
         t.setNome("Standard");
         return tipiR.save(t);
     }
+
+    public static Eventi creaEventoValido(IEventiRepository evR) {
+        Eventi e = new Eventi();
+        e.setTipoEvento("Standard");
+        e.setDataInizio(LocalDate.now());
+        return evR.save(e);
+    }
+
+    public static Giornate creaGiornataValida(IGiornateRepository gioR, IEventiRepository evR) {
+        Eventi e = creaEventoValido(evR);
+        Giornate g = new Giornate();
+        g.setData(LocalDate.now());
+        g.setEvento(e);
+        return gioR.save(g);
+    }
 }
