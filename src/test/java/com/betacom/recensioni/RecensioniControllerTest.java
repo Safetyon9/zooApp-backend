@@ -2,6 +2,8 @@ package com.betacom.recensioni;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -163,5 +165,17 @@ public class RecensioniControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = (Resp) resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+    }
+    
+    @Test
+    @Order(7)
+    public void listPagamentiTest() {
+        log.debug("list pagamenti");
+
+        ResponseEntity<?> resp = recensioniC.list();
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        List<RecensioniDTO> list = (List<RecensioniDTO>) resp.getBody();
+        Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }
 }
