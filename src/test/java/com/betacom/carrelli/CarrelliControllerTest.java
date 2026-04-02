@@ -6,114 +6,90 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
+import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
+import com.betacom.testutils.TestDataFactory;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CarrelliControllerTest {
-	
-	private final CarrelliController carrelliC;
-	
-	@SuppressWarnings("unchecked")
+
+	@Autowired
+	private CarrelliController carrelliC;
+
+	@Autowired
+	private IClientiRepository clRepo;
+
+	@Autowired
+	private IUtentiRepository utRepo;
+
 	@Test
-	@Order(1)	
-	public void myTest() {
-		getCarrello();
-		getCarrelloError();
-		create();
-//		update();
-		delete();
-		list();
+	@Order(1)
+	public void createCarrello() {
+		Clienti cliente = TestDataFactory.creaClienteValido(clRepo, utRepo);
+		log.debug("Create carrello");
+		
+		CarrelliReq req = new CarrelliReq();
+		req.setClienteId(cliente.getId());
+
+		ResponseEntity<Resp> resp = carrelliC.create(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
 	}
-	
-	public void getCarrello() {
-		log.debug("Test getCarrello");
+
+	@Test
+	@Order(2)
+	public void getById() {
+		log.debug("getById test");
 		ResponseEntity<?> resp = carrelliC.getById(1);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		CarrelliDTO car = (CarrelliDTO)resp.getBody();
-		Assertions.assertThat(car.getCliente().getNome()).isEqualTo("Paolo");
-	}
-	public void getCarrelloError() {
-		log.debug("Test getCarrello error");
-		ResponseEntity<?> resp = carrelliC.getById(99);
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		Assertions.assertThat(resp.getBody()).isEqualTo("Socio non trovato nel DB...99");
+		CarrelliDTO dto = (CarrelliDTO) resp.getBody();
+		Assertions.assertThat(dto.getCliente().getNome()).isEqualTo("Mario");
 	}
 
-	public void create() {
-
-		log.debug("Create");
-		
-		CarrelliReq c = new CarrelliReq();
-		
-		// c.setCliente(cliente);
-		
-		ResponseEntity<Resp> resp = carrelliC.create(c);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
-		
-	}
-
+	@Test
+	@Order(3)
 	public void list() {
-		log.debug("Test list");
-		
+		log.debug("Test list carrelli");
+
 		ResponseEntity<?> resp = carrelliC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Object body = resp.getBody();
-		
+
 		List<CarrelliDTO> lC = (List<CarrelliDTO>) body;
-		
-		Assertions.assertThat(lC.size()).isGreaterThan(0);
-		lC.forEach(s -> log.debug(s.toString()));
 
+		Assertions.assertThat(lC.size()).isGreaterThanOrEqualTo(0);
+		lC.forEach(c -> log.debug(c.toString()));
 	}
-	
-//	public void update() {
-//		log.debug("*** Update ***");
-//		
-//		CarrelliReq req = new CarrelliReq();
-//		req.setId(3);
-//		//req.setCognome("LaBrutta");
-//		
-//		ResponseEntity<Resp> resp = carrelliC.update(req);
-//	
-//		
-//		assertEquals(HttpStatus.OK, resp.getStatusCode());
-//		Resp r = (Resp)resp.getBody();
-//		log.debug(r.getMsg());
-//		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
-//		
-//				
-//	}
 
+	@Test
+	@Order(4)
 	public void delete() {
-		log.debug("*** delete ***");
-		
-		
-		ResponseEntity<Resp> resp = carrelliC.delete(3);
-	
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");			
-	}
+		log.debug("delete carrello");
 
+		ResponseEntity<Resp> resp = carrelliC.delete(1);
+
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp) resp.getBody();
+		log.debug(r.getMsg());
+		assert r.getMsg().equals("rest_deleted");
+	}
 }

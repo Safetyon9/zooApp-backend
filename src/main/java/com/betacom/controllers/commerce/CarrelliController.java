@@ -45,21 +45,6 @@ public class CarrelliController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-//	@PutMapping("/update")
-//	public ResponseEntity<Resp> update(@RequestBody(required = true) CarrelliReq req){
-//		Resp r = new Resp();
-//		HttpStatus status = HttpStatus.OK;
-//		
-//		try {
-//			carrS.update(req);
-//			r.setMsg(msgS.get("rest_updated"));
-//		} catch (Exception e) {
-//			r.setMsg(e.getMessage());
-//			status = HttpStatus.BAD_REQUEST;
-//		}
-//		return ResponseEntity.status(status).body(r);
-//	}
-	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Resp> delete(@PathVariable(required = true) Integer id){
 		Resp r = new Resp();
@@ -88,8 +73,8 @@ public class CarrelliController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-	@GetMapping("/getById")				
-	public ResponseEntity<Object> getById(@RequestParam(required = true) Integer id){
+	@GetMapping("/get/{id}")				
+	public ResponseEntity<Object> getById(@PathVariable Integer id){
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
