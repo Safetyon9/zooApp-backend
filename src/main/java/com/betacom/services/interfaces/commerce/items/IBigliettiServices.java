@@ -1,9 +1,8 @@
 package com.betacom.services.interfaces.commerce.items;
 
-import com.betacom.dto.inputs.commerce.items.BigliettiReq;
-
 import java.util.List;
 
+import com.betacom.dto.inputs.commerce.items.BigliettiReq;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 
 public interface IBigliettiServices {

@@ -115,9 +115,7 @@ public class PagamentiControllerTest {
     public void findByIdPagamentoErrorTest() {
         ResponseEntity<?> resp = pagC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-
-        Resp r = (Resp) resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("Pagamento non trovato");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Pagamento non trovata");
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.betacom.services.interfaces.commerce;
 import java.util.List;
 
 import com.betacom.dto.inputs.commerce.GiornateReq;
-
 import com.betacom.dto.outputs.commerce.GiornateDTO;
 
 public interface IGiornateServices {

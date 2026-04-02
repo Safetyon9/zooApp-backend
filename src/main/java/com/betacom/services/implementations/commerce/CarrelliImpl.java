@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
-import com.betacom.dto.outputs.commerce.ClientiDTO;
-import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;

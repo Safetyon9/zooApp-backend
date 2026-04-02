@@ -54,7 +54,7 @@ public class OggettiCarrelliControllerTest {
     public void createOggettoCarrelloTest() {
         log.debug("Create oggetto carrello");
 
-        Carrelli carrello = TestDataFactory.creaCarrelloValido(carrelliR, tipiR, clR, utR);
+        Carrelli carrello = TestDataFactory.creaCarrelloValido(carrelliR, clR, utR);
         TipiBiglietti item = TestDataFactory.creaTipoBigliettoValido(tipiR);
 
         OggettiCarrelliReq req = new OggettiCarrelliReq();

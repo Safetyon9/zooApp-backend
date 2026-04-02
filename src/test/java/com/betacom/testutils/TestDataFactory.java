@@ -99,7 +99,6 @@ public class TestDataFactory {
     
     public static Carrelli creaCarrelloValido(
             ICarrelliRepository carrelliR,
-            ITipiBigliettiRepository tipiR,
             IClientiRepository clR,
             IUtentiRepository utR) {
 

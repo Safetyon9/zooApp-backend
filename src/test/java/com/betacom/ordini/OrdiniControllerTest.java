@@ -20,7 +20,6 @@ import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
-import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
 
