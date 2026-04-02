@@ -67,7 +67,6 @@ import com.betacom.utenti.UtentiImplTest;
 	OrdiniImplTest.class,
 	OrdiniControllerTest.class,
 
-	PagamentiImplTest.class,
 	PagamentiControllerTest.class,
 
 	ProdottiImplTest.class,

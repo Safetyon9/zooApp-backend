@@ -28,33 +28,26 @@ import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpedizioniControllerTest {
 
-    @Autowired
     private SpedizioniController spedC;
-
-    @Autowired
     private IOrdiniRepository ordR;
-
-    @Autowired
     private ICorrieriRepository corR;
-
-    @Autowired
     private IClientiRepository clR;
-
-    @Autowired
     private IUtentiRepository utR;
 
     @Test
     @Order(1)
     public void createSpedizioneTest() {
 
-        log.debug("create spedizione OK");
+        log.debug("create spedizione");
 
         Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
         Corrieri corriere = TestDataFactory.creaCorriereValido(corR);
@@ -64,8 +57,6 @@ public class SpedizioniControllerTest {
         req.setCorriereId(corriere.getId());
         req.setTrackingNumber("TRACK123");
         req.setCosto(BigDecimal.valueOf(10));
-        req.setStato("SPEDITO");
-        req.setDataAggiornamento(LocalDate.now());
 
         ResponseEntity<Resp> resp = spedC.create(req);
 
@@ -77,7 +68,7 @@ public class SpedizioniControllerTest {
     @Test
     @Order(2)
     public void createSpedizioneErrorTest() {
-        log.debug("create spedizione KO");
+        log.debug("create spedizione error");
 
         SpedizioniReq req = new SpedizioniReq();
         req.setOrdineId(9999);
@@ -91,7 +82,7 @@ public class SpedizioniControllerTest {
 
     @Test
     @Order(3)
-    public void getByIdTest() {
+    public void findByIdTest() {
 
     	Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
     	Corrieri corriere = TestDataFactory.creaCorriereValido(corR);
@@ -101,8 +92,6 @@ public class SpedizioniControllerTest {
         req.setCorriereId(corriere.getId());
         req.setTrackingNumber("TRACK456");
         req.setCosto(BigDecimal.valueOf(15));
-        req.setStato("IN_TRANSITO");
-        req.setDataAggiornamento(LocalDate.now());
 
         spedC.create(req);
 
@@ -115,7 +104,7 @@ public class SpedizioniControllerTest {
 
     @Test
     @Order(4)
-    public void getByIdErrorTest() {
+    public void findByIdErrorTest() {
         ResponseEntity<?> resp = spedC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         Assertions.assertThat(resp.getBody()).isEqualTo("Spedizione non trovata");
