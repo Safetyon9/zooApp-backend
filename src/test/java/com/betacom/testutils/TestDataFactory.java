@@ -9,6 +9,7 @@ import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
+import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
@@ -94,6 +95,10 @@ public class TestDataFactory {
         s.setDataAggiornamento(LocalDate.now());
 
         return speR.save(s);
+    }
+    
+    public static MetodiPagamento creaMetodoPagamentoValido() {
+    	
     }
 
     public static TipiBiglietti creaTipoBigliettoValido(ITipiBigliettiRepository tipiR) {
