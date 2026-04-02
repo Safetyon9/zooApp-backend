@@ -33,13 +33,13 @@ public class Ordini {
     private Integer id;
 	
 	@Column (nullable = false)
+	private String indirizzo;
+	
+	@Column (nullable = false)
 	private String nome;
 	
 	@Column (nullable = false)
 	private String cognome;
-	
-	@Column (nullable = false)
-	private String indirizzo;
 	
 	@Column(nullable = false)
     private LocalDateTime dataOrdine = LocalDateTime.now();
