@@ -86,7 +86,7 @@ public class PagamentiControllerTest {
     public void findByIdPagamentoTest() {
 
         Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
-        MetodiDiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
 
         PagamentiReq req = new PagamentiReq();
         req.setOrdineId(ordine.getId());

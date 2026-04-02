@@ -18,6 +18,7 @@ import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
+import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
@@ -97,8 +98,14 @@ public class TestDataFactory {
         return speR.save(s);
     }
     
-    public static MetodiPagamento creaMetodoPagamentoValido() {
+    public static MetodiPagamento creaMetodoPagamentoValido(
+    		IMetodiPagamentiRepository mpR
+    		) {
+    	MetodiPagamento mp = new MetodiPagamento();
+    	mp.setNome("Paypal");
+    	mp.setProvider("Paypal");
     	
+    	return mpR.save(mp);
     }
 
     public static TipiBiglietti creaTipoBigliettoValido(ITipiBigliettiRepository tipiR) {
