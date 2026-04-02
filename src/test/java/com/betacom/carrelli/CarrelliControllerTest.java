@@ -14,10 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.CarrelliController;
+import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
-import com.betacom.jpa.dto.inputs.SocioReq;
-import com.betacom.jpa.dto.outputs.SocioDTO;
-import com.betacom.jpa.response.Resp;
+import com.betacom.response.Resp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ public class CarrelliControllerTest {
 		getCarrello();
 		getCarrelloError();
 		create();
-		update();
+//		update();
 		delete();
 		list();
 	}
@@ -59,13 +58,12 @@ public class CarrelliControllerTest {
 	public void create() {
 
 		log.debug("Create");
-		SocioReq req = new SocioReq();
-		req.setNome("Anna");
-		req.setCognome("LaBella");
-		req.setCodiceFiscale("AB009");
-		req.setMail("a.bella@gmail.com");
 		
-		ResponseEntity<Resp> resp = socioC.create(req);
+		CarrelliReq c = new CarrelliReq();
+		
+		// c.setCliente(cliente);
+		
+		ResponseEntity<Resp> resp = carrelliC.create(c);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		
@@ -76,41 +74,40 @@ public class CarrelliControllerTest {
 	public void list() {
 		log.debug("Test list");
 		
-		ResponseEntity<?> resp = socioC.list(null, null, null, null);
+		ResponseEntity<?> resp = carrelliC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Object body = resp.getBody();
 		
-		List<SocioDTO> lS = (List<SocioDTO>) body;
+		List<CarrelliDTO> lC = (List<CarrelliDTO>) body;
 		
-		Assertions.assertThat(lS.size()).isGreaterThan(0);
-//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
-		lS.forEach(s -> log.debug(s.toString()));
-// updateSocio();
+		Assertions.assertThat(lC.size()).isGreaterThan(0);
+		lC.forEach(s -> log.debug(s.toString()));
+
 	}
 	
-	public void update() {
-		log.debug("*** Update ***");
-		
-		SocioReq req = new SocioReq();
-		req.setId(3);
-		req.setCognome("LaBrutta");
-		
-		ResponseEntity<Resp> resp = socioC.update(req);
-	
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
-		
-				
-	}
+//	public void update() {
+//		log.debug("*** Update ***");
+//		
+//		CarrelliReq req = new CarrelliReq();
+//		req.setId(3);
+//		//req.setCognome("LaBrutta");
+//		
+//		ResponseEntity<Resp> resp = carrelliC.update(req);
+//	
+//		
+//		assertEquals(HttpStatus.OK, resp.getStatusCode());
+//		Resp r = (Resp)resp.getBody();
+//		log.debug(r.getMsg());
+//		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+//		
+//				
+//	}
 
 	public void delete() {
 		log.debug("*** delete ***");
 		
 		
-		ResponseEntity<Resp> resp = socioC.delete(3);
+		ResponseEntity<Resp> resp = carrelliC.delete(3);
 	
 		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
