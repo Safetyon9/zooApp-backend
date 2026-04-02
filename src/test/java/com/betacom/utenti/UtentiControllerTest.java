@@ -15,8 +15,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.UtentiController;
+import com.betacom.dto.inputs.LoginReq;
+import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.ClientiReq;
+import com.betacom.dto.outputs.LoginDTO;
+import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.enums.Roles;
+import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.response.Resp;
 
 import lombok.extern.slf4j.Slf4j;
@@ -153,6 +161,64 @@ public class UtentiControllerTest {
 		lS.forEach(s -> log.debug(s.toString()));
 		// updateSocio();
 	}
+	
+	
+	@Test
+	@Order(9)	
+	public void login() {
+		log.debug("Test list socio");
+		
+		LoginReq req = new LoginReq();
+		req.setUsername("Test3");
+		req.setPwd("LaBella");
+		
+		ResponseEntity<?> resp = utentiC.login(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		LoginDTO login = (LoginDTO) resp.getBody();
+		Assertions.assertThat(login.getUsername()).isEqualTo("Test3");
+
+	}
+	
+	@Test
+	@Order(10)
+	public void loginError() {
+	    LoginReq req = new LoginReq();
+	    req.setUsername("InvalidUser"); 
+	    req.setPwd("wrongpwd");
+	    
+	    ResponseEntity<Object> resp = utentiC.login(req); 
+	    assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+	    
+	    Object body = resp.getBody();
+	    Assertions.assertThat(body).isInstanceOf(Resp.class);  
+	    Resp errorResp = (Resp) body;
+	}
+	
+	@Test
+	@Order(11)
+	public void register() {
+		log.debug("Test register OK");
+	    UtentiReq utente = new UtentiReq();
+	    utente.setUsername("TestRegisterOK");
+	    utente.setPwd("password123");
+	    utente.setEmail("testregister@ok.com");
+	    utente.setRole("USER");
+	    
+	    ClientiReq cliente = new ClientiReq();
+	    cliente.setNome("Test");
+	    cliente.setCognome("Register");
+	    
+
+	    RegisterReq req = new RegisterReq(utente,cliente);
+	    
+	    ResponseEntity<?> resp = utentiC.register(req);
+	    assertEquals(HttpStatus.OK, resp.getStatusCode()); 
+	    RegisterDTO body = (RegisterDTO) resp.getBody();
+		Assertions.assertThat(body.getEmail()).isEqualTo("testregister@ok.com");
+
+	}
+	
+	
 	
 	
 	
