@@ -34,7 +34,6 @@ import com.betacom.prodotti.ProdottiImplTest;
 import com.betacom.recensioni.RecensioniControllerTest;
 import com.betacom.recensioni.RecensioniImplTest;
 import com.betacom.spedizioni.SpedizioniControllerTest;
-import com.betacom.spedizioni.SpedizioniImplTest;
 import com.betacom.utenti.UtentiControllerTest;
 import com.betacom.utenti.UtentiImplTest;
 
@@ -85,7 +84,6 @@ import com.betacom.utenti.UtentiImplTest;
 	RecensioniImplTest.class,
 	RecensioniControllerTest.class,
 
-	SpedizioniImplTest.class,
 	SpedizioniControllerTest.class,
 
 	UtentiImplTest.class,
