@@ -22,7 +22,6 @@ import com.betacom.pagamenti.PagamentiControllerTest;
 import com.betacom.prodotti.ProdottiControllerTest;
 import com.betacom.prodotti.ProdottiImplTest;
 import com.betacom.recensioni.RecensioniControllerTest;
-import com.betacom.recensioni.RecensioniImplTest;
 import com.betacom.spedizioni.SpedizioniControllerTest;
 import com.betacom.utenti.UtentiControllerTest;
 import com.betacom.utenti.UtentiImplTest;
