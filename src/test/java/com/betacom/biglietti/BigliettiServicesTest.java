@@ -15,7 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.dto.inputs.commerce.items.BigliettiReq;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
+import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.services.interfaces.commerce.items.IBigliettiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +28,14 @@ public class BigliettiServicesTest {
 	
 	@Autowired
 	private IBigliettiServices bigliettiS;
+
+	@Autowired
+	private ITipiBigliettiRepository tipiR;
 	
 	@Test
 	@Order(1)
 	public void createBigliettoTest() {
+		TestDataFactory.creaTipoBigliettoValido(tipiR);
 		log.debug("create biglietto");
 		try {
 			BigliettiReq req = new BigliettiReq();

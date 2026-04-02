@@ -15,7 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.services.interfaces.commerce.IGiornateServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GiornateServicesTest {
+
+	@Autowired
+	private IEventiRepository evRepo;
 	
 	@Autowired
 	private IGiornateServices giornateS;
@@ -30,6 +35,7 @@ public class GiornateServicesTest {
 	@Test
 	@Order(1)
 	public void createGiornataTest() {
+		TestDataFactory.creaEventoValido(evRepo);
 		log.debug("create giornata");
 		try {
 			GiornateReq req = new GiornateReq();

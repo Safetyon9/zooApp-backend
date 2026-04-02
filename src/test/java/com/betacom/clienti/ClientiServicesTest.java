@@ -14,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.services.interfaces.commerce.items.IClientiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,11 +26,15 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientiServicesTest {
 
 	@Autowired
+	private IUtentiRepository utRepo;
+
+	@Autowired
 	private IClientiServices clientiS;
 
 	@Test
 	@Order(1)
 	public void createCliente() {
+		TestDataFactory.creaUtenteValido(utRepo);
 		log.debug("create cliente");
 		try {
 			ClientiReq req = new ClientiReq();

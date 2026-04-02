@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.ClientiController;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.response.Resp;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,14 +30,20 @@ public class ClientiControllerTest {
 	@Autowired
 	private ClientiController clientiC;
 
+	@Autowired
+	private IUtentiRepository utRepo;
+
 	@Test
 	@Order(1)
 	public void createCliente() {
+		TestDataFactory.creaUtenteValido(utRepo);
+
 		log.debug("Create cliente");
 		ClientiReq req = new ClientiReq();
 		req.setNome("Mario");
 		req.setCognome("Rossi");
 		req.setIndirizzo("Via Roma 1");
+		req.setUtenteUsername("testuser");
 		req.setComune("Milano");
 		req.setCap("20100");
 		req.setProvincia("MI");
