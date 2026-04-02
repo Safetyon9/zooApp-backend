@@ -1,10 +1,8 @@
 package com.betacom.spedizioni;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -28,19 +26,26 @@ import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpedizioniControllerTest {
 
+	@Autowired
     private SpedizioniController spedC;
+	
+	@Autowired
     private IOrdiniRepository ordR;
+	
+    @Autowired
     private ICorrieriRepository corR;
+    
+    @Autowired
     private IClientiRepository clR;
+    
+    @Autowired
     private IUtentiRepository utR;
 
     @Test

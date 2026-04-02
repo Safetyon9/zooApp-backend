@@ -26,19 +26,26 @@ import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PagamentiControllerTest {
 
+	@Autowired
     private PagamentiController pagC;
+	
+	@Autowired
     private IOrdiniRepository ordR;
+	
+	@Autowired
     private IMetodiPagamentiRepository mpR;
+	
+	@Autowired
     private IClientiRepository clR;
+	
+	@Autowired
     private IUtentiRepository utR;
 
     @Test
@@ -80,7 +87,7 @@ public class PagamentiControllerTest {
         Resp r = resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("Ordine o MetodoPagamento non trovato");
     }
-
+    
     @Test
     @Order(3)
     public void findByIdPagamentoTest() {
@@ -109,8 +116,8 @@ public class PagamentiControllerTest {
         ResponseEntity<?> resp = pagC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 
-        // cast sicuro se il controller restituisce Resp
         Resp r = (Resp) resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("Pagamento non trovato");
     }
+
 }
