@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
+import com.betacom.jpa.dto.inputs.SocioReq;
+import com.betacom.jpa.dto.outputs.SocioDTO;
+import com.betacom.jpa.response.Resp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CarrelliControllerTest {
-	/*
+	
 	private final CarrelliController carrelliC;
 	
 	@SuppressWarnings("unchecked")
@@ -115,5 +118,5 @@ public class CarrelliControllerTest {
 		log.debug(r.getMsg());
 		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");			
 	}
-*/
+
 }
