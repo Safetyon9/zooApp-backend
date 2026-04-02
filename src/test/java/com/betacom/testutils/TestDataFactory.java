@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.betacom.enums.Roles;
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
@@ -12,6 +13,7 @@ import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
@@ -93,6 +95,19 @@ public class TestDataFactory {
         TipiBiglietti t = new TipiBiglietti();
         t.setNome("Standard");
         return tipiR.save(t);
+    }
+    
+    public static Carrelli creaCarrelloValido(
+            ICarrelliRepository carrelliR,
+            IClientiRepository clR,
+            IUtentiRepository utR) {
+
+        Clienti cliente = creaClienteValido(clR, utR);
+
+        Carrelli carrello = new Carrelli();
+        carrello.setCliente(cliente);
+
+        return carrelliR.save(carrello);
     }
 
     public static Eventi creaEventoValido(IEventiRepository evR) {

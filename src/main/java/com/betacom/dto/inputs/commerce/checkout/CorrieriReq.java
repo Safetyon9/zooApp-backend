@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
 @ToString
 public class CorrieriReq {
 	private Integer id;
-
-    private String nome;
+	
+	private String nome;
 }

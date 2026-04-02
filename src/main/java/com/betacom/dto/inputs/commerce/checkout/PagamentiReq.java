@@ -1,7 +1,6 @@
 package com.betacom.dto.inputs.commerce.checkout;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;

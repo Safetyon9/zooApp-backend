@@ -1,7 +1,5 @@
 package com.betacom.services.implementations.commerce.checkout;
 
-import static com.betacom.utilities.Utils.stringToDate;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
