@@ -55,7 +55,17 @@ public class BigliettiControllerTest {
 	}
 
 	@Test
-	@Order(2)	
+	@Order(2)
+	public void getById() {
+		log.debug("getById test");
+		ResponseEntity<?> resp = bigliettiC.getById(1);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		BigliettiDTO dto = (BigliettiDTO) resp.getBody();
+		Assertions.assertThat(dto.getNome()).isEqualTo("Biglietto Intero");
+	}
+
+	@Test
+	@Order(3)	
 	public void updateBiglietto() {
 		log.debug("Update biglietto");
 		
@@ -75,7 +85,7 @@ public class BigliettiControllerTest {
 	}
 
 	@Test
-	@Order(3)	
+	@Order(4)	
 	public void updateBigliettoError() {
 		log.debug("Update biglietto error");
 		
@@ -88,7 +98,7 @@ public class BigliettiControllerTest {
 	}
 
 	@Test
-	@Order(4)	
+	@Order(5)	
 	public void deleteBiglietto() {
 		log.debug("delete biglietto");
 		
@@ -101,7 +111,7 @@ public class BigliettiControllerTest {
 	}
 	
 	@Test
-	@Order(5)	
+	@Order(6)	
 	public void deleteBigliettoError() {
 		log.debug("delete biglietto error");
 		ResponseEntity<Resp> resp = bigliettiC.delete(9999);

@@ -82,4 +82,17 @@ public class ClientiController {
 	        return ResponseEntity.status(status).body(r);
 	    }
 
+	    @GetMapping("/get/{id}")
+	    public ResponseEntity<Object> getById(@PathVariable Integer id) {
+	        HttpStatus status = HttpStatus.OK;
+	        Object r;
+	        try {
+	            r = clientiS.getById(id);
+	        } catch (Exception e) {
+	            r = e.getMessage();
+	            status = HttpStatus.BAD_REQUEST;
+	        }
+	        return ResponseEntity.status(status).body(r);
+	    }
+
 }	   
