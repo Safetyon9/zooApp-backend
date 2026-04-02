@@ -3,32 +3,29 @@ package com.betacom.testutils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.betacom.dto.inputs.*;
-import com.betacom.dto.inputs.commerce.*;
-import com.betacom.enums.*;
-import com.betacom.persistence.entity.*;
-import com.betacom.persistence.entity.commerce.*;
-import com.betacom.persistence.entity.commerce.checkout.*;
-import com.betacom.persistence.repository.*;
-import com.betacom.persistence.repository.commerce.*;
-import com.betacom.persistence.repository.commerce.checkout.*;
+import com.betacom.enums.Roles;
+import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.entity.commerce.checkout.Corrieri;
+import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
+import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
+import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 public class TestDataFactory {
 
     public static Utenti creaUtenteValido(IUtentiRepository utR) {
-        UtentiReq req = new UtentiReq();
-        req.setUsername("testuser");
-        req.setEmail("test@mail.com");
-        req.setPwd("1234");
-        req.setRole("USER");
 
         Utenti u = new Utenti();
-        u.setUserName(req.getUsername());
-        u.setEmail(req.getEmail());
-        u.setPwd(req.getPwd());
-        u.setRole(Roles.valueOf(req.getRole()));
+        u.setUserName("testuser");
+        u.setEmail("test@mail.com");
+        u.setPwd("1234");
+        u.setRole(Roles.valueOf("USER"));
 
         return utR.save(u);
     }
@@ -39,26 +36,16 @@ public class TestDataFactory {
 
         Utenti utente = creaUtenteValido(utR);
 
-        ClientiReq req = new ClientiReq();
-        req.setNome("Mario");
-        req.setCognome("Rossi");
-        req.setIndirizzo("Via Roma 1");
-        req.setUtenteUsername(utente.getUserName());
-        req.setComune("Roma");
-        req.setCap("00100");
-        req.setTelefono("3331234567");
-        req.setProvincia("RM");
-
         Clienti c = new Clienti();
-        c.setNome(req.getNome());
-        c.setCognome(req.getCognome());
-        c.setIndirizzo(req.getIndirizzo());
-        c.setUtente(utente);
-        c.setComune(req.getComune());
-        c.setCap(req.getCap());
-        c.setTelefono(req.getTelefono());
-        c.setProvinca(req.getProvincia());
 
+        c.setNome("Mario");
+        c.setCognome("Rossi");
+        c.setIndirizzo("Via Roma 1");
+        c.setUtente(utente);
+        c.setComune("Roma");
+        c.setCap("00100");
+        c.setTelefono("3331234567");
+        c.setProvinca("RM");
         return clR.save(c);
     }
 
@@ -72,7 +59,10 @@ public class TestDataFactory {
 
         Ordini o = new Ordini();
         o.setCliente(cliente);
+        o.setNome(cliente.getNome());
+        o.setCognome(cliente.getCognome());
         o.setIndirizzo(cliente.getIndirizzo());
+        
         return ordR.save(o);
     }
 
