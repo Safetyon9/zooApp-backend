@@ -58,6 +58,16 @@ public class ClientiControllerTest {
 
 	@Test
 	@Order(2)
+	public void getById() {
+		log.debug("getById test");
+		ResponseEntity<?> resp = clientiC.getById(1);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		ClientiDTO dto = (ClientiDTO) resp.getBody();
+		Assertions.assertThat(dto.getNome()).isEqualTo("Mario");
+	}
+
+	@Test
+	@Order(3)
 	public void updateCliente() {
 		log.debug("Update cliente");
 
@@ -75,7 +85,7 @@ public class ClientiControllerTest {
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	public void deleteCliente() {
 		log.debug("delete cliente");
 
@@ -88,7 +98,7 @@ public class ClientiControllerTest {
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	public void list() {
 		log.debug("Test list clienti");
 
