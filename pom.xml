@@ -80,6 +80,12 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+		    <groupId>org.junit.platform</groupId>
+		    <artifactId>junit-platform-suite</artifactId>
+		    <version>1.13.4</version>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security-test</artifactId>
 			<scope>test</scope>
