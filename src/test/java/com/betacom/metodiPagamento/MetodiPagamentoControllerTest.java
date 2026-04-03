@@ -28,7 +28,9 @@ public class MetodiPagamentoControllerTest {
 
     @Autowired
     private MetodiPagamentoController mpC;
-
+    
+    private static Integer createdId;
+    
     @Test
     @Order(1)
     public void createMetodiPagamento() {
@@ -43,6 +45,9 @@ public class MetodiPagamentoControllerTest {
 
         Resp r = resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_created");
+        
+        List<MetodiPagamentoDTO> list = (List<MetodiPagamentoDTO>) mpC.list().getBody();
+        createdId = list.get(list.size() - 1).getId();
     }
 
     @Test
@@ -61,7 +66,7 @@ public class MetodiPagamentoControllerTest {
     public void getById() {
         log.debug("Get metodo pagamento by id");
 
-        ResponseEntity<?> resp = mpC.getById(1);
+        ResponseEntity<?> resp = mpC.getById(createdId);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         MetodiPagamentoDTO dto = (MetodiPagamentoDTO) resp.getBody();
@@ -111,7 +116,7 @@ public class MetodiPagamentoControllerTest {
     public void deleteMetodiPagamento() {
         log.debug("Delete metodo pagamento");
 
-        ResponseEntity<Resp> resp = mpC.delete(1);
+        ResponseEntity<Resp> resp = mpC.delete(createdId);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
