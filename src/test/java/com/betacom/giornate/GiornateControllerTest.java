@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.GiornateController;
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.persistence.entity.commerce.Eventi;
+import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.response.Resp;
@@ -45,12 +47,12 @@ public class GiornateControllerTest {
 	@Test
 	@Order(1)
 	public void createGiornata() {
-		TestDataFactory.creaEventoValido(evRepo);
+		Eventi evento = TestDataFactory.creaEventoValido(evRepo);
 
 		log.debug("Create giornata");
 		GiornateReq req = new GiornateReq();
 		req.setData(LocalDate.now());
-		req.setEventoId(1);
+		req.setEventoId(evento.getId());
 
 		ResponseEntity<Resp> resp = giornateC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -65,10 +67,16 @@ public class GiornateControllerTest {
 	@Order(2)		
 	public void getGiornata() {
 		log.debug("Test getGiornata");
-		ResponseEntity<?> resp = giornateC.getById(1);
+		
+		Giornate gio = TestDataFactory.creaGiornataValida(gioRepo, evRepo);
+		
+		ResponseEntity<?> resp = giornateC.getById(gio.getId());
+		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		
 		GiornateDTO dto = (GiornateDTO)resp.getBody();
-		Assertions.assertThat(dto.getEventoId()).isEqualTo(1);
+		
+		Assertions.assertThat(gio.getEvento().getTipoEvento()).isEqualTo("Standard");
 	}
 
 	@Test
@@ -84,16 +92,19 @@ public class GiornateControllerTest {
 	public void updateGiornata() {
 		log.debug("Update giornata");
 		
+		Giornate gio = TestDataFactory.creaGiornataValida(gioRepo, evRepo);
+		
 		GiornateReq req = new GiornateReq();
-		req.setId(1);
+		req.setId(gio.getId());
 		req.setData(LocalDate.now().plusDays(1));
-		req.setEventoId(1);
 		
 		ResponseEntity<Resp> resp = giornateC.update(req);
 		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		
 		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
+
+
 		Assertions.assertThat(r.getMsg())
         .isEqualTo(msgS.get("rest_updated"));
 	}

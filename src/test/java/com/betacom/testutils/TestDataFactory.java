@@ -230,7 +230,6 @@ public class TestDataFactory {
         r.setTesto("Molto divertente");
         r.setGeneraleZoo(true);
     	
-    	
 		return recR.save(r);
     }
     
@@ -272,7 +271,8 @@ public class TestDataFactory {
         Giornate g = new Giornate();
         g.setData(LocalDate.now());
         g.setEvento(e);
-        return gioR.save(g);}
+        return gioR.save(g);
+    }
     
     public static OggettiOrdini creaOggettiOrdiniValido(
     		IOggettiOrdiniRepository ooR,
@@ -294,17 +294,7 @@ public class TestDataFactory {
         
         return ooR.save(oo);
     }
-    
-    public static Items creaItemValido(
-            IItemsRepository itR,
-            IProdottiRepository prR,
-            ICategorieRepository catR) {
 
-        Prodotti p = creaProdottoValido(prR, catR);
-
-        return itR.findById(p.getId())
-                  .orElseThrow(() -> new IllegalStateException("Item non trovato dopo creazione prodotto"));
-    }
 
 }
 
