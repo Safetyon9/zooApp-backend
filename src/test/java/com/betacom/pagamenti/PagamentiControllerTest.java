@@ -25,6 +25,7 @@ import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,9 @@ public class PagamentiControllerTest {
 	
 	@Autowired
     private IUtentiRepository utR;
+	
+	@Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -68,7 +72,9 @@ public class PagamentiControllerTest {
 
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+        
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test
@@ -144,7 +150,9 @@ public class PagamentiControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+        
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
     }
 
     @Test
@@ -168,7 +176,9 @@ public class PagamentiControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
     
     @Test

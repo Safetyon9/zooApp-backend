@@ -6,6 +6,7 @@ import org.junit.platform.suite.api.Suite;
 import com.betacom.biglietti.BigliettiControllerTest;
 import com.betacom.bigliettigiornata.BigliettiGiornataControllerTest;
 import com.betacom.carrelli.CarrelliControllerTest;
+import com.betacom.categorie.CategorieControllerTest;
 import com.betacom.clienti.ClientiControllerTest;
 import com.betacom.corrieri.CorrieriControllerTest;
 import com.betacom.coupons.CouponsControllerTest;
@@ -29,6 +30,8 @@ import com.betacom.utenti.UtentiImplTest;
 	BigliettiGiornataControllerTest.class,
 
 	CarrelliControllerTest.class,
+	
+	CategorieControllerTest.class,
 
 	ClientiControllerTest.class,
 	
