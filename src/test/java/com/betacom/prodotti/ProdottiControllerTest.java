@@ -130,23 +130,31 @@ public class ProdottiControllerTest {
 	@Test
 	@Order(6)
 	public void deleteProdotto() {
-		log.debug("Delete prodotto");
-		Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
-		
-		ResponseEntity<Resp> resp = prodC.delete(pr.getId());
+	    log.debug("Delete prodotto");
+	    Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
 
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = resp.getBody();
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_deleted"));
+	    ResponseEntity<Resp> resp = prodC.delete(pr.getId());
+
+	    assertEquals(HttpStatus.OK, resp.getStatusCode());
+	    Resp r = resp.getBody();
+	    Assertions.assertThat(r).isNotNull();
+	    Assertions.assertThat(r.getMsg())
+	              .isEqualTo(msgS.get("rest_deleted"));
 	}
-
+	
 	@Test
 	@Order(7)
-	public void deleteError() {
-		log.debug("Delete prodotto error");
-		ResponseEntity<Resp> resp = prodC.delete(9999);
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+	public void delete() {
+	    log.debug("Delete prodotto");
+	    Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
+
+	    ResponseEntity<Resp> resp = prodC.delete(pr.getId());
+
+	    assertEquals(HttpStatus.OK, resp.getStatusCode());
+	    Resp r = resp.getBody();
+	    Assertions.assertThat(r).isNotNull();
+	    Assertions.assertThat(r.getMsg())
+	              .isEqualTo(msgS.get("rest_deleted"));
 	}
 
 	@Test

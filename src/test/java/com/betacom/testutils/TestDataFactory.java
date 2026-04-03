@@ -71,7 +71,6 @@ public class TestDataFactory {
     	p.setSku(10L);
     	p.setStock(1);
     	p.setUrlImmagine("URL IMAGE TEST");
-    	
 		return prR.save(p);
     }
     
