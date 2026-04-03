@@ -16,9 +16,13 @@ import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.items.CategorieController;
 import com.betacom.dto.inputs.commerce.items.CategorieReq;
+import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,12 +37,14 @@ public class CategorieControllerTest {
 	@Autowired
 	private IMessaggiServices msgS;
 	
+	@Autowired
+	private ICategorieRepository catR;
+	
 	@Test
 	@Order(1)
 	public void create() {
 		log.debug("Create categorie");
 		CategorieReq req = new CategorieReq();
-		req.setId(1);
 		req.setNome("Test");
 
 		ResponseEntity<?> resp = catC.create(req);
@@ -57,10 +63,7 @@ public class CategorieControllerTest {
 		req.setNome("TestError");
 
 		ResponseEntity<?> resp = catC.create(req);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp) resp.getBody();
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_created"));
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 	}
 	
 	
@@ -68,10 +71,12 @@ public class CategorieControllerTest {
 	@Order(3)
 	public void findById() {
 		log.debug("Test findById");
-		ResponseEntity<?> resp = catC.findById(1);
+		Categorie cat = TestDataFactory.creaCategoriaValida(catR);
+		
+		ResponseEntity<?> resp = catC.findById(cat.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
-		Assertions.assertThat(prod.getNome()).isEqualTo("Test");
+		CategorieDTO prod = (CategorieDTO) resp.getBody();
+		Assertions.assertThat(prod.getNome()).isEqualTo("Categoria1");
 	}
 	
 	@Test
@@ -79,9 +84,7 @@ public class CategorieControllerTest {
 	public void findByIdErr() {
 		log.debug("Test findById");
 		ResponseEntity<?> resp = catC.findById(100);
-        assertEquals(HttpStatus.OK, resp.getStatusCode());
-		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
-		Assertions.assertThat(prod.getNome()).isEqualTo("Test");
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 	}
 	
 	@Test
@@ -108,10 +111,7 @@ public class CategorieControllerTest {
 		req.setNome("Update");
 
 		ResponseEntity<Resp> resp = catC.update(req);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = resp.getBody();
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_updated"));
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 	}
 	
 	@Test
@@ -138,7 +138,7 @@ public class CategorieControllerTest {
 	}
 	
 	@Test
-	@Order(8)
+	@Order(9)
 	public void deleteErr() {
 		log.debug("Delete categorie");
 		ResponseEntity<Resp> resp = catC.delete(100);

@@ -13,6 +13,7 @@ import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
+import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
@@ -23,6 +24,7 @@ import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
+import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 public class TestDataFactory {
@@ -114,6 +116,17 @@ public class TestDataFactory {
         b.setTipo(t);
         
         return bigR.save(b);
+    }
+    
+    public static Categorie creaCategoriaValida(
+    		ICategorieRepository catR
+    		) {
+    	
+    	Categorie c = new Categorie();
+    	c.setNome("Categoria1");
+    	
+		return catR.save(c);
+    	
     }
 
     

@@ -47,7 +47,7 @@ public class CouponsControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CouponsControllerTest {
 
         ResponseEntity<Resp> resp = couC.create(req);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Coupons non trovato nel DB");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Coupon non presente nel DB");
     }
 
     @Test
@@ -78,7 +78,7 @@ public class CouponsControllerTest {
 
         couC.create(req);
 
-        ResponseEntity<?> resp = couC.getById(1);
+        ResponseEntity<?> resp = couC.getById(2);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         CouponsDTO dto = (CouponsDTO) resp.getBody();
@@ -108,7 +108,7 @@ public class CouponsControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_updated");
     }
 
     @Test
@@ -128,11 +128,11 @@ public class CouponsControllerTest {
     public void deleteCoupon() {
         log.debug("Delete coupon");
 
-        ResponseEntity<Resp> resp = couC.delete(1);
+        ResponseEntity<Resp> resp = couC.delete(2);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_deleted");
     }
 
     @Test

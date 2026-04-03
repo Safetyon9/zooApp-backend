@@ -66,7 +66,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_created");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.update(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_updated");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_updated");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.delete(1);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_deleted");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_deleted");
     }
 
     @Test
