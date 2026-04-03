@@ -141,24 +141,9 @@ public class ProdottiControllerTest {
 	    Assertions.assertThat(r.getMsg())
 	              .isEqualTo(msgS.get("rest_deleted"));
 	}
-	
+
 	@Test
 	@Order(7)
-	public void delete() {
-	    log.debug("Delete prodotto");
-	    Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
-
-	    ResponseEntity<Resp> resp = prodC.delete(pr.getId());
-
-	    assertEquals(HttpStatus.OK, resp.getStatusCode());
-	    Resp r = resp.getBody();
-	    Assertions.assertThat(r).isNotNull();
-	    Assertions.assertThat(r.getMsg())
-	              .isEqualTo(msgS.get("rest_deleted"));
-	}
-
-	@Test
-	@Order(8)
 	public void list() {
 		log.debug("Test list prodotti");
 		ResponseEntity<?> resp = prodC.list();

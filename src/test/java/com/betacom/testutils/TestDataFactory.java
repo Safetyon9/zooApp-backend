@@ -2,6 +2,7 @@ package com.betacom.testutils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.betacom.enums.Roles;
 import com.betacom.enums.StatoPagamento;
@@ -58,20 +59,24 @@ public class TestDataFactory {
     }
     
     public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
-    	Prodotti p = new Prodotti();
-    	
-    	Categorie c = creaCategoriaValida(catR, "3");
-    	p.setCategoria(c);
-    	
-    	p.setDescrizione("TestDescrizione");
-    	p.setDimensioni(new BigDecimal(10.00));
-    	p.setNome("TestNome");
-    	p.setPeso(new BigDecimal(10.00));
-    	p.setPrezzo(new BigDecimal(10.00));
-    	p.setSku(10L);
-    	p.setStock(1);
-    	p.setUrlImmagine("URL IMAGE TEST");
-		return prR.save(p);
+        Prodotti p = new Prodotti();
+
+        Categorie c = creaCategoriaValida(catR, String.valueOf(System.currentTimeMillis()));
+        p.setCategoria(c);
+
+        p.setDescrizione("TestDescrizione");
+        p.setDimensioni(new BigDecimal("10.00"));
+        p.setNome("TestNome");
+        p.setPeso(new BigDecimal("10.00"));
+        p.setPrezzo(new BigDecimal("10.00"));
+
+        long sku = ThreadLocalRandom.current().nextLong(100000L, 9999999999L);
+        p.setSku(sku);
+
+        p.setStock(1);
+        p.setUrlImmagine("URL IMAGE TEST");
+
+        return prR.save(p);
     }
     
 
