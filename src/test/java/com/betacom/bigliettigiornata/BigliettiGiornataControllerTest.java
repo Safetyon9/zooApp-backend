@@ -128,21 +128,10 @@ public class BigliettiGiornataControllerTest {
     @Test
     @Order(5)
     public void updateBigliettoGiornataTest() {
-        Giornate giornata = TestDataFactory.creaGiornataValida(gioR, evR);
-        TipiBiglietti biglietto = TestDataFactory.creaTipoBigliettoValido(tipiR);
-        Eventi evento = giornata.getEvento();
-
-        BigliettiGiornateReq req = new BigliettiGiornateReq();
-        req.setGiornataId(giornata.getId());
-        req.setBigliettoId(biglietto.getId());
-        req.setEventoId(evento.getId());
-        req.setPrezzo(BigDecimal.valueOf(70));
-        req.setStock(30);
-
-        bigGiornC.create(req);
+    	BigliettiGiornata big = TestDataFactory.creaBigliettoGiornataValido(gioR, evR, tipiR, bigR, biGR);
 
         BigliettiGiornateReq updateReq = new BigliettiGiornateReq();
-        updateReq.setId(1);
+        updateReq.setId(big.getId());
         updateReq.setPrezzo(BigDecimal.valueOf(80));
         updateReq.setStock(40);
 
