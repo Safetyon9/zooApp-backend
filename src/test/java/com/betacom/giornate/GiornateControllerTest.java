@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.GiornateController;
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
+import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
@@ -34,6 +36,9 @@ public class GiornateControllerTest {
 
 	@Autowired
 	private IEventiRepository evRepo;
+	
+	@Autowired
+	private IGiornateRepository gioRepo;
 
 	@Autowired
 	private IMessaggiServices msgS;
@@ -41,12 +46,12 @@ public class GiornateControllerTest {
 	@Test
 	@Order(1)
 	public void createGiornata() {
-		TestDataFactory.creaEventoValido(evRepo);
+		com.betacom.persistence.entity.commerce.Eventi ev = TestDataFactory.creaEventoValido(evRepo);
 
 		log.debug("Create giornata");
 		GiornateReq req = new GiornateReq();
 		req.setData(LocalDate.now());
-		req.setEventoId(1);
+		req.setEventoId(ev.getId());
 
 		ResponseEntity<Resp> resp = giornateC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -61,10 +66,11 @@ public class GiornateControllerTest {
 	@Order(2)		
 	public void getGiornata() {
 		log.debug("Test getGiornata");
-		ResponseEntity<?> resp = giornateC.getById(1);
+		Giornate g = TestDataFactory.creaGiornataValida(gioRepo, evRepo);
+		ResponseEntity<?> resp = giornateC.getById(g.getId());
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		GiornateDTO g = (GiornateDTO)resp.getBody();
-		Assertions.assertThat(g.getEventoId()).isEqualTo(1);
+		GiornateDTO dto = (GiornateDTO)resp.getBody();
+		Assertions.assertThat(dto.getEventoId()).isEqualTo(g.getEvento().getId());
 	}
 
 	@Test
@@ -79,11 +85,12 @@ public class GiornateControllerTest {
 	@Order(4)	
 	public void updateGiornata() {
 		log.debug("Update giornata");
+		Giornate g = TestDataFactory.creaGiornataValida(gioRepo, evRepo);
 		
 		GiornateReq req = new GiornateReq();
-		req.setId(1);
+		req.setId(g.getId());
 		req.setData(LocalDate.now().plusDays(1));
-		req.setEventoId(1);
+		req.setEventoId(g.getEvento().getId());
 		
 		ResponseEntity<Resp> resp = giornateC.update(req);
 		
@@ -98,8 +105,9 @@ public class GiornateControllerTest {
 	@Order(5)	
 	public void deleteGiornata() {
 		log.debug("delete giornata");
+		Giornate g = TestDataFactory.creaGiornataValida(gioRepo, evRepo);
 		
-		ResponseEntity<Resp> resp = giornateC.delete(1);
+		ResponseEntity<Resp> resp = giornateC.delete(g.getId());
 		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
@@ -119,7 +127,7 @@ public class GiornateControllerTest {
 		
 		List<GiornateDTO> lG = (List<GiornateDTO>) body;
 		
-		Assertions.assertThat(lG.size()).isGreaterThanOrEqualTo(0);
+		Assertions.assertThat(lG).isNotEmpty();
 		lG.forEach(g -> log.debug(g.toString()));
 	}
 
