@@ -2,6 +2,7 @@ package com.betacom.services.implementations;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,10 @@ public class UtentiImpl implements IUtentiServices {
         if (repoU.findByEmail(Ureq.getEmail()).isPresent()) {
             throw new ZooException(msgS.get("email_exists"));
         }
+        
+        if (!Ureq.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+        	 throw new ZooException(msgS.get("email_invalid"));
+	    }
 
         Utenti u = new Utenti();
         u.setUserName(Ureq.getUsername());
