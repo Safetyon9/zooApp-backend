@@ -20,6 +20,7 @@ import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,9 @@ public class GiornateControllerTest {
 
 	@Autowired
 	private IEventiRepository evRepo;
+
+	@Autowired
+	private IMessaggiServices msgS;
 
 	@Test
 	@Order(1)
@@ -48,7 +52,9 @@ public class GiornateControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp) resp.getBody();
 
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
 	}
 
 	@Test
@@ -84,7 +90,8 @@ public class GiornateControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 	}
 
 	@Test
@@ -97,7 +104,8 @@ public class GiornateControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
 	}
 	
 	@Test
