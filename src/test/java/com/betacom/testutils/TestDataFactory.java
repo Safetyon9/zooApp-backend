@@ -31,6 +31,8 @@ import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
+import jakarta.transaction.Transactional;
+
 public class TestDataFactory {
 
     public static Utenti creaUtenteValido(IUtentiRepository utR) {
@@ -144,17 +146,19 @@ public class TestDataFactory {
     }
     
     public static Categorie creaCategoriaValida(
-    		ICategorieRepository catR
+    		ICategorieRepository catR,
+    		String unique
     		) {
-    	
+
     	Categorie c = new Categorie();
-    	c.setNome("Categoria1");
+    	
+    	c.setNome("Categoria" + unique);
     	
 		return catR.save(c);
     	
     }
 
-    
+    @Transactional
     public static Carrelli creaCarrelloValido(
             ICarrelliRepository carrelliR,
             IClientiRepository clR,
