@@ -287,6 +287,17 @@ public class TestDataFactory {
         
         return ooR.save(oo);
     }
+    
+    public static Items creaItemValido(
+            IItemsRepository itR,
+            IProdottiRepository prR,
+            ICategorieRepository catR) {
+
+        Prodotti p = creaProdottoValido(prR, catR);
+
+        return itR.findById(p.getId())
+                  .orElseThrow(() -> new IllegalStateException("Item non trovato dopo creazione prodotto"));
+    }
 
 }
 
