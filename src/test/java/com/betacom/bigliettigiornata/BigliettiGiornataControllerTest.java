@@ -20,9 +20,11 @@ import com.betacom.dto.inputs.commerce.items.BigliettiGiornateReq;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
+import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -48,6 +50,9 @@ public class BigliettiGiornataControllerTest {
     private ITipiBigliettiRepository tipiR;
     
     @Autowired
+    private IBigliettiRepository bigR;
+    
+    @Autowired
 	private IMessaggiServices msgS;
 
     @Test
@@ -56,7 +61,7 @@ public class BigliettiGiornataControllerTest {
         log.debug("create biglietto giornata");
 
         Giornate giornata = TestDataFactory.creaGiornataValida(gioR, evR);
-        TipiBiglietti biglietto = TestDataFactory.creaTipoBigliettoValido(tipiR);
+        Biglietti biglietto = TestDataFactory.creaBigliettoValido(bigR, tipiR);
         Eventi evento = giornata.getEvento();
 
         BigliettiGiornateReq req = new BigliettiGiornateReq();
@@ -188,9 +193,14 @@ public class BigliettiGiornataControllerTest {
 		
 		List<BigliettiGiornateDTO> lS = (List<BigliettiGiornateDTO>) body;
 		
-		Assertions.assertThat(lS.size()).isGreaterThan(0);
-	//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
-		lS.forEach(s -> log.debug(s.toString()));
+		Assertions.assertThat(lS).isNotEmpty();
 
+		BigliettiGiornateDTO first = lS.get(0);
+
+		Assertions.assertThat(first.getPrezzo()).isNotNull();
+		Assertions.assertThat(first.getStock()).isGreaterThan(0);
+		Assertions.assertThat(first.getBigliettoId()).isNotNull();
+		Assertions.assertThat(first.getGiornataId()).isNotNull();
+		lS.forEach(s -> log.debug(s.toString()));
 	}
 }

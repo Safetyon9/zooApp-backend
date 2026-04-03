@@ -1,5 +1,6 @@
 package com.betacom.testutils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.betacom.enums.Roles;
@@ -11,6 +12,7 @@ import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
@@ -20,6 +22,7 @@ import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 public class TestDataFactory {
@@ -96,6 +99,23 @@ public class TestDataFactory {
         t.setNome("Standard");
         return tipiR.save(t);
     }
+    
+    public static Biglietti creaBigliettoValido(
+    		IBigliettiRepository bigR,
+    		ITipiBigliettiRepository tipiR
+    		) {
+    	TipiBiglietti t = creaTipoBigliettoValido(tipiR);
+    	
+        Biglietti b = new Biglietti();
+        b.setNome("Biglietto Intero");
+        b.setDescrizione("Ingresso standard adulti");
+        b.setUrlImmagine("biglietto.png");
+        b.setPrezzo(new BigDecimal("15.50"));
+        b.setTipo(t);
+        
+        return bigR.save(b);
+    }
+
     
     public static Carrelli creaCarrelloValido(
             ICarrelliRepository carrelliR,
