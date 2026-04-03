@@ -18,13 +18,16 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.checkout.OggettiOrdiniController;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
+import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +51,14 @@ public class OggettiOrdiniControllerTest {
 
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+    private IMessaggiServices msgS;
 
-    private Integer oggettoOrdineId;
-
+    @Autowired
+    private IOggettiOrdiniRepository ooR;
+    
+    
     @Test
     @Order(1)
     public void createOggettoOrdineTest() {
@@ -63,12 +71,15 @@ public class OggettiOrdiniControllerTest {
         req.setOrdineId(ordine.getId());
         req.setItemId(item.getId());
         req.setQuantita(2);
-        req.setPrezzoUnitario(new BigDecimal("20.00"));
-        req.setPrezzoTotale(new BigDecimal("40.00"));
+        req.setPrezzoUnitario(new BigDecimal("3.00"));
+        req.setPrezzoTotale(new BigDecimal("1.00"));
+        
 
         ResponseEntity<Resp> resp = ooC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_created");
+		Resp r = (Resp) resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
 
     }
 
@@ -88,7 +99,9 @@ public class OggettiOrdiniControllerTest {
     public void getByIdTest() {
         log.debug("Get oggetto ordine by id");
 
-        ResponseEntity<?> resp = ooC.findById(1);
+        OggettiOrdini oo = TestDataFactory.creaOggettiOrdiniValido(ooR, ordiniR, clR, utR, tipiR);
+        
+        ResponseEntity<?> resp = ooC.findById(oo.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         OggettiOrdiniDTO dto = (OggettiOrdiniDTO) resp.getBody();

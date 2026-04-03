@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.enums.Roles;
 import com.betacom.enums.StatoPagamento;
 import com.betacom.enums.TipoCoupon;
@@ -16,6 +17,7 @@ import com.betacom.persistence.entity.commerce.Recensioni;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
+import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
@@ -34,6 +36,7 @@ import com.betacom.persistence.repository.commerce.IRecensioniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
+import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
@@ -272,4 +275,18 @@ public class TestDataFactory {
         g.setData(LocalDate.now());
         g.setEvento(e);
         return gioR.save(g);}
+    
+    public static OggettiOrdini creaOggettiOrdiniValido(IOggettiOrdiniRepository ooR, IOrdiniRepository ordR, IClientiRepository clR, IUtentiRepository utR, ITipiBigliettiRepository tipiR) {
+    	Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
+
+        OggettiOrdini oo = new OggettiOrdini();
+        oo.setOrdine(ordine);
+        oo.setQuantita(2);
+        oo.setPrezzoUnitario(new BigDecimal("3.00"));
+        oo.setPrezzoTotale(new BigDecimal("1.00"));
+        
+        return ooR.save(oo);
+    }
+
 }
+
