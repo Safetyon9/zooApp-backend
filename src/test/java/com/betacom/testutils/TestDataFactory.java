@@ -59,6 +59,17 @@ public class TestDataFactory {
         return utR.save(u); 
     }
     
+    public static Utenti creaUtenteValido(IUtentiRepository utR, String invalido) {
+
+        Utenti u = new Utenti();
+        u.setUserName("testuser" + invalido);
+        u.setEmail("test" + invalido + "@mail.com");
+        u.setPwd("1234");
+        u.setRole(Roles.valueOf("USER"));
+
+        return utR.save(u); 
+    }
+    
     public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
         Prodotti p = new Prodotti();
 
@@ -214,27 +225,6 @@ public class TestDataFactory {
 		return couR.save(c);
     }
     
-    public static Recensioni creaRecensioneValida(
-    		IRecensioniRepository recR,
-    		IClientiRepository clR,
-    		IUtentiRepository utR,
-    		IBigliettiRepository bigliettoR,
-    		ITipiBigliettiRepository tipiR
-    		 ) {
-    	
-        Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
-        Biglietti item = TestDataFactory.creaBigliettoValido(bigliettoR, tipiR);
-    	
-    	Recensioni r = new Recensioni();
-    	r.setCliente(cliente);
-        r.setItem(item);
-        r.setVoto(5);
-        r.setTitolo("Bellissimo");
-        r.setTesto("Molto divertente");
-        r.setGeneraleZoo(true);
-    	
-		return recR.save(r);
-    }
     
     public static Categorie creaCategoriaValida(
     		ICategorieRepository catR,

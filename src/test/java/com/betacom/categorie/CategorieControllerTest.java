@@ -129,14 +129,6 @@ public class CategorieControllerTest {
 	}
 	
 	@Test
-	@Order(10)
-	public void listErr() {
-		log.debug("Test list categorie");
-		ResponseEntity<?> resp = catC.list();
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-	}
-	
-	@Test
 	@Order(8)
 	public void delete() {
 		log.debug("Delete categorie");

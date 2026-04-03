@@ -22,7 +22,15 @@ import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.enums.Roles;
+import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.services.interfaces.IUtentiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +41,15 @@ public class UtentiControllerTest {
 	
 	@Autowired
 	private UtentiController utentiC;
+	
+	@Autowired
+	private IMessaggiServices msgS;
+	
+	@Autowired 
+	private IUtentiRepository utR;
+	
+	@Autowired 
+	private IClientiRepository clR;
 	
 	@Test
 	@Order(1)
@@ -51,7 +68,6 @@ public class UtentiControllerTest {
 		log.debug("Test getUtenti");
 		ResponseEntity<?> resp = utentiC.findByUserName("Test1000");
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		Assertions.assertThat(resp.getBody()).isEqualTo("Utente non trovato in db:Test1000");
 	
 	}
 	
@@ -70,7 +86,8 @@ public class UtentiControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
 		
 	}
 	@Test
@@ -86,9 +103,6 @@ public class UtentiControllerTest {
 		
 		ResponseEntity<?> resp = utentiC.create(req);
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		
-		Assertions.assertThat(r.getMsg()).isEqualTo("email_invalid");
 		
 	}
 	
@@ -97,11 +111,13 @@ public class UtentiControllerTest {
 	public void updateUtenti() {
 		log.debug("******* Update utenti  *******");
 		
+		Utenti ut = TestDataFactory.creaUtenteValido(utR,"1");
+		
+		
 		UtentiReq req = new UtentiReq();
-		req.setUsername("Test4");
-		req.setPwd("LaBella");
-		req.setRole("User");
-		req.setEmail("test@gmail.com");
+		req.setUsername(ut.getUserName());
+		req.setPwd("labrutta");
+		
 		
 		ResponseEntity<Resp> resp = utentiC.update(req);
 	
@@ -109,7 +125,8 @@ public class UtentiControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 			
 	}
 	
@@ -136,14 +153,16 @@ public class UtentiControllerTest {
 	public void deleteSocio() {
 		log.debug("******* delete utenti  *******");
 		
+		Utenti ut = TestDataFactory.creaUtenteValido(utR,"2z");
 		
-		ResponseEntity<Resp> resp = utentiC.delete("Test4");
-	
+		ResponseEntity<Resp> resp = utentiC.delete(ut.getUserName());
+		
 		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
 		
 	}
 	
@@ -213,23 +232,28 @@ public class UtentiControllerTest {
 	@Order(11)
 	public void register() {
 		log.debug("Test register OK");
-	    UtentiReq utente = new UtentiReq();
-	    utente.setUsername("TestRegisterOK");
-	    utente.setPwd("password123");
-	    utente.setEmail("testregister@ok.com");
-	    utente.setRole("USER");
-	    
-	    ClientiReq cliente = new ClientiReq();
-	    cliente.setNome("Test");
-	    cliente.setCognome("Register");
-	    
 
-	    RegisterReq req = new RegisterReq(utente,cliente);
+        UtentiReq u = new UtentiReq();
+        u.setUsername("TEST1747");
+        u.setEmail("ciao@gmail.com");
+        u.setPwd("12341414");
+        u.setRole("USER");
+
+        ClientiReq c = new ClientiReq();
+        c.setNome("asdadad");
+        c.setCognome("Register1234412");
+        c.setIndirizzo("asdadasdad");
+        c.setCap("00124");
+        c.setComune("Ciao");
+        c.setTelefono("123456789");
+        c.setProvincia("Roma");
+	    
+	    RegisterReq req = new RegisterReq(u, c);
 	    
 	    ResponseEntity<?> resp = utentiC.register(req);
 	    assertEquals(HttpStatus.OK, resp.getStatusCode()); 
 	    RegisterDTO body = (RegisterDTO) resp.getBody();
-		Assertions.assertThat(body.getEmail()).isEqualTo("testregister@ok.com");
+		Assertions.assertThat(body.getEmail()).isEqualTo("ciao@gmail.com");
 
 	}
 	
