@@ -23,6 +23,7 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class RecensioniControllerTest {
 
     @Autowired
     private ITipiBigliettiRepository tipiR;
+    
+    @Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -64,7 +68,9 @@ public class RecensioniControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test
@@ -142,7 +148,9 @@ public class RecensioniControllerTest {
         ResponseEntity<Resp> resp = recensioniC.update(updateReq);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = (Resp) resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
     }
 
     @Test
@@ -164,7 +172,9 @@ public class RecensioniControllerTest {
         ResponseEntity<Resp> resp = recensioniC.delete(1);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = (Resp) resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
     
     @Test

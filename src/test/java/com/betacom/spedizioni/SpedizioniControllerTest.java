@@ -27,6 +27,7 @@ import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,9 @@ public class SpedizioniControllerTest {
     
     @Autowired
     private ISpedizioniRepository speR;
+    
+    @Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -73,7 +77,9 @@ public class SpedizioniControllerTest {
 
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test
@@ -136,7 +142,9 @@ public class SpedizioniControllerTest {
         ResponseEntity<Resp> resp = spedC.update(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+        
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 
         SpedizioniDTO updated = (SpedizioniDTO) spedC.findById(sped.getId()).getBody();
         Assertions.assertThat(updated.getTrackingNumber()).isEqualTo("TRACK789");
@@ -157,7 +165,9 @@ public class SpedizioniControllerTest {
 
         ResponseEntity<?> respNotFound = spedC.findById(sped.getId());
         assertEquals(HttpStatus.BAD_REQUEST, respNotFound.getStatusCode());
-        Assertions.assertThat(respNotFound.getBody()).isEqualTo("Spedizione non trovata");
+
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
     
     @Test
