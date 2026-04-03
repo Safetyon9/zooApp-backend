@@ -22,9 +22,6 @@ import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
-import com.betacom.enums.Roles;
-import com.betacom.persistence.entity.Utenti;
-import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.response.Resp;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +37,7 @@ public class UtentiControllerTest {
 	@Test
 	@Order(1)
 	public void getUtenti() {
-		log.debug("Test getSocio");
+		log.debug("Test getUtenti");
 		ResponseEntity<?> resp = utentiC.findByUserName("Test1");
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		UtentiDTO ute = (UtentiDTO) resp.getBody();
@@ -51,7 +48,7 @@ public class UtentiControllerTest {
 	@Test
 	@Order(2)
 	public void getUtentiError() {
-		log.debug("Test getSocio");
+		log.debug("Test getUtenti");
 		ResponseEntity<?> resp = utentiC.findByUserName("Test1000");
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 		Assertions.assertThat(resp.getBody()).isEqualTo("Utente non trovato in db:Test1000");
@@ -60,9 +57,9 @@ public class UtentiControllerTest {
 	
 	@Test
 	@Order(3)	
-	public void createSocio() {
+	public void createUtenti() {
 
-		log.debug("Create socio");
+		log.debug("Create Utenti");
 		UtentiReq req = new UtentiReq();
 		req.setUsername("Test3");
 		req.setPwd("LaBella");
@@ -74,6 +71,24 @@ public class UtentiControllerTest {
 		Resp r = (Resp)resp.getBody();
 		
 		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+		
+	}
+	@Test
+	@Order(12)	
+	public void createUtentiErr() {
+
+		log.debug("Create Utenti");
+		UtentiReq req = new UtentiReq();
+		req.setUsername("Test3");
+		req.setPwd("LaBella");
+		req.setRole("User");
+		req.setEmail("mailsbagliata");
+		
+		ResponseEntity<?> resp = utentiC.create(req);
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+		Resp r = (Resp)resp.getBody();
+		
+		Assertions.assertThat(r.getMsg()).isEqualTo("email_invalid");
 		
 	}
 	
@@ -99,7 +114,7 @@ public class UtentiControllerTest {
 	}
 	
 	@Test
-	@Order(4)	
+	@Order(1)	
 	public void updateUtentiErr() {
 		log.debug("******* Update utenti error *******");
 		
@@ -148,7 +163,7 @@ public class UtentiControllerTest {
 	@Test
 	@Order(8)	
 	public void list() {
-		log.debug("Test list socio");
+		log.debug("Test list Utenti");
 		
 		ResponseEntity<?> resp = utentiC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -166,7 +181,7 @@ public class UtentiControllerTest {
 	@Test
 	@Order(9)	
 	public void login() {
-		log.debug("Test list socio");
+		log.debug("Test list Utenti");
 		
 		LoginReq req = new LoginReq();
 		req.setUsername("Test3");
