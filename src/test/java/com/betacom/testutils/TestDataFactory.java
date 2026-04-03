@@ -17,6 +17,7 @@ import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
@@ -29,6 +30,7 @@ import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
+import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 import jakarta.transaction.Transactional;
@@ -45,6 +47,25 @@ public class TestDataFactory {
         u.setRole(Roles.valueOf("USER"));
 
         return utR.save(u);
+    }
+    
+    public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
+    	Prodotti p = new Prodotti();
+    	
+    	Categorie c = creaCategoriaValida(catR, "3");
+    	p.setCategoria(c);
+    	
+    	p.setDescrizione("TestDescrizione");
+    	p.setDimensioni(new BigDecimal(10.00));
+    	p.setNome("TestNome");
+    	p.setPeso(new BigDecimal(10.00));
+    	p.setPrezzo(new BigDecimal(10.00));
+    	p.setSku(10L);
+    	p.setStock(1);
+    	p.setUrlImmagine("URL IMAGE TEST");
+    	
+    	
+		return prR.save(p);
     }
 
     public static Clienti creaClienteValido(
