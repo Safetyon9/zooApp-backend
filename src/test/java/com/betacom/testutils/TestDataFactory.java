@@ -3,6 +3,8 @@ package com.betacom.testutils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.betacom.enums.Roles;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
@@ -13,6 +15,7 @@ import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
+import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
@@ -23,6 +26,7 @@ import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
@@ -116,6 +120,27 @@ public class TestDataFactory {
         b.setTipo(t);
         
         return bigR.save(b);
+    }
+    
+    public static BigliettiGiornata creaBigliettoGiornataValido(
+    		 IGiornateRepository gioR,
+    		 IEventiRepository evR,
+    		 ITipiBigliettiRepository tipiR,
+    		 IBigliettiRepository bigR,
+    		 IBigliettiGiornataRepository biGR
+    		) {
+    	Giornate giornata = TestDataFactory.creaGiornataValida(gioR, evR);
+        Biglietti biglietto = TestDataFactory.creaBigliettoValido(bigR, tipiR);
+        Eventi evento = giornata.getEvento();
+    	
+    	BigliettiGiornata big = new BigliettiGiornata();
+        big.setGiornata(giornata);
+        big.setBiglietto(biglietto);
+        big.setEvento(evento);
+        big.setPrezzo(BigDecimal.valueOf(60));
+        big.setStock(50);
+        
+        return biGR.save(big);
     }
     
     public static Categorie creaCategoriaValida(
