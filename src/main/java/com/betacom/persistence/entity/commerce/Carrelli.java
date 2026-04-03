@@ -25,7 +25,7 @@ public class Carrelli {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true, nullable = false)
     private Clienti cliente;
 	
