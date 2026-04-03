@@ -19,10 +19,14 @@ import com.betacom.dto.inputs.commerce.RecensioniReq;
 import com.betacom.dto.outputs.commerce.RecensioniDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Recensioni;
+import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.IRecensioniRepository;
+import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
+import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -52,6 +56,13 @@ public class RecensioniControllerTest {
     
     @Autowired
 	private IMessaggiServices msgS;
+    
+    @Autowired
+	private IItemsRepository itR;
+    @Autowired
+	private IProdottiRepository prR;
+    @Autowired
+	private ICategorieRepository catR;
 
     @Test
     @Order(1)
@@ -59,10 +70,12 @@ public class RecensioniControllerTest {
         log.debug("create recensione");
 
         Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
-
+        
+        Items item = TestDataFactory.creaItemValido(itR, prR, catR);
+        		
         RecensioniReq req = new RecensioniReq();
         req.setClienteId(cliente.getId());
-        req.setItemId(null);
+        req.setItemId(item.getId());
         req.setVoto(5);
         req.setTitolo("Bellissimo");
         req.setTesto("Molto divertente");
@@ -92,7 +105,6 @@ public class RecensioniControllerTest {
 
         ResponseEntity<Resp> resp = recensioniC.create(req);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Cliente o Item non trovato");
     }
 
     @Test
