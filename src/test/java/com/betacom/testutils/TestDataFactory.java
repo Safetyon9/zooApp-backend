@@ -20,6 +20,7 @@ import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
@@ -27,6 +28,7 @@ import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
+import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.IRecensioniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
@@ -55,6 +57,18 @@ public class TestDataFactory {
         return utR.save(u);
     }
     
+    public static Items creaItemValido(IItemsRepository itR) {
+    	
+    	Items i = new Items() {
+		};
+    	i.setDescrizione("Test1");
+    	i.setNome("TestName");
+    	i.setPrezzo(new BigDecimal(10));
+    	i.setUrlImmagine("URLIMAGE");
+    	
+    	return itR.save(i);
+    }
+    
     public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
     	Prodotti p = new Prodotti();
     	
@@ -69,7 +83,6 @@ public class TestDataFactory {
     	p.setSku(10L);
     	p.setStock(1);
     	p.setUrlImmagine("URL IMAGE TEST");
-    	
     	
 		return prR.save(p);
     }

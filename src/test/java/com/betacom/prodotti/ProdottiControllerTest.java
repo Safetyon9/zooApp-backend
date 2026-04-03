@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,10 @@ import com.betacom.controllers.commerce.items.ProdottiController;
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.entity.commerce.items.Prodotti;
+import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
+import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
@@ -39,6 +43,12 @@ public class ProdottiControllerTest {
 	
 	@Autowired
 	private IMessaggiServices msgS;
+	
+	@Autowired
+	private IProdottiRepository prR;
+	
+	@Autowired
+	private IItemsRepository itR;
 
 	@Test
 	@Order(3)
@@ -89,18 +99,31 @@ public class ProdottiControllerTest {
 	@Order(4)
 	public void update() {
 		log.debug("Update prodotto");
-		ProdottiReq req = new ProdottiReq();
-		req.setSku(1001L);
-		req.setNome("Test Prodotto Updated");
-		req.setDescrizione("Descrizione aggiornata");
-		req.setPrezzo(new BigDecimal("25.00"));
-		req.setStock(100);
-		req.setCategoriaId(1);
+		Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
 
+		ProdottiReq req = new ProdottiReq();
+		
+		req.setCategoriaId(pr.getCategoria().getId());
+		req.setDescrizione("Updated");
+		req.setDimensioni(pr.getDimensioni());
+		req.setNome(pr.getNome());
+		req.setPeso(pr.getPeso());
+		req.setPrezzo(pr.getPrezzo());
+		req.setSku(pr.getSku());
+		req.setStock(pr.getStock());
+		req.setUrlImmagine(pr.getUrlImmagine());
+		
+		Item it = TestDataFactory.creaItemValido(itR);
+		req.setItemId();
+		
+		
+		
 		ResponseEntity<Resp> resp = prodC.update(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = resp.getBody();
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+		Resp r = (Resp) resp.getBody();
+		log.debug(r.getMsg());
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 	}
 
 	@Test
@@ -118,11 +141,14 @@ public class ProdottiControllerTest {
 	@Order(6)
 	public void deleteProdotto() {
 		log.debug("Delete prodotto");
-		ResponseEntity<Resp> resp = prodC.delete(2001);
+		Prodotti pr = TestDataFactory.creaProdottoValido(prR, catR);
+		
+		ResponseEntity<Resp> resp = prodC.delete(pr.getId());
 
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = resp.getBody();
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
 	}
 
 	@Test
