@@ -94,7 +94,8 @@ public class BigliettiGiornataControllerTest {
 
         ResponseEntity<Resp> resp = bigGiornC.create(req);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Giornata, Biglietto o Evento non trovato");
+        Assertions.assertThat(resp.getBody().getMsg())
+        .isEqualTo("Biglietto non trovato");
     }
 
     @Test

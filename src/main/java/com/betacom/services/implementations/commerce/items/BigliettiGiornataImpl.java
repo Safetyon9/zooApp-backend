@@ -41,10 +41,15 @@ public class BigliettiGiornataImpl implements IBigliettiGiornataServices{
 	public void create(BigliettiGiornateReq req) throws ZooException {
 		log.debug("create {}", req);
 
-	    if (req.getBigliettoId() == null)
-	        throw new ZooException("Biglietto non trovato.");
-	    if (req.getGiornataId() == null)
-	        throw new ZooException("Giornata non trovata.");
+		if (!bigR.existsById(req.getBigliettoId())) {
+		    throw new ZooException("Biglietto non trovato");
+		}
+		if (!gioR.existsById(req.getGiornataId())) {
+		    throw new ZooException("Giornata non trovata");
+		}
+		if (req.getEventoId() != null && !eveR.existsById(req.getEventoId())) {
+		    throw new ZooException("Evento non trovato");
+		}
 	    if (req.getPrezzo() == null)
 	        throw new ZooException("Prezzo non trovato.");
 	    if (req.getStock() == null)
