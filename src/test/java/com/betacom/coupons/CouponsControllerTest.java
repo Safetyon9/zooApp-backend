@@ -60,7 +60,7 @@ public class CouponsControllerTest {
 
         ResponseEntity<Resp> resp = couC.create(req);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Coupon non presente nel DB");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Coupons non trovato nel DB");
     }
 
     @Test

@@ -21,9 +21,11 @@ import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
+import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
@@ -39,6 +41,9 @@ public class BigliettiGiornataControllerTest {
 
     @Autowired
     private BigliettiGiornataController bigGiornC;
+    
+    @Autowired
+    private IBigliettiGiornataRepository biGR;
 
     @Autowired
     private IGiornateRepository gioR;
@@ -102,23 +107,23 @@ public class BigliettiGiornataControllerTest {
     @Order(3)
     public void findByIdTest() {
         Giornate giornata = TestDataFactory.creaGiornataValida(gioR, evR);
-        TipiBiglietti biglietto = TestDataFactory.creaTipoBigliettoValido(tipiR);
+        Biglietti biglietto = TestDataFactory.creaBigliettoValido(bigR, tipiR);
         Eventi evento = giornata.getEvento();
 
-        BigliettiGiornateReq req = new BigliettiGiornateReq();
-        req.setGiornataId(giornata.getId());
-        req.setBigliettoId(biglietto.getId());
-        req.setEventoId(evento.getId());
-        req.setPrezzo(BigDecimal.valueOf(60));
-        req.setStock(50);
+        BigliettiGiornata big = new BigliettiGiornata();
+        big.setGiornata(giornata);
+        big.setBiglietto(biglietto);
+        big.setEvento(evento);
+        big.setPrezzo(BigDecimal.valueOf(60));
+        big.setStock(50);
 
-        bigGiornC.create(req);
+        big = biGR.save(big);
 
-        ResponseEntity<?> resp = bigGiornC.findById(1);
+        ResponseEntity<?> resp = bigGiornC.findById(big.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
-        BigliettiGiornateDTO dto = (BigliettiGiornateDTO) resp.getBody();
-        Assertions.assertThat(dto.getPrezzo()).isEqualTo(BigDecimal.valueOf(60));
+        BigliettiGiornata dto = biGR.findById(big.getId()).get();
+        Assertions.assertThat(dto.getPrezzo()).isEqualByComparingTo(BigDecimal.valueOf(60));
         Assertions.assertThat(dto.getStock()).isEqualTo(50);
     }
 
