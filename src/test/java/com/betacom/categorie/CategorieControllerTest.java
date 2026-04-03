@@ -70,7 +70,7 @@ public class CategorieControllerTest {
 	@Order(3)
 	public void findById() {
 		log.debug("Test findById");
-		Categorie cat = TestDataFactory.creaCategoriaValida(catR);
+		Categorie cat = TestDataFactory.creaCategoriaValida(catR,"1");
 		
 		ResponseEntity<?> resp = catC.findById(cat.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -90,8 +90,10 @@ public class CategorieControllerTest {
 	@Order(5)
 	public void update() {
 		log.debug("Update categorie");
+		Categorie cat = TestDataFactory.creaCategoriaValida(catR,"2");
+		
 		CategorieReq req = new CategorieReq();
-		req.setId(99);
+		req.setId(cat.getId());
 		req.setNome("Update");
 
 		ResponseEntity<Resp> resp = catC.update(req);
