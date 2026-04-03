@@ -44,14 +44,14 @@ public class PagamentiImpl implements IPagamentiServices{
 	public void create(PagamentiReq req) throws ZooException {
 		log.debug("create {}", req);
 		
-		if (req.getImporto() == null)
-			throw new ZooException("Importo non trovato.");
 		if (req.getOrdineId() == null)
 			throw new ZooException("Ordine collegato non trovato.");
 		if (req.getMetodoPagamentoId() == null)
 			throw new ZooException("Metodo di pagamento collegato non trovato.");
 		if (req.getCouponId() == null)
 			throw new ZooException("Coupon collegato non trovato.");
+		if (req.getImporto() == null)
+			throw new ZooException("Importo non trovato.");
 		
 		
 		Ordini ordine = ordR.findById(req.getOrdineId())

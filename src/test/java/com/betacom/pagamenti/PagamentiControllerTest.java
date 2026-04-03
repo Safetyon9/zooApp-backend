@@ -91,15 +91,12 @@ public class PagamentiControllerTest {
         log.debug("create pagamento error");
 
         PagamentiReq req = new PagamentiReq();
-        req.setOrdineId(9999);
-        req.setMetodoPagamentoId(9999);
-        req.setImporto(BigDecimal.valueOf(50));
 
         ResponseEntity<Resp> resp = pagC.create(req);
 
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("Ordine o MetodoPagamento non trovato");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Ordine collegato non trovato.");
     }
     
     @Test
