@@ -3,20 +3,21 @@ package com.betacom.testutils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.betacom.enums.Roles;
+import com.betacom.enums.TipoCoupon;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
+import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
@@ -24,11 +25,13 @@ import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
+import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
+import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 
 import jakarta.transaction.Transactional;
@@ -45,6 +48,25 @@ public class TestDataFactory {
         u.setRole(Roles.valueOf("USER"));
 
         return utR.save(u);
+    }
+    
+    public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
+    	Prodotti p = new Prodotti();
+    	
+    	Categorie c = creaCategoriaValida(catR, "3");
+    	p.setCategoria(c);
+    	
+    	p.setDescrizione("TestDescrizione");
+    	p.setDimensioni(new BigDecimal(10.00));
+    	p.setNome("TestNome");
+    	p.setPeso(new BigDecimal(10.00));
+    	p.setPrezzo(new BigDecimal(10.00));
+    	p.setSku(10L);
+    	p.setStock(1);
+    	p.setUrlImmagine("URL IMAGE TEST");
+    	
+    	
+		return prR.save(p);
     }
 
     public static Clienti creaClienteValido(
@@ -145,6 +167,21 @@ public class TestDataFactory {
         return biGR.save(big);
     }
     
+    public static Coupons creaCouponValido(ICouponsRepository couR) {
+    	
+    	String unique = String.valueOf(System.currentTimeMillis());
+    	Coupons c = new Coupons();
+    	
+    	c.setCodice("promo" + unique);
+    	c.setValore(BigDecimal.valueOf(10));
+    	c.setTipo(TipoCoupon.valueOf("FISSO"));
+        c.setAttivo(true);
+        c.setDataInizio(LocalDate.now());
+        c.setDataFine(LocalDate.now().plusMonths(1));
+    	
+		return couR.save(c);
+    }
+    
     public static Categorie creaCategoriaValida(
     		ICategorieRepository catR,
     		String unique
@@ -155,7 +192,6 @@ public class TestDataFactory {
     	c.setNome("Categoria" + unique);
     	
 		return catR.save(c);
-    	
     }
 
     @Transactional

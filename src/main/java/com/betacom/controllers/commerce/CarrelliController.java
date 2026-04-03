@@ -75,8 +75,10 @@ public class CarrelliController {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
+			log.debug("GETBYID RICEVO ID: {}", id);
 			r = carrS.getById(id);
 		} catch (Exception e) {
+			log.error("ERRORE getById: {}", e.getMessage(), e);
 			r = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}

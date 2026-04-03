@@ -75,9 +75,9 @@ public class CarrelliControllerTest {
     @Order(3)
     public void getByIdCarrelloTest() {
         log.debug("get carrello by id");
-
-        Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
+        
         Carrelli carrello = TestDataFactory.creaCarrelloValido(carrelliR, clR, utR);
+        log.debug("CARRELLO ID: {}", carrello.getId());
 
         ResponseEntity<?> resp = carrelliC.getById(carrello.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());

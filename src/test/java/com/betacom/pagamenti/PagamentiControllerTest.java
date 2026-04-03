@@ -18,10 +18,12 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.checkout.PagamentiController;
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
+import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.response.Resp;
@@ -51,6 +53,9 @@ public class PagamentiControllerTest {
     private IUtentiRepository utR;
 	
 	@Autowired
+	private ICouponsRepository couR;
+	
+	@Autowired
 	private IMessaggiServices msgS;
 
     @Test
@@ -61,12 +66,14 @@ public class PagamentiControllerTest {
 
         Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
         MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+        Coupons coupon = TestDataFactory.creaCouponValido(couR);
 
         PagamentiReq req = new PagamentiReq();
         req.setOrdineId(ordine.getId());
         req.setMetodoPagamentoId(metodo.getId());
         req.setImporto(BigDecimal.valueOf(100));
         req.setStato("PAGATO");
+        req.setCouponId(coupon.getId());
 
         ResponseEntity<Resp> resp = pagC.create(req);
 
@@ -84,15 +91,12 @@ public class PagamentiControllerTest {
         log.debug("create pagamento error");
 
         PagamentiReq req = new PagamentiReq();
-        req.setOrdineId(9999);
-        req.setMetodoPagamentoId(9999);
-        req.setImporto(BigDecimal.valueOf(50));
 
         ResponseEntity<Resp> resp = pagC.create(req);
 
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("Ordine o MetodoPagamento non trovato");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Ordine collegato non trovato.");
     }
     
     @Test
