@@ -18,9 +18,11 @@ import com.betacom.controllers.commerce.RecensioniController;
 import com.betacom.dto.inputs.commerce.RecensioniReq;
 import com.betacom.dto.outputs.commerce.RecensioniDTO;
 import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.entity.commerce.Recensioni;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.IRecensioniRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -35,6 +37,9 @@ public class RecensioniControllerTest {
 
     @Autowired
     private RecensioniController recensioniC;
+    
+    @Autowired
+    private IRecensioniRepository recR;
 
     @Autowired
     private IClientiRepository clR;
@@ -52,6 +57,8 @@ public class RecensioniControllerTest {
     @Order(1)
     public void createRecensioneTest() {
         log.debug("create recensione");
+        
+        Recensioni rec = TestDataFactory.creaRecensioneValida(recR);
 
         Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
         TipiBiglietti item = TestDataFactory.creaTipoBigliettoValido(tipiR);

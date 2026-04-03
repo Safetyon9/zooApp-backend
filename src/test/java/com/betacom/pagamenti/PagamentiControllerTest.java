@@ -21,11 +21,13 @@ import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
@@ -39,6 +41,9 @@ public class PagamentiControllerTest {
 
 	@Autowired
     private PagamentiController pagC;
+	
+	@Autowired
+	private IPagamentiRepository pagR;
 	
 	@Autowired
     private IOrdiniRepository ordR;
@@ -103,22 +108,13 @@ public class PagamentiControllerTest {
     @Order(3)
     public void findByIdPagamentoTest() {
 
-        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
-        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+    	Pagamenti pagamento = TestDataFactory.creaPagamentoValido(pagR ,ordR, clR, utR, mpR);
 
-        PagamentiReq req = new PagamentiReq();
-        req.setOrdineId(ordine.getId());
-        req.setMetodoPagamentoId(metodo.getId());
-        req.setImporto(BigDecimal.valueOf(150));
-        req.setStato("IN_ATTESA");
-
-        pagC.create(req);
-
-        ResponseEntity<?> resp = pagC.findById(req.getOrdineId());
+        ResponseEntity<?> resp = pagC.findById(pagamento.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         PagamentiDTO pag = (PagamentiDTO) resp.getBody();
-        Assertions.assertThat(pag.getImporto()).isEqualTo(BigDecimal.valueOf(150));
+        Assertions.assertThat(pag.getImporto()).isEqualByComparingTo(BigDecimal.valueOf(150));
     }
 
     @Test
@@ -126,7 +122,7 @@ public class PagamentiControllerTest {
     public void findByIdPagamentoErrorTest() {
         ResponseEntity<?> resp = pagC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Pagamento non trovata");
+        Assertions.assertThat(resp.getBody()).isEqualTo("Pagamento non trovato in DB");
     }
 
     @Test
@@ -135,20 +131,11 @@ public class PagamentiControllerTest {
 
         log.debug("update pagamento");
 
-        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
-        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+        Pagamenti pagamento = TestDataFactory.creaPagamentoValido(pagR ,ordR, clR, utR, mpR);
 
-        PagamentiReq req = new PagamentiReq();
-        req.setOrdineId(ordine.getId());
-        req.setMetodoPagamentoId(metodo.getId());
-        req.setImporto(BigDecimal.valueOf(200));
-        req.setStato("IN_ATTESA");
-
-        pagC.create(req);
         PagamentiReq updateReq = new PagamentiReq();
-        updateReq.setOrdineId(ordine.getId());
+        updateReq.setId(pagamento.getId());
         updateReq.setImporto(BigDecimal.valueOf(250));
-        updateReq.setStato("PAGATO");
 
         ResponseEntity<Resp> resp = pagC.update(updateReq);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -165,18 +152,9 @@ public class PagamentiControllerTest {
 
         log.debug("delete pagamento");
 
-        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
-        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+        Pagamenti pagamento = TestDataFactory.creaPagamentoValido(pagR ,ordR, clR, utR, mpR);
 
-        PagamentiReq req = new PagamentiReq();
-        req.setOrdineId(ordine.getId());
-        req.setMetodoPagamentoId(metodo.getId());
-        req.setImporto(BigDecimal.valueOf(300));
-        req.setStato("IN_ATTESA");
-
-        pagC.create(req);
-
-        ResponseEntity<Resp> resp = pagC.delete(req.getOrdineId());
+        ResponseEntity<Resp> resp = pagC.delete(pagamento.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();

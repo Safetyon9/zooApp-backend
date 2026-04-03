@@ -4,16 +4,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.betacom.enums.Roles;
+import com.betacom.enums.StatoPagamento;
 import com.betacom.enums.TipoCoupon;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
+import com.betacom.persistence.entity.commerce.Recensioni;
 import com.betacom.persistence.entity.commerce.checkout.Corrieri;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
+import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
@@ -24,10 +27,12 @@ import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
+import com.betacom.persistence.repository.commerce.IRecensioniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
+import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiGiornataRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
@@ -105,6 +110,26 @@ public class TestDataFactory {
         return ordR.save(o);
     }
 
+    public static Pagamenti creaPagamentoValido(
+    		IPagamentiRepository pagR,
+    		IOrdiniRepository ordR,
+    		IClientiRepository clR,
+    		IUtentiRepository utR,
+    		IMetodiPagamentiRepository mpR
+            ) {
+    	
+        Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
+        MetodiPagamento metodo = TestDataFactory.creaMetodoPagamentoValido(mpR);
+
+    	Pagamenti p = new Pagamenti();
+    	p.setOrdine(ordine);
+        p.setMetodoPagamento(metodo);
+        p.setImporto(BigDecimal.valueOf(150));
+        p.setStato(StatoPagamento.valueOf("ATTESA"));
+        
+        return pagR.save(p);
+    }
+
     public static Corrieri creaCorriereValido(ICorrieriRepository corR) {
     	
     	String unique = String.valueOf(System.currentTimeMillis());
@@ -180,6 +205,14 @@ public class TestDataFactory {
         c.setDataFine(LocalDate.now().plusMonths(1));
     	
 		return couR.save(c);
+    }
+    
+    public static Recensioni creaRecensioneValida(IRecensioniRepository recR) {
+    	
+    	Recensioni r = new Recensioni();
+    	
+    	
+		return recR.save(r);
     }
     
     public static Categorie creaCategoriaValida(
