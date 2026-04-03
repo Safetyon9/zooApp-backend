@@ -19,6 +19,7 @@ import com.betacom.controllers.commerce.items.EventiController;
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 public class EventiControllerTest {
 	@Autowired
 	private EventiController eventiC;
+	
+	@Autowired
+	private IMessaggiServices msgS;
 	
 	@Test
 	@Order(1)		
@@ -42,7 +46,9 @@ public class EventiControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
 	}
 
 	@Test
@@ -79,7 +85,8 @@ public class EventiControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 	}
 
 	@Test
@@ -92,7 +99,8 @@ public class EventiControllerTest {
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
 		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
 	}
 	
 	@Test
