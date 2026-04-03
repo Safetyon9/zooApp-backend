@@ -2,7 +2,6 @@ package com.betacom.services.implementations;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
-import com.betacom.services.implementations.commerce.ClientiImpl;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
@@ -31,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UtentiImpl implements IUtentiServices {
 
-    private final ClientiImpl implC;
 	private final IUtentiRepository repoU;
     private final IClientiRepository repoC;
 

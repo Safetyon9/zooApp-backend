@@ -3,6 +3,7 @@ package com.betacom.bigliettigiornata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -15,7 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.betacom.controllers.commerce.items.BigliettiGiornataController;
+import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.commerce.items.BigliettiGiornateReq;
+import com.betacom.dto.outputs.LoginDTO;
+import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.entity.commerce.Giornate;
@@ -165,4 +169,21 @@ public class BigliettiGiornataControllerTest {
         Resp r = (Resp) resp.getBody();
         Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
     }
+    
+    @Test
+	@Order(7)	
+	public void list() {
+    	log.debug("Test list biglietto giornata");
+		
+		ResponseEntity<?> resp = bigGiornC.list();
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Object body = resp.getBody();
+		
+		List<BigliettiGiornateDTO> lS = (List<BigliettiGiornateDTO>) body;
+		
+		Assertions.assertThat(lS.size()).isGreaterThan(0);
+	//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
+		lS.forEach(s -> log.debug(s.toString()));
+
+	}
 }

@@ -32,7 +32,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(3)
-	public void findByCodiceOK() {
+	public void findByCodice() {
 		log.debug("Test findByCodice OK");
 		ResponseEntity<?> resp = prodC.findByCodice(1001L);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -51,7 +51,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(1)
-	public void createProdotto() {
+	public void create() {
 		log.debug("Create prodotto");
 		ProdottiReq req = new ProdottiReq();
 		req.setSku(1001L);
@@ -72,7 +72,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(4)
-	public void updateProdotto() {
+	public void update() {
 		log.debug("Update prodotto");
 		ProdottiReq req = new ProdottiReq();
 		req.setSku(1001L);
@@ -90,7 +90,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(5)
-	public void updateProdottoErr() {
+	public void updateoErr() {
 		log.debug("Update prodotto error");
 		ProdottiReq req = new ProdottiReq();
 		req.setSku(9999L);
@@ -112,7 +112,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(7)
-	public void deleteProdottoError() {
+	public void deleteError() {
 		log.debug("Delete prodotto error");
 		ResponseEntity<Resp> resp = prodC.delete(9999);
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
@@ -120,7 +120,7 @@ public class ProdottiControllerTest {
 
 	@Test
 	@Order(8)
-	public void listProdotti() {
+	public void list() {
 		log.debug("Test list prodotti");
 		ResponseEntity<?> resp = prodC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
