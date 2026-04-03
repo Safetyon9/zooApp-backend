@@ -27,7 +27,7 @@ import com.betacom.utenti.UtentiImplTest;
 @SelectClasses({
 	BigliettiControllerTest.class,
 
-	//BigliettiGiornataControllerTest.class,
+	BigliettiGiornataControllerTest.class,
 
 	CarrelliControllerTest.class,
 	
