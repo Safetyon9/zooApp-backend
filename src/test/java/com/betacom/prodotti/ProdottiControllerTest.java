@@ -20,6 +20,7 @@ import com.betacom.controllers.commerce.items.ProdottiController;
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
@@ -103,19 +104,8 @@ public class ProdottiControllerTest {
 
 		ProdottiReq req = new ProdottiReq();
 		
-		req.setCategoriaId(pr.getCategoria().getId());
+		req.setItemId(pr.getId());
 		req.setDescrizione("Updated");
-		req.setDimensioni(pr.getDimensioni());
-		req.setNome(pr.getNome());
-		req.setPeso(pr.getPeso());
-		req.setPrezzo(pr.getPrezzo());
-		req.setSku(pr.getSku());
-		req.setStock(pr.getStock());
-		req.setUrlImmagine(pr.getUrlImmagine());
-		
-		Item it = TestDataFactory.creaItemValido(itR);
-		req.setItemId();
-		
 		
 		
 		ResponseEntity<Resp> resp = prodC.update(req);

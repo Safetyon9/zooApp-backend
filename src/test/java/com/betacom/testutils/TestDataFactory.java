@@ -57,18 +57,6 @@ public class TestDataFactory {
         return utR.save(u);
     }
     
-    public static Items creaItemValido(IItemsRepository itR) {
-    	
-    	Items i = new Items() {
-		};
-    	i.setDescrizione("Test1");
-    	i.setNome("TestName");
-    	i.setPrezzo(new BigDecimal(10));
-    	i.setUrlImmagine("URLIMAGE");
-    	
-    	return itR.save(i);
-    }
-    
     public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {
     	Prodotti p = new Prodotti();
     	
@@ -86,6 +74,7 @@ public class TestDataFactory {
     	
 		return prR.save(p);
     }
+    
 
     public static Clienti creaClienteValido(
             IClientiRepository clR, 
