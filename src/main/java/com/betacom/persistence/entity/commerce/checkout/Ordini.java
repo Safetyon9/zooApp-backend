@@ -51,7 +51,7 @@ public class Ordini {
 	@OneToMany(
 			mappedBy = "ordine",
 			cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY
+			fetch = FetchType.EAGER
 			)
     private List<OggettiOrdini> oggettiOrdine;
 	

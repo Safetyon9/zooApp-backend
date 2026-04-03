@@ -1,4 +1,5 @@
 package com.betacom.utilities;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,15 +124,19 @@ public class Mapper {
 	
 	public static OrdiniDTO buildOrdiniDTO(Ordini o) {
 		return OrdiniDTO.builder()
-				.id(o.getId())
-				.clienteId(o.getCliente() != null ? o.getCliente().getId() : null)
-				.nome(o.getNome())
-				.cognome(o.getCognome())
-				.indirizzo(o.getIndirizzo())
-				.stato(o.getStato())
-				.dataOrdine(o.getDataOrdine())
-				.build();
-		
+		        .id(o.getId())
+		        .clienteId(o.getCliente() != null ? o.getCliente().getId() : null)
+		        .nome(o.getNome())
+		        .cognome(o.getCognome())
+		        .indirizzo(o.getIndirizzo())
+		        .stato(o.getStato())
+		        .dataOrdine(o.getDataOrdine())
+		        .righe(
+		            o.getOggettiOrdine() != null 
+		                ? buildOgettiOrdiniDTO(o.getOggettiOrdine()) 
+		                : Collections.emptyList()
+		        )
+		        .build();
 	}
 	
 	public static RecensioniDTO buildRecensioniDTO (Recensioni r) {
@@ -226,14 +231,22 @@ public class Mapper {
 				.build();
 	}
 	
+	public static List<OggettiCarrelliDTO> buildOggettiCarrelliDTO(List<OggettiCarrelli> lOC) {
+	    return lOC.stream()
+	              .map(Mapper::buildOggettiCarrelliDTO)
+	              .collect(Collectors.toList());
+	}
+	
 	public static CarrelliDTO buildCarrelliDTO(Carrelli carrelli) {
-		return CarrelliDTO.builder()
-		        .id(carrelli.getId())
-		        .cliente(buildClienteDTO(carrelli.getCliente()))
-		        .oggettiCarrello(carrelli.getOggettiCarrello().stream()
-		                .map(oc -> buildOggettiCarrelliDTO(oc))
-		                .toList())
-		        .build();
+	    return CarrelliDTO.builder()
+	            .id(carrelli.getId())
+	            .clienteId(carrelli.getCliente() != null ? carrelli.getCliente().getId() : null)
+	            .oggettiCarrello(
+	                carrelli.getOggettiCarrello() != null 
+	                    ? buildOggettiCarrelliDTO(carrelli.getOggettiCarrello())
+	                    : Collections.emptyList()
+	            )
+	            .build();
 	}
 	
 	public static MetodiPagamentoDTO buildMetodiPagamentoDTO(MetodiPagamento mp) {

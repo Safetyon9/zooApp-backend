@@ -1,5 +1,6 @@
 package com.betacom.services.implementations.commerce;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.entity.commerce.OggettiCarrelli;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -40,9 +42,10 @@ public class CarrelliImpl implements ICarrelliServices{
 		
 		Carrelli c = new Carrelli();
 		
-		 c.setCliente(cliente);
+		c.setCliente(cliente);
+		c.setOggettiCarrello(new ArrayList<OggettiCarrelli>());
 		 
-		 carrelliRepo.save(c);
+		carrelliRepo.save(c);
 		
 	}
 	

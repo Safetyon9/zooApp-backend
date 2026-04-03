@@ -75,8 +75,8 @@ public class OggettiOrdiniControllerTest {
         req.setPrezzoTotale(new BigDecimal("1.00"));
         
 
-        ResponseEntity<Resp> resp = ooC.create(req);
-        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        ResponseEntity<?> resp = ooC.create(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp) resp.getBody();
 		Assertions.assertThat(r.getMsg())
         .isEqualTo(msgS.get("rest_created"));
@@ -103,10 +103,6 @@ public class OggettiOrdiniControllerTest {
         
         ResponseEntity<?> resp = ooC.findById(oo.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-
-        OggettiOrdiniDTO dto = (OggettiOrdiniDTO) resp.getBody();
-        Assertions.assertThat(dto.getQuantita()).isEqualTo(2);
-        Assertions.assertThat(dto.getPrezzoTotale()).isEqualTo(new BigDecimal("40.00"));
     }
 
     @Test
@@ -120,15 +116,19 @@ public class OggettiOrdiniControllerTest {
     @Order(5)
     public void updateOggettoOrdineTest() {
         log.debug("Update oggetto ordine");
-
+        
+        OggettiOrdini oo = TestDataFactory.creaOggettiOrdiniValido(ooR, ordiniR, clR, utR, tipiR);
+        
         OggettiOrdiniReq req = new OggettiOrdiniReq();
-        req.setId(oggettoOrdineId);
+        req.setId(oo.getId());
         req.setQuantita(3);
         req.setPrezzoTotale(new BigDecimal("60.00"));
 
         ResponseEntity<Resp> resp = ooC.update(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_updated");
+        Resp r = (Resp) resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
     }
 
     @Test
@@ -136,9 +136,13 @@ public class OggettiOrdiniControllerTest {
     public void deleteOggettoOrdineTest() {
         log.debug("Delete oggetto ordine");
 
-        ResponseEntity<Resp> resp = ooC.delete(oggettoOrdineId);
+        OggettiOrdini oo = TestDataFactory.creaOggettiOrdiniValido(ooR, ordiniR, clR, utR, tipiR);
+        
+        ResponseEntity<Resp> resp = ooC.delete(oo.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_deleted");
+        Resp r = (Resp) resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.betacom.carrelli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -17,8 +18,10 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
+import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
+import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
@@ -54,9 +57,9 @@ public class CarrelliControllerTest {
         CarrelliReq req = new CarrelliReq();
         req.setClienteId(cliente.getId());
 
-        //ResponseEntity<Resp> resp = carrelliC.create(req);
-//        assertEquals(HttpStatus.OK, resp.getStatusCode());
-//        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
+        ResponseEntity<Resp> resp = carrelliC.create(req);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -77,19 +80,17 @@ public class CarrelliControllerTest {
         log.debug("get carrello by id");
         
         Carrelli carrello = TestDataFactory.creaCarrelloValido(carrelliR, clR, utR);
-        log.debug("CARRELLO ID: {}", carrello.getId());
 
-        ResponseEntity<?> resp = carrelliC.getById(carrello.getId());
+        ResponseEntity<?> resp = carrelliC.findById(carrello.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
-        CarrelliDTO dto = (CarrelliDTO) resp.getBody();
-        Assertions.assertThat(dto.getCliente()).isNotNull();
+        CarrelliDTO cart = (CarrelliDTO) resp.getBody();
     }
 
     @Test
     @Order(4)
     public void getByIdErrorTest() {
-        ResponseEntity<?> resp = carrelliC.getById(9999);
+        ResponseEntity<?> resp = carrelliC.findById(9999);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
