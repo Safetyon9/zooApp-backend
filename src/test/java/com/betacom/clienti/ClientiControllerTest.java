@@ -125,7 +125,7 @@ public class ClientiControllerTest {
 
 		List<ClientiDTO> lC = (List<ClientiDTO>) body;
 
-		Assertions.assertThat(lC).isNotEmpty();
+		Assertions.assertThat(lC.size()).isGreaterThanOrEqualTo(1);
 		lC.forEach(c -> log.debug(c.toString()));
 	}
 

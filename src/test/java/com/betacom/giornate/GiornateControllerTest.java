@@ -127,7 +127,7 @@ public class GiornateControllerTest {
 		
 		List<GiornateDTO> lG = (List<GiornateDTO>) body;
 		
-		Assertions.assertThat(lG).isNotEmpty();
+		Assertions.assertThat(lG.size()).isGreaterThanOrEqualTo(1);
 		lG.forEach(g -> log.debug(g.toString()));
 	}
 

@@ -18,8 +18,11 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.EventiController;
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
+import com.betacom.persistence.entity.commerce.Eventi;
+import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 public class EventiControllerTest {
 	@Autowired
 	private EventiController eventiC;
+	
+	@Autowired
+	private IEventiRepository evRepo;
 	
 	@Autowired
 	private IMessaggiServices msgS;
@@ -55,10 +61,11 @@ public class EventiControllerTest {
 	@Order(2)		
 	public void getEvento() {
 		log.debug("Test getEvento");
-		ResponseEntity<?> resp = eventiC.getById(1);
+		Eventi ev = TestDataFactory.creaEventoValido(evRepo);
+		ResponseEntity<?> resp = eventiC.getById(ev.getId());
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		EventiDTO ev = (EventiDTO)resp.getBody();
-		Assertions.assertThat(ev.getTipoEvento()).isEqualTo("Visita Guidata");
+		EventiDTO dto = (EventiDTO)resp.getBody();
+		Assertions.assertThat(dto.getTipoEvento()).isEqualTo(ev.getTipoEvento());
 	}
 
 	@Test
@@ -73,9 +80,10 @@ public class EventiControllerTest {
 	@Order(4)	
 	public void updateEvento() {
 		log.debug("Update evento");
+		Eventi ev = TestDataFactory.creaEventoValido(evRepo);
 		
 		EventiReq req = new EventiReq();
-		req.setId(1);
+		req.setId(ev.getId());
 		req.setTipoEvento("Visita Guidata Serale");
 		req.setDataInizio(LocalDate.now());
 		req.setDataFine(LocalDate.now().plusDays(7));
@@ -93,8 +101,9 @@ public class EventiControllerTest {
 	@Order(5)	
 	public void deleteEvento() {
 		log.debug("delete evento");
+		Eventi ev = TestDataFactory.creaEventoValido(evRepo);
 		
-		ResponseEntity<Resp> resp = eventiC.delete(1);
+		ResponseEntity<Resp> resp = eventiC.delete(ev.getId());
 		
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp)resp.getBody();
@@ -114,7 +123,7 @@ public class EventiControllerTest {
 		
 		List<EventiDTO> lE = (List<EventiDTO>) body;
 		
-		Assertions.assertThat(lE.size()).isGreaterThanOrEqualTo(0);
+		Assertions.assertThat(lE.size()).isGreaterThanOrEqualTo(1);
 		lE.forEach(e -> log.debug(e.toString()));
 	}
 
