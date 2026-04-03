@@ -21,6 +21,7 @@ import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,9 @@ public class OrdiniControllerTest {
 
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -52,7 +56,11 @@ public class OrdiniControllerTest {
 
         ResponseEntity<Resp> resp = ordC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_created");
+        
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test
@@ -114,7 +122,11 @@ public class OrdiniControllerTest {
 
         ResponseEntity<Resp> resp = ordC.update(updateReq);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_updated");
+        
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
     }
 
     @Test
@@ -131,7 +143,11 @@ public class OrdiniControllerTest {
 
         ResponseEntity<Resp> resp = ordC.delete(1);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_deleted");
+        
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
 
     @Test

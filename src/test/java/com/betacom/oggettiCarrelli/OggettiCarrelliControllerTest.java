@@ -26,7 +26,9 @@ import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
+import com.betacom.utilities.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,6 +54,9 @@ public class OggettiCarrelliControllerTest {
 
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -65,12 +70,16 @@ public class OggettiCarrelliControllerTest {
         req.setCarrelloId(carrello.getId());
         req.setItemId(item.getId());
         req.setQuantita(2);
-        req.setPrezzoUnitario(new BigDecimal("15.50"));
-        req.setPrezzoTotale(new BigDecimal("31.00"));
+        req.setPrezzoUnitario(item.getPrezzo());
+        req.setPrezzoTotale(Utils.calcolaPrezzoTotale(req.getQuantita(), req.getPrezzoUnitario()));
 
         ResponseEntity<Resp> resp = ocC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
+
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test
@@ -117,7 +126,11 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.update(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_updated");
+        
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
     }
 
     @Test
@@ -127,7 +140,11 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.delete(1);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_deleted");
+        
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
     }
 
     @Test

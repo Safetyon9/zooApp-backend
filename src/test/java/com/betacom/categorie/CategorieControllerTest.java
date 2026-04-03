@@ -48,7 +48,9 @@ public class CategorieControllerTest {
 
 		ResponseEntity<?> resp = catC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		
 		Resp r = (Resp) resp.getBody();
+		
 		Assertions.assertThat(r.getMsg())
         .isEqualTo(msgS.get("rest_created"));
 	}
@@ -138,10 +140,13 @@ public class CategorieControllerTest {
 	@Order(8)
 	public void delete() {
 		log.debug("Delete categorie");
-		ResponseEntity<Resp> resp = catC.delete(1);
+		Categorie cat = TestDataFactory.creaCategoriaValida(catR,"5");
+		
+		ResponseEntity<Resp> resp = catC.delete(cat.getId());
 
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = resp.getBody();
+		
 		Assertions.assertThat(r.getMsg())
         .isEqualTo(msgS.get("rest_deleted"));
 	}

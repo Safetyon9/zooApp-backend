@@ -36,7 +36,7 @@ public class OggettiOrdini {
 	@Column (nullable =false, precision = 10, scale = 2)
 	private BigDecimal prezzoTotale;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
     private Items item;
 	

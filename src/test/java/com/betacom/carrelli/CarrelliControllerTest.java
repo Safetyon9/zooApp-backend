@@ -26,6 +26,7 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class CarrelliControllerTest {
 
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+	private IMessaggiServices msgS;
 
     @Test
     @Order(1)
@@ -59,7 +63,10 @@ public class CarrelliControllerTest {
 
         ResponseEntity<Resp> resp = carrelliC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
+        Resp r = (Resp) resp.getBody();
+
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
     }
 
     @Test

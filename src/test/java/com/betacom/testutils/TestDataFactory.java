@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.enums.Roles;
 import com.betacom.enums.StatoPagamento;
 import com.betacom.enums.TipoCoupon;
@@ -23,7 +22,6 @@ import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
-import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
@@ -31,7 +29,6 @@ import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
-import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.IRecensioniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
@@ -44,6 +41,7 @@ import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
+import com.betacom.utilities.Utils;
 
 import jakarta.transaction.Transactional;
 
@@ -276,14 +274,23 @@ public class TestDataFactory {
         g.setEvento(e);
         return gioR.save(g);}
     
-    public static OggettiOrdini creaOggettiOrdiniValido(IOggettiOrdiniRepository ooR, IOrdiniRepository ordR, IClientiRepository clR, IUtentiRepository utR, ITipiBigliettiRepository tipiR) {
+    public static OggettiOrdini creaOggettiOrdiniValido(
+    		IOggettiOrdiniRepository ooR,
+    		IOrdiniRepository ordR,
+    		IClientiRepository clR,
+    		IUtentiRepository utR,
+    		ITipiBigliettiRepository tipiR,
+    		IBigliettiRepository bigliettoR
+    		) {
     	Ordini ordine = TestDataFactory.creaOrdineValido(ordR, clR, utR);
+    	Biglietti item = TestDataFactory.creaBigliettoValido(bigliettoR, tipiR);
 
         OggettiOrdini oo = new OggettiOrdini();
         oo.setOrdine(ordine);
+        oo.setItem(item);
         oo.setQuantita(2);
-        oo.setPrezzoUnitario(new BigDecimal("3.00"));
-        oo.setPrezzoTotale(new BigDecimal("1.00"));
+        oo.setPrezzoUnitario(item.getPrezzo());
+        oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(oo.getQuantita(),oo.getPrezzoUnitario()));
         
         return ooR.save(oo);
     }

@@ -33,13 +33,12 @@ public class GiornateImpl implements IGiornateServices {
 
         if (req.getEventoId() == null || req.getEventoId() <= 0)
             throw new Exception("EventoId non valido");
-
-        Giornate g = new Giornate();
-        g.setData(req.getData());
-
+        
         Eventi e = evE.findById(req.getEventoId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
+        Giornate g = new Giornate();
+        g.setData(req.getData());
         g.setEvento(e);
 
         repo.save(g);

@@ -49,6 +49,8 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         oo.setQuantita(req.getQuantita());
         oo.setPrezzoUnitario(item.getPrezzo());
         oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(oo.getQuantita(),oo.getPrezzoUnitario()));
+        oo.setOrdine(o);
+        oo.setItem(item);
 
         ooR.save(oo);
     }
