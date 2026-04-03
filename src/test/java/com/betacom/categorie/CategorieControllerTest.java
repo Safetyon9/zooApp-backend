@@ -1,8 +1,24 @@
 package com.betacom.categorie;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.betacom.controllers.commerce.items.CategorieController;
+import com.betacom.dto.inputs.commerce.items.CategorieReq;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,5 +26,123 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategorieControllerTest {
+	
+	@Autowired
+	private CategorieController catC;
+	
+	@Autowired
+	private IMessaggiServices msgS;
+	
+	@Test
+	@Order(1)
+	public void create() {
+		log.debug("Create categorie");
+		CategorieReq req = new CategorieReq();
+		req.setId(1);
+		req.setNome("Test");
 
+		ResponseEntity<?> resp = catC.create(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp) resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
+	}
+	
+	@Test
+	@Order(2)
+	public void createErr() {
+		log.debug("Create categorie err");
+		CategorieReq req = new CategorieReq();
+		req.setId(1);
+		req.setNome("TestError");
+
+		ResponseEntity<?> resp = catC.create(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp) resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
+	}
+	
+	
+	@Test
+	@Order(3)
+	public void findById() {
+		log.debug("Test findById");
+		ResponseEntity<?> resp = catC.findById(1);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
+		Assertions.assertThat(prod.getNome()).isEqualTo("Test");
+	}
+	
+	@Test
+	@Order(4)
+	public void findByIdErr() {
+		log.debug("Test findById");
+		ResponseEntity<?> resp = catC.findById(100);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
+		Assertions.assertThat(prod.getNome()).isEqualTo("Test");
+	}
+	
+	@Test
+	@Order(5)
+	public void update() {
+		log.debug("Update categorie");
+		CategorieReq req = new CategorieReq();
+		req.setId(99);
+		req.setNome("Update");
+
+		ResponseEntity<Resp> resp = catC.update(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
+	}
+	
+	@Test
+	@Order(6)
+	public void updateErr() {
+		log.debug("Update categorie");
+		CategorieReq req = new CategorieReq();
+		req.setId(99);
+		req.setNome("Update");
+
+		ResponseEntity<Resp> resp = catC.update(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
+	}
+	
+	@Test
+	@Order(7)
+	public void list() {
+		log.debug("Test list categorie");
+		ResponseEntity<?> resp = catC.list();
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		List<ProdottiDTO> listP = (List<ProdottiDTO>) resp.getBody();
+		Assertions.assertThat(listP).isNotEmpty();
+		listP.forEach(p -> log.debug(p.toString()));
+	}
+	
+	@Test
+	@Order(8)
+	public void delete() {
+		log.debug("Delete categorie");
+		ResponseEntity<Resp> resp = catC.delete(1);
+
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = resp.getBody();
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
+	}
+	
+	@Test
+	@Order(8)
+	public void deleteErr() {
+		log.debug("Delete categorie");
+		ResponseEntity<Resp> resp = catC.delete(100);
+
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+	}
 }
