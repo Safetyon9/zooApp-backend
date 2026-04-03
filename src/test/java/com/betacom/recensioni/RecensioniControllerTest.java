@@ -25,6 +25,7 @@ import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.IRecensioniRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
@@ -41,9 +42,6 @@ public class RecensioniControllerTest {
 
     @Autowired
     private RecensioniController recensioniC;
-    
-    @Autowired
-    private IRecensioniRepository recR;
 
     @Autowired
     private IClientiRepository clR;
@@ -58,11 +56,7 @@ public class RecensioniControllerTest {
 	private IMessaggiServices msgS;
     
     @Autowired
-	private IItemsRepository itR;
-    @Autowired
-	private IProdottiRepository prR;
-    @Autowired
-	private ICategorieRepository catR;
+    private IBigliettiRepository bigR;
 
     @Test
     @Order(1)
@@ -71,7 +65,7 @@ public class RecensioniControllerTest {
 
         Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
         
-        Items item = TestDataFactory.creaItemValido(itR, prR, catR);
+        Items item = TestDataFactory.creaBigliettoValido(bigR, tipiR);
         		
         RecensioniReq req = new RecensioniReq();
         req.setClienteId(cliente.getId());
