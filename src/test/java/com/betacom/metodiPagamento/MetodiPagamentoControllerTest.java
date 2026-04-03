@@ -42,7 +42,7 @@ public class MetodiPagamentoControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -91,7 +91,7 @@ public class MetodiPagamentoControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_updated");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_updated");
     }
 
     @Test
@@ -115,7 +115,7 @@ public class MetodiPagamentoControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+        Assertions.assertThat(r.getMsg()).isEqualTo("Messaggio per codice: rest_deleted");
     }
 
     @Test

@@ -31,6 +31,10 @@ public class CouponsImpl implements ICouponsServices{
 	public void create(CouponsReq req) throws Exception {
 		log.debug("create: {}", req);
 		
+		if (req.getId() != null) {
+	        throw new ZooException("Coupons non trovato nel DB");
+	    }
+		
 		Coupons c = new Coupons();
 		
 		c.setCodice(req.getCodice());

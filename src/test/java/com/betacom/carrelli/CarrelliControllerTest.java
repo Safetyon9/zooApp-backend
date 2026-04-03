@@ -13,12 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
-import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
@@ -55,7 +56,7 @@ public class CarrelliControllerTest {
 
         ResponseEntity<Resp> resp = carrelliC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_created");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -101,7 +102,7 @@ public class CarrelliControllerTest {
 
         ResponseEntity<Resp> resp = carrelliC.delete(carrello.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("rest_deleted");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_deleted");
     }
 
     @Test
@@ -114,5 +115,7 @@ public class CarrelliControllerTest {
 
         List<CarrelliDTO> list = (List<CarrelliDTO>) resp.getBody();
         Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
+
+        list.forEach(c -> log.debug(c.toString()));
     }
 }
