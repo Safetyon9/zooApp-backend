@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.ClientiController;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
+import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
@@ -33,6 +35,9 @@ public class ClientiControllerTest {
 
 	@Autowired
 	private IUtentiRepository utRepo;
+
+	@Autowired
+	private IClientiRepository clRepo;
 
 	@Autowired
 	private IMessaggiServices msgS;

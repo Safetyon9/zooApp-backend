@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.EventiController;
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
+import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
@@ -30,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 public class EventiControllerTest {
 	@Autowired
 	private EventiController eventiC;
+	
+	@Autowired
+	private IEventiRepository evRepo;
 	
 	@Autowired
 	private IMessaggiServices msgS;
