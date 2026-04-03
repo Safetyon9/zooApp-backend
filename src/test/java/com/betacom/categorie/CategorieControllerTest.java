@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.CategorieController;
 import com.betacom.dto.inputs.commerce.items.CategorieReq;
 import com.betacom.dto.outputs.commerce.items.CategorieDTO;
-import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.response.Resp;
@@ -120,7 +119,7 @@ public class CategorieControllerTest {
 		log.debug("Test list categorie");
 		ResponseEntity<?> resp = catC.list();
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		List<ProdottiDTO> listP = (List<ProdottiDTO>) resp.getBody();
+		List<CategorieDTO> listP = (List<CategorieDTO>) resp.getBody();
 		Assertions.assertThat(listP).isNotEmpty();
 		listP.forEach(p -> log.debug(p.toString()));
 	}

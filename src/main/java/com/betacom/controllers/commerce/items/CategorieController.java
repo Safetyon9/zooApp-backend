@@ -78,7 +78,7 @@ public class CategorieController {
         HttpStatus status = HttpStatus.OK;
         try {
             r = catS.findAll();
-            log.debug("response ok");
+            log.debug("list ok");
         } catch (Exception e) {
             log.debug("error:" + e.getMessage());
             r = e.getMessage();
