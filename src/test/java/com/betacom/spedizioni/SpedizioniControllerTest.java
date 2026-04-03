@@ -89,12 +89,12 @@ public class SpedizioniControllerTest {
 
         SpedizioniReq req = new SpedizioniReq();
         req.setOrdineId(9999);
-        req.setCorriereId(9999);
+        req.setCorriereId(9999); 
 
         ResponseEntity<Resp> resp = spedC.create(req);
 
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Ordine o Corriere non trovato");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Ordine o Corriere non trovato");
     }
 
     @Test
@@ -112,7 +112,7 @@ public class SpedizioniControllerTest {
 
         spedC.create(req);
 
-        ResponseEntity<?> resp = spedC.findById(1);
+        ResponseEntity<?> resp = spedC.findById(2);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 
         SpedizioniDTO sped = (SpedizioniDTO) resp.getBody();
@@ -148,7 +148,7 @@ public class SpedizioniControllerTest {
 
         SpedizioniDTO updated = (SpedizioniDTO) spedC.findById(sped.getId()).getBody();
         Assertions.assertThat(updated.getTrackingNumber()).isEqualTo("TRACK789");
-        Assertions.assertThat(updated.getCosto()).isEqualTo(BigDecimal.valueOf(20));
+        Assertions.assertThat(updated.getCosto()).isEqualByComparingTo(BigDecimal.valueOf(20));
     }
     
     @Test
@@ -160,8 +160,11 @@ public class SpedizioniControllerTest {
         ResponseEntity<Resp> resp = spedC.delete(sped.getId());
 
         assertEquals(HttpStatus.OK, resp.getStatusCode());
+        
         Resp r = resp.getBody();
-        Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
+        
+        Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_deleted"));
 
         ResponseEntity<?> respNotFound = spedC.findById(sped.getId());
         assertEquals(HttpStatus.BAD_REQUEST, respNotFound.getStatusCode());

@@ -40,10 +40,10 @@ public class SpedizioniImpl implements ISpedizioniServices{
 		log.debug("create {}", req);
 		
 	    Ordini ordine = ordR.findById(req.getOrdineId())
-	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+	            .orElseThrow(() -> new ZooException("Ordine o Corriere non trovato"));
 	    
 	    Corrieri corriere = corR.findById(req.getCorriereId())
-	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+	            .orElseThrow(() -> new ZooException("Ordine o Corriere non trovato"));
 		
 		if (ordine.getIndirizzo() == null)
 	        throw new ZooException("Indirizzo non trovato.");
