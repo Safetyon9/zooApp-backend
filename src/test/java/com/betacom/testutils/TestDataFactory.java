@@ -58,7 +58,7 @@ public class TestDataFactory {
         u.setPwd("1234");
         u.setRole(Roles.valueOf("USER"));
 
-        return utR.save(u);
+        return utR.save(u); 
     }
     
     public static Prodotti creaProdottoValido(IProdottiRepository prR, ICategorieRepository catR) {

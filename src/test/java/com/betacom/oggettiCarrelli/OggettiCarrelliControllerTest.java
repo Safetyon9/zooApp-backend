@@ -19,10 +19,11 @@ import com.betacom.controllers.commerce.OggettiCarrelliController;
 import com.betacom.dto.inputs.commerce.OggettiCarrelliReq;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.persistence.entity.commerce.Carrelli;
-import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
+import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
 import com.betacom.response.Resp;
 import com.betacom.testutils.TestDataFactory;
@@ -41,6 +42,9 @@ public class OggettiCarrelliControllerTest {
     private ICarrelliRepository carrelliR;
 
     @Autowired
+    private IBigliettiRepository bigliettoR;
+    
+    @Autowired
     private ITipiBigliettiRepository tipiR;
 
     @Autowired
@@ -55,7 +59,7 @@ public class OggettiCarrelliControllerTest {
         log.debug("Create oggetto carrello");
 
         Carrelli carrello = TestDataFactory.creaCarrelloValido(carrelliR, clR, utR);
-        TipiBiglietti item = TestDataFactory.creaTipoBigliettoValido(tipiR);
+        Biglietti item = TestDataFactory.creaBigliettoValido(bigliettoR, tipiR);
 
         OggettiCarrelliReq req = new OggettiCarrelliReq();
         req.setCarrelloId(carrello.getId());
@@ -66,7 +70,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.create(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_created");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_created");
     }
 
     @Test
@@ -113,7 +117,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.update(req);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_updated");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_updated");
     }
 
     @Test
@@ -123,7 +127,7 @@ public class OggettiCarrelliControllerTest {
 
         ResponseEntity<Resp> resp = ocC.delete(1);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        Assertions.assertThat(resp.getBody()).isEqualTo("Messaggio per codice: rest_deleted");
+        Assertions.assertThat(resp.getBody().getMsg()).isEqualTo("Messaggio per codice: rest_deleted");
     }
 
     @Test
