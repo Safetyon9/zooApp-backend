@@ -217,14 +217,17 @@ public class TestDataFactory {
     public static Recensioni creaRecensioneValida(
     		IRecensioniRepository recR,
     		IClientiRepository clR,
-    		IUtentiRepository utR
+    		IUtentiRepository utR,
+    		IBigliettiRepository bigliettoR,
+    		ITipiBigliettiRepository tipiR
     		 ) {
     	
         Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
+        Biglietti item = TestDataFactory.creaBigliettoValido(bigliettoR, tipiR);
     	
     	Recensioni r = new Recensioni();
     	r.setCliente(cliente);
-        r.setItem(null);
+        r.setItem(item);
         r.setVoto(5);
         r.setTitolo("Bellissimo");
         r.setTesto("Molto divertente");
