@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.inputs.commerce.CarrelliReq;
@@ -70,15 +71,13 @@ public class CarrelliController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-	@GetMapping("/get/{id}")				
-	public ResponseEntity<Object> getById(@PathVariable Integer id){
+	@GetMapping("/findById")				
+	public ResponseEntity<Object> findById(@RequestParam (required = true)  Integer id){
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			log.debug("GETBYID RICEVO ID: {}", id);
 			r = carrS.getById(id);
 		} catch (Exception e) {
-			log.error("ERRORE getById: {}", e.getMessage(), e);
 			r = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}

@@ -37,10 +37,10 @@ public class OggettiOrdini {
 	private BigDecimal prezzoTotale;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "items_id", referencedColumnName = "id")
+    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
     private Items item;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ordine_id", referencedColumnName = "id")
+    @JoinColumn(name = "ordine_id", referencedColumnName = "id", nullable = false)
     private Ordini ordine;
 }

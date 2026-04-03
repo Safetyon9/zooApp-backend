@@ -29,6 +29,10 @@ public class Carrelli {
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true, nullable = false)
     private Clienti cliente;
 	
-	@OneToMany(mappedBy = "carrello", cascade = CascadeType.ALL)
+	@OneToMany(
+			mappedBy = "carrello",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+			)
     private List<OggettiCarrelli> oggettiCarrello;
 }
