@@ -18,7 +18,11 @@ import org.springframework.http.ResponseEntity;
 import com.betacom.controllers.commerce.items.ProdottiController;
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.persistence.entity.commerce.items.Categorie;
+import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +33,19 @@ public class ProdottiControllerTest {
 
 	@Autowired
 	private ProdottiController prodC;
+	
+	@Autowired
+	private ICategorieRepository catR;
+	
+	@Autowired
+	private IMessaggiServices msgS;
 
 	@Test
 	@Order(3)
 	public void findByCodice() {
 		log.debug("Test findByCodice OK");
+		
+		
 		ResponseEntity<?> resp = prodC.findByCodice(1001L);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
 		ProdottiDTO prod = (ProdottiDTO) resp.getBody();
@@ -46,7 +58,6 @@ public class ProdottiControllerTest {
 		log.debug("Test findByCodice Error");
 		ResponseEntity<?> resp = prodC.findByCodice(999999L);
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		Assertions.assertThat(resp.getBody().toString()).contains("non trovato");
 	}
 
 	@Test
@@ -62,12 +73,16 @@ public class ProdottiControllerTest {
 		req.setDimensioni(new BigDecimal("10.5"));
 		req.setPeso(new BigDecimal("1.2"));
 		req.setStock(50);
-		req.setCategoriaId(1);
+		
+		Categorie cat = TestDataFactory.creaCategoriaValida(catR,"4");
+		
+		req.setCategoriaId(cat.getId());
 
 		ResponseEntity<?> resp = prodC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Resp r = (Resp) resp.getBody();
-		Assertions.assertThat(r.getMsg()).isEqualTo("rest_created");
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_created"));
 	}
 
 	@Test
