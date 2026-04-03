@@ -207,9 +207,21 @@ public class TestDataFactory {
 		return couR.save(c);
     }
     
-    public static Recensioni creaRecensioneValida(IRecensioniRepository recR) {
+    public static Recensioni creaRecensioneValida(
+    		IRecensioniRepository recR,
+    		IClientiRepository clR,
+    		IUtentiRepository utR
+    		 ) {
+    	
+        Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
     	
     	Recensioni r = new Recensioni();
+    	r.setCliente(cliente);
+        r.setItem(null);
+        r.setVoto(5);
+        r.setTitolo("Bellissimo");
+        r.setTesto("Molto divertente");
+        r.setGeneraleZoo(true);
     	
     	
 		return recR.save(r);

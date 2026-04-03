@@ -57,15 +57,12 @@ public class RecensioniControllerTest {
     @Order(1)
     public void createRecensioneTest() {
         log.debug("create recensione");
-        
-        Recensioni rec = TestDataFactory.creaRecensioneValida(recR);
 
         Clienti cliente = TestDataFactory.creaClienteValido(clR, utR);
-        TipiBiglietti item = TestDataFactory.creaTipoBigliettoValido(tipiR);
 
         RecensioniReq req = new RecensioniReq();
         req.setClienteId(cliente.getId());
-        req.setItemId(item.getId());
+        req.setItemId(null);
         req.setVoto(5);
         req.setTitolo("Bellissimo");
         req.setTesto("Molto divertente");
