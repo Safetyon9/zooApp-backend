@@ -106,18 +106,8 @@ public class BigliettiGiornataControllerTest {
     @Test
     @Order(3)
     public void findByIdTest() {
-        Giornate giornata = TestDataFactory.creaGiornataValida(gioR, evR);
-        Biglietti biglietto = TestDataFactory.creaBigliettoValido(bigR, tipiR);
-        Eventi evento = giornata.getEvento();
 
-        BigliettiGiornata big = new BigliettiGiornata();
-        big.setGiornata(giornata);
-        big.setBiglietto(biglietto);
-        big.setEvento(evento);
-        big.setPrezzo(BigDecimal.valueOf(60));
-        big.setStock(50);
-
-        big = biGR.save(big);
+        BigliettiGiornata big = TestDataFactory.creaBigliettoGiornataValido(gioR, evR, tipiR, bigR, biGR);
 
         ResponseEntity<?> resp = bigGiornC.findById(big.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
