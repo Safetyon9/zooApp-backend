@@ -103,6 +103,19 @@ public class UtentiController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
+	@GetMapping("/findAllByUserName")
+	public ResponseEntity<Object> findAllByUserName(@RequestParam (required = true)  String userName){
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r= utS.getAllByUser(userName);
+		} catch (Exception e) {
+			r=e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+	}
+	
 	@PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody(required = true) LoginReq req){
         Object r = new Object();

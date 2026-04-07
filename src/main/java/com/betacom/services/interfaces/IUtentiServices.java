@@ -8,6 +8,7 @@ import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.dto.outputs.UtentiResp;
 import com.betacom.exceptions.ZooException;
 
 public interface IUtentiServices {
@@ -20,7 +21,11 @@ public interface IUtentiServices {
 
     UtentiDTO getByUserName(String userName) throws ZooException;
     
+    UtentiResp getAllByUser(String userName) throws ZooException;
+    
     LoginDTO login(LoginReq req) throws ZooException;
 	
 	RegisterDTO register(UtentiReq Ureq, ClientiReq Creq) throws ZooException;
+	
+	
 }

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.dto.outputs.UtentiResp;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
@@ -171,6 +172,22 @@ public class Mapper {
 			    .userName(u.getUserName())
 			    .email(u.getEmail())
 			    .role(u.getRole().name())
+			    .build();
+		
+	}
+	
+	public static UtentiResp buildUtentiResp(Utenti u, Clienti c) {
+		return UtentiResp.builder()
+			    .userName(u.getUserName())
+			    .email(u.getEmail())
+			    .role(u.getRole().name())
+			    .nome(c.getNome())
+			    .cognome(c.getCognome())
+			    .indirizzo(c.getIndirizzo())
+			    .comune(c.getComune())
+			    .cap(c.getCap())
+			    .telefono(c.getTelefono())
+			    .provincia(c.getProvinca())
 			    .build();
 		
 	}

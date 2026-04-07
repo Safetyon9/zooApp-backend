@@ -11,6 +11,7 @@ import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.dto.outputs.UtentiResp;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
@@ -113,6 +114,20 @@ public class UtentiImpl implements IUtentiServices {
 
         return Mapper.buildUtentiDTO(u);
     }
+
+
+	@Override
+	public UtentiResp getAllByUser(String userName) throws ZooException {
+		log.debug("getAllByUserName {}", userName);
+
+        Utenti u = repoU.findByUserName(userName)
+                .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
+        
+        Clienti c = repoC.findById(u.getCliente().getId())
+                .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
+
+        return Mapper.buildUtentiResp(u, c);
+	}
     
     @Override
     public LoginDTO login(LoginReq req) throws ZooException {
@@ -159,4 +174,6 @@ public class UtentiImpl implements IUtentiServices {
 
         return Mapper.buildRegisterDTO(c, u);
     }
+
+
 }
