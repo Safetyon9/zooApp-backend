@@ -12,6 +12,7 @@ import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
+import com.betacom.persistence.specification.ProdottiSpecification;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.items.IProdottiServices;
 import com.betacom.utilities.Mapper;
@@ -113,10 +114,13 @@ public class ProdottiImpl implements IProdottiServices {
     }
 
     @Override
-    public List<ProdottiDTO> find(Integer id, String nome, String descrizione,
-                                  String categoria, Integer stock) {
+    public List<ProdottiDTO> find(ProdottiReq req) {
 
-        log.debug("find {} / {} / {} / {} / {}", id, nome, descrizione, categoria, stock);
-        return list(); 
+        log.debug("find con filtri {}", req);
+
+        return repoP.findAll(ProdottiSpecification.filterByParams(req))
+                .stream()
+                .map(Mapper::buildProdottiDTO)
+                .toList();
     }
 }

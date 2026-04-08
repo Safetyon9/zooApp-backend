@@ -16,12 +16,6 @@ public interface IProdottiServices {
 
     ProdottiDTO getBySku(Long sku) throws ZooException;
 
-    List<ProdottiDTO> find(
-            Integer id,
-            String nome,
-            String descrizione,
-            String categoria,
-            Integer stock
-    ) throws ZooException;
+    List<ProdottiDTO> find(ProdottiReq req) throws ZooException;
 	
 }

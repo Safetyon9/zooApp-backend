@@ -25,77 +25,76 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/rest/biglietti")
 public class BigliettiController {
 
+    private final IMessaggiServices msgS;
+    private final IBigliettiServices bigliettiS;
 
-	    private final IMessaggiServices msgS;
-	    private final IBigliettiServices bigliettiS;
+    @PostMapping("/create")
+    public ResponseEntity<Resp> create(@RequestBody BigliettiReq req) {
+        Resp r = new Resp();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            bigliettiS.create(req);
+            r.setMsg(msgS.get("rest_created"));
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
-	    @PostMapping("/create")
-	    public ResponseEntity<Resp> create(@RequestBody BigliettiReq req) {
-	        Resp r = new Resp();
-	        HttpStatus status = HttpStatus.OK;
-	        try {
-	            bigliettiS.create(req);
-	            r.setMsg(msgS.get("rest_created"));
-	        } catch (Exception e) {
-	            r.setMsg(e.getMessage());
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
+    @PutMapping("/update")
+    public ResponseEntity<Resp> update(@RequestBody BigliettiReq req) {
+        Resp r = new Resp();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            bigliettiS.update(req);
+            r.setMsg(msgS.get("rest_updated"));
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
-	    @PutMapping("/update")
-	    public ResponseEntity<Resp> update(@RequestBody BigliettiReq req) {
-	        Resp r = new Resp();
-	        HttpStatus status = HttpStatus.OK;
-	        try {
-	            bigliettiS.update(req);
-	            r.setMsg(msgS.get("rest_updated"));
-	        } catch (Exception e) {
-	            r.setMsg(e.getMessage());
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Resp> delete(@PathVariable Integer id) {
+        Resp r = new Resp();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            bigliettiS.delete(id);
+            r.setMsg(msgS.get("rest_deleted"));
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
-	    @DeleteMapping("/delete/{id}")
-	    public ResponseEntity<Resp> delete(@PathVariable Integer id) {
-	        Resp r = new Resp();
-	        HttpStatus status = HttpStatus.OK;
-	        try {
-	            bigliettiS.delete(id);
-	            r.setMsg(msgS.get("rest_deleted"));
-	        } catch (Exception e) {
-	            r.setMsg(e.getMessage());
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
+    @GetMapping("/list")
+    public ResponseEntity<Object> list() {
+        Object r;
+        HttpStatus status = HttpStatus.OK;
+        try {
+            r = bigliettiS.findAll();
+        } catch (Exception e) {
+            r = e.getMessage();
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
-	    @GetMapping("/list")
-	    public ResponseEntity<Object> list() {
-	        Object r;
-	        HttpStatus status = HttpStatus.OK;
-	        try {
-	            r = bigliettiS.findAll();
-	        } catch (Exception e) {
-	            r = e.getMessage();
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Object> getById(@PathVariable Integer id) {
+        HttpStatus status = HttpStatus.OK;
+        Object r;
+        try {
+            r = bigliettiS.getById(id);
+        } catch (Exception e) {
+            r = e.getMessage();
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
-	    @GetMapping("/get/{id}")
-	    public ResponseEntity<Object> getById(@PathVariable Integer id) {
-	        HttpStatus status = HttpStatus.OK;
-	        Object r;
-	        try {
-	            r = bigliettiS.getById(id);
-	        } catch (Exception e) {
-	            r = e.getMessage();
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
 
-	
-	}
+}

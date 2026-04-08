@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.betacom.controllers.commerce.items.EventiController;
+import com.betacom.controllers.commerce.EventiController;
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.persistence.repository.commerce.IEventiRepository;

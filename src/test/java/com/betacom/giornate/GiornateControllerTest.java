@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.betacom.controllers.commerce.items.GiornateController;
+import com.betacom.controllers.commerce.GiornateController;
 import com.betacom.dto.inputs.commerce.GiornateReq;
 import com.betacom.dto.outputs.commerce.GiornateDTO;
 import com.betacom.persistence.entity.commerce.Eventi;

@@ -1,6 +1,4 @@
-package com.betacom.controllers.commerce.items;
-
-import java.util.List;
+package com.betacom.controllers.commerce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.dto.inputs.commerce.GiornateReq;
-import com.betacom.dto.outputs.commerce.GiornateDTO;
+import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
-import com.betacom.services.interfaces.commerce.IGiornateServices;
+import com.betacom.services.interfaces.commerce.items.IClientiServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,18 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/rest/giornate")
-public class GiornateController {
-
+@RequestMapping("/rest/clienti")
+public class ClientiController {
+	
 	    private final IMessaggiServices msgS;
-	    private final IGiornateServices giornateS;
+	    private final IClientiServices clientiS;
 
 	    @PostMapping("/create")
-	    public ResponseEntity<Resp> create(@RequestBody GiornateReq req) {
+	    public ResponseEntity<Resp> create(@RequestBody ClientiReq req) {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            giornateS.create(req);
+	            clientiS.create(req);
 	            r.setMsg(msgS.get("rest_created"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -46,11 +43,11 @@ public class GiornateController {
 	    }
 
 	    @PutMapping("/update")
-	    public ResponseEntity<Resp> update(@RequestBody GiornateReq req) {
+	    public ResponseEntity<Resp> update(@RequestBody ClientiReq req) {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            giornateS.update(req);
+	            clientiS.update(req);
 	            r.setMsg(msgS.get("rest_updated"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -64,7 +61,7 @@ public class GiornateController {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            giornateS.delete(id);
+	            clientiS.delete(id);
 	            r.setMsg(msgS.get("rest_deleted"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -78,7 +75,7 @@ public class GiornateController {
 	        Object r;
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            r = giornateS.findAll();
+	            r = clientiS.findAll();
 	        } catch (Exception e) {
 	            r = e.getMessage();
 	            status = HttpStatus.BAD_REQUEST;
@@ -86,35 +83,17 @@ public class GiornateController {
 	        return ResponseEntity.status(status).body(r);
 	    }
 
-	    @GetMapping("/listByEvento/{eventoId}")
-	    public ResponseEntity<Object> listByEvento(@PathVariable Integer eventoId) {
-	        Object r;
-	        HttpStatus status = HttpStatus.OK;
-	        try {
-	            List<GiornateDTO> tutte = giornateS.findAll();
-	            r = tutte.stream()
-	                     .filter(g -> g.getEventoId().equals(eventoId))
-	                     .toList();
-	        } catch (Exception e) {
-	            r = e.getMessage();
-	            status = HttpStatus.BAD_REQUEST;
-	        }
-	        return ResponseEntity.status(status).body(r);
-	    }
 	    @GetMapping("/get/{id}")
 	    public ResponseEntity<Object> getById(@PathVariable Integer id) {
 	        HttpStatus status = HttpStatus.OK;
 	        Object r;
-
 	        try {
-	            r = giornateS.getById(id);
+	            r = clientiS.getById(id);
 	        } catch (Exception e) {
 	            r = e.getMessage();
 	            status = HttpStatus.BAD_REQUEST;
 	        }
-
 	        return ResponseEntity.status(status).body(r);
 	    }
-	    
-	    
-	}
+
+}	   

@@ -1,4 +1,6 @@
-package com.betacom.controllers.commerce.items;
+package com.betacom.controllers.commerce;
+
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.dto.inputs.commerce.ClientiReq;
+import com.betacom.dto.inputs.commerce.GiornateReq;
+import com.betacom.dto.outputs.commerce.GiornateDTO;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
-import com.betacom.services.interfaces.commerce.items.IClientiServices;
+import com.betacom.services.interfaces.commerce.IGiornateServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +25,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/rest/clienti")
-public class ClientiController {
-	
+@RequestMapping("/rest/giornate")
+public class GiornateController {
+
 	    private final IMessaggiServices msgS;
-	    private final IClientiServices clientiS;
+	    private final IGiornateServices giornateS;
 
 	    @PostMapping("/create")
-	    public ResponseEntity<Resp> create(@RequestBody ClientiReq req) {
+	    public ResponseEntity<Resp> create(@RequestBody GiornateReq req) {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            clientiS.create(req);
+	            giornateS.create(req);
 	            r.setMsg(msgS.get("rest_created"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -43,11 +46,11 @@ public class ClientiController {
 	    }
 
 	    @PutMapping("/update")
-	    public ResponseEntity<Resp> update(@RequestBody ClientiReq req) {
+	    public ResponseEntity<Resp> update(@RequestBody GiornateReq req) {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            clientiS.update(req);
+	            giornateS.update(req);
 	            r.setMsg(msgS.get("rest_updated"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -61,7 +64,7 @@ public class ClientiController {
 	        Resp r = new Resp();
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            clientiS.delete(id);
+	            giornateS.delete(id);
 	            r.setMsg(msgS.get("rest_deleted"));
 	        } catch (Exception e) {
 	            r.setMsg(e.getMessage());
@@ -75,7 +78,7 @@ public class ClientiController {
 	        Object r;
 	        HttpStatus status = HttpStatus.OK;
 	        try {
-	            r = clientiS.findAll();
+	            r = giornateS.findAll();
 	        } catch (Exception e) {
 	            r = e.getMessage();
 	            status = HttpStatus.BAD_REQUEST;
@@ -83,17 +86,35 @@ public class ClientiController {
 	        return ResponseEntity.status(status).body(r);
 	    }
 
+	    @GetMapping("/listByEvento/{eventoId}")
+	    public ResponseEntity<Object> listByEvento(@PathVariable Integer eventoId) {
+	        Object r;
+	        HttpStatus status = HttpStatus.OK;
+	        try {
+	            List<GiornateDTO> tutte = giornateS.findAll();
+	            r = tutte.stream()
+	                     .filter(g -> g.getEventoId().equals(eventoId))
+	                     .toList();
+	        } catch (Exception e) {
+	            r = e.getMessage();
+	            status = HttpStatus.BAD_REQUEST;
+	        }
+	        return ResponseEntity.status(status).body(r);
+	    }
 	    @GetMapping("/get/{id}")
 	    public ResponseEntity<Object> getById(@PathVariable Integer id) {
 	        HttpStatus status = HttpStatus.OK;
 	        Object r;
+
 	        try {
-	            r = clientiS.getById(id);
+	            r = giornateS.getById(id);
 	        } catch (Exception e) {
 	            r = e.getMessage();
 	            status = HttpStatus.BAD_REQUEST;
 	        }
+
 	        return ResponseEntity.status(status).body(r);
 	    }
-
-}	   
+	    
+	    
+	}

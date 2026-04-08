@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.betacom.controllers.commerce.items.ClientiController;
+import com.betacom.controllers.commerce.ClientiController;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.commerce.ClientiDTO;
 import com.betacom.persistence.entity.Utenti;

@@ -1,5 +1,7 @@
 package com.betacom.controllers.commerce.items;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.items.IProdottiServices;
@@ -96,5 +99,10 @@ public class ProdottiController {
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
+    }
+    
+    @PostMapping("/search")
+    public List<ProdottiDTO> search(@RequestBody ProdottiReq req) {
+        return prodS.find(req);
     }
 }

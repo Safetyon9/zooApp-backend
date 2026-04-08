@@ -1,4 +1,4 @@
-package com.betacom.controllers.commerce.items;
+package com.betacom.controllers.commerce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
