@@ -217,5 +217,18 @@ public class UtentiImpl implements IUtentiServices {
         return Mapper.buildRegisterDTO(c, u);
     }
 
+    @Transactional(rollbackFor = ZooException.class)
+	@Override
+	public void changePwd(UtentiReq req) throws ZooException {
+		Utenti u = repoU.findByUserName(req.getUsername())
+		           .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
+
+		   if (!u.getPwd().equals(req.getOldPwd()))
+		       throw new ZooException("Password attuale non corretta");
+
+		   u.setPwd(req.getNewPwd());
+		   repoU.save(u);
+	}
+
 
 }

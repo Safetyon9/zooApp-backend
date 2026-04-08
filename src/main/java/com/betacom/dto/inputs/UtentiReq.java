@@ -13,5 +13,7 @@ public class UtentiReq {
     private String email;
     private String pwd;
     private String role;   
+    private String oldPwd;
+    private String newPwd;
 
 }

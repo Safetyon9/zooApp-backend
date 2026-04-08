@@ -163,5 +163,19 @@ public class UtentiController {
 	    }
 	    return ResponseEntity.status(status).body(r);
 	}
+	
+	@PutMapping("/changePwd")
+	public ResponseEntity<Resp> changePwd(@RequestBody UtentiReq req) {
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+	    try {
+	        utS.changePwd(req);
+	        r.setMsg(msgS.get("rest_updated"));
+	    } catch (Exception e) {
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+	    return ResponseEntity.status(status).body(r);
+	}
 
 }

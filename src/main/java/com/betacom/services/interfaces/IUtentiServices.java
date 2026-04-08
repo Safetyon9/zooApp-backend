@@ -29,5 +29,7 @@ public interface IUtentiServices {
 	
 	RegisterDTO register(UtentiReq Ureq, ClientiReq Creq) throws ZooException;
 	
+	void changePwd(UtentiReq req) throws ZooException;
+	
 	
 }
