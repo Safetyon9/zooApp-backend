@@ -65,7 +65,7 @@ public class UtentiController {
 		return ResponseEntity.status(status).body(r);		
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/delete/{username}")
 	public ResponseEntity<Resp> delete(@PathVariable(required = true)  String username){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
