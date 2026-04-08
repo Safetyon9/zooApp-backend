@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.UtentiReqResp;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -49,7 +50,8 @@ public class UtentiController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Resp> update(@RequestBody(required = true)  UtentiReq req){
+	public ResponseEntity<Resp> update(@RequestBody(required = true)  UtentiReqResp req){
+		log.debug("REQUEST BODY: {}", req);
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {

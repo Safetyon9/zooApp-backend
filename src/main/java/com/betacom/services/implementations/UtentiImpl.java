@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.UtentiReqResp;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
@@ -65,25 +66,42 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void update(UtentiReq req) throws ZooException {
+    public void update(UtentiReqResp req) throws ZooException {
         log.debug("update {}", req);
 
-        Utenti u = repoU.findByUserName(req.getUsername())
+        Utenti u = repoU.findByUserName(req.getUserName())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
         
-        if(req.getUsername() != null)
-        	u.setUserName(req.getUsername());
+        Clienti c = repoC.findById(u.getCliente().getId())
+                .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
+        
         
         if(req.getEmail() != null)
         	u.setEmail(req.getEmail());
         
-        if(req.getPwd() != null)
-        	u.setPwd(req.getPwd());
+        if(req.getNome() != null)
+        	c.setNome(req.getNome());
         
-        if(req.getRole() != null)
-        	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        if(req.getCognome() != null)
+        	c.setCognome(req.getCognome());
+        
+        if(req.getIndirizzo() != null)
+        	c.setIndirizzo(req.getIndirizzo());
+        
+        if(req.getComune() != null)
+        	c.setComune(req.getComune());
+        
+        if(req.getCap() != null)
+        	c.setCap(req.getCap());
+        
+        if(req.getTelefono() != null)
+        	c.setTelefono(req.getTelefono());
+        
+        if(req.getProvincia() != null)
+        	c.setProvinca(req.getProvincia());
 
         repoU.save(u);
+        repoC.save(c);
     }
 
     @Transactional(rollbackFor = ZooException.class)
