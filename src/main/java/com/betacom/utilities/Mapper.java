@@ -177,6 +177,14 @@ public class Mapper {
 	}
 	
 	public static UtentiResp buildUtentiResp(Utenti u, Clienti c) {
+		if (c == null) {
+			return UtentiResp.builder()
+				    .userName(u.getUserName())
+				    .email(u.getEmail())
+				    .role(u.getRole().name())
+				    .build();
+		}
+			
 		return UtentiResp.builder()
 			    .userName(u.getUserName())
 			    .email(u.getEmail())

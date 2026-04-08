@@ -161,6 +161,10 @@ public class UtentiImpl implements IUtentiServices {
         Utenti u = repoU.findByUserName(userName)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         
+        if (u.getCliente() == null || u.getCliente().getId() == null) {
+        	return Mapper.buildUtentiResp(u, null);
+        }
+        
         Clienti c = repoC.findById(u.getCliente().getId())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
