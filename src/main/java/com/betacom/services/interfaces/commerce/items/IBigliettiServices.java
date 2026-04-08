@@ -11,7 +11,6 @@ public interface IBigliettiServices {
     void update(BigliettiReq req) throws Exception;
     void delete(Integer id) throws Exception;
     BigliettiDTO getById(Integer id) throws Exception;
+    List<BigliettiDTO> search(BigliettiReq filtro) throws Exception;
     List<BigliettiDTO> findAll() throws Exception;
 }
-//create void o con id
-//create update req tutti boid

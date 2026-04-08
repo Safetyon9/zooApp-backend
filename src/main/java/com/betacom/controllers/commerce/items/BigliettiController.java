@@ -82,6 +82,19 @@ public class BigliettiController {
         }
         return ResponseEntity.status(status).body(r);
     }
+    
+    @PostMapping("/search")
+    public ResponseEntity<Object> search(@RequestBody BigliettiReq filtro) {
+        HttpStatus status = HttpStatus.OK;
+        Object r;
+        try {
+            r = bigliettiS.search(filtro);
+        } catch (Exception e) {
+            r = e.getMessage();
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Object> getById(@PathVariable Integer id) {

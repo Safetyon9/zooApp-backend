@@ -14,6 +14,7 @@ import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.ITipiBigliettiRepository;
+import com.betacom.persistence.specification.BigliettiSpecification;
 import com.betacom.services.interfaces.commerce.items.IBigliettiServices;
 import com.betacom.utilities.Mapper;
 
@@ -116,6 +117,22 @@ public class BigliettiImpl implements IBigliettiServices {
                 .orElseThrow(() -> new ZooException("Biglietto non trovato"));
 
         return Mapper.buildBigliettiDTO(b);
+    }
+    
+    @Override
+    public List<BigliettiDTO> search(BigliettiReq filtro) throws Exception {
+        List<Biglietti> lista = bigliettiR.findAll(
+            BigliettiSpecification.filter(
+                filtro.getNome(),
+                filtro.getTipoId(),
+                filtro.getPrezzo(),
+                null
+            )
+        );
+
+        return lista.stream()
+                    .map(Mapper::buildBigliettiDTO)
+                    .toList();
     }
 
     @Override
