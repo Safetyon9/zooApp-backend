@@ -16,6 +16,8 @@ public class ProdottiSpecification {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
+            
+            predicates.add(criteriaBuilder.equal(root.get("deleted"), false));
 
             if (req.getCategoriaId() != null) {
                 predicates.add(criteriaBuilder.equal(
