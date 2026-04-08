@@ -62,12 +62,30 @@ public class UtentiImpl implements IUtentiServices {
         repoU.save(u);
     }
     
+    @Transactional(rollbackFor = ZooException.class)
+    @Override
+    public void update(UtentiReq req) throws ZooException {
+    	log.debug("update {}", req);
+
+        Utenti u = repoU.findByUserName(req.getUsername())
+                .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
+        
+        if(req.getUsername() != null)
+        	u.setUserName(req.getUsername());
+        
+        if(req.getEmail() != null)
+        	u.setEmail(req.getEmail());
+        
+        if(req.getRole() != null) {
+        	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
+        }
+    }
     
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void update(UtentiReqResp req) throws ZooException {
-        log.debug("update {}", req);
+    public void Allupdate(UtentiReqResp req) throws ZooException {
+        log.debug("Allupdate {}", req);
 
         Utenti u = repoU.findByUserName(req.getUserName())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
@@ -75,6 +93,8 @@ public class UtentiImpl implements IUtentiServices {
         Clienti c = repoC.findById(u.getCliente().getId())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         
+        if(req.getUserName() != null)
+        	u.setUserName(req.getUserName());
         
         if(req.getEmail() != null)
         	u.setEmail(req.getEmail());

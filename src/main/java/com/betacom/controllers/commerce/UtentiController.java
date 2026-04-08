@@ -50,12 +50,28 @@ public class UtentiController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Resp> update(@RequestBody(required = true)  UtentiReqResp req){
+	public ResponseEntity<Resp> update(@RequestBody(required = true)  UtentiReq req){
 		log.debug("REQUEST BODY: {}", req);
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			utS.update(req);
+			r.setMsg(msgS.get("rest_updated"));
+		} catch (Exception e) {
+			log.debug("Error:" + e.getMessage());
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);		
+	}
+	
+	@PutMapping("/Allupdate")
+	public ResponseEntity<Resp> Allupdate(@RequestBody(required = true)  UtentiReqResp req){
+		log.debug("REQUEST BODY: {}", req);
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.Allupdate(req);
 			r.setMsg(msgS.get("rest_updated"));
 		} catch (Exception e) {
 			log.debug("Error:" + e.getMessage());
