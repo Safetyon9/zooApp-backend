@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
-import com.betacom.services.interfaces.commerce.items.IEventiServices;
+import com.betacom.services.interfaces.commerce.IEventiServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

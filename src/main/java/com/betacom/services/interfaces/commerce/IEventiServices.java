@@ -1,4 +1,4 @@
-package com.betacom.services.interfaces.commerce.items;
+package com.betacom.services.interfaces.commerce;
 
 
 import java.util.List;

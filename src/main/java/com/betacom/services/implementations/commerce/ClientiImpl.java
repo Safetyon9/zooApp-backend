@@ -12,7 +12,7 @@ import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
-import com.betacom.services.interfaces.commerce.items.IClientiServices;
+import com.betacom.services.interfaces.commerce.IClientiServices;
 import com.betacom.utilities.Mapper;
 
 @Service

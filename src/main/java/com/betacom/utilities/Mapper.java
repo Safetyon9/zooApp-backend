@@ -23,6 +23,7 @@ import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
+import com.betacom.dto.outputs.commerce.items.TipiBigliettiDTO;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
@@ -41,6 +42,7 @@ import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
+import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
 
 public class Mapper {
 
@@ -51,7 +53,7 @@ public class Mapper {
 	            .descrizione(b.getDescrizione())
 	            .urlImmagine(b.getUrlImmagine())
 	            .prezzo(b.getPrezzo())
-	            .tipoId(b.getTipo() != null ? b.getTipo().getId() : null)
+	            .tipoNome(b.getTipo() != null ? b.getTipo().getNome() : null)
 	            .build();
 	}
 
@@ -102,6 +104,13 @@ public class Mapper {
 	            .nome(c.getNome())
 	            .build();
 	}
+	
+	public static TipiBigliettiDTO buildTipiBigliettiDTO(TipiBiglietti t) {
+        return TipiBigliettiDTO.builder()
+                .id(t.getId())
+                .nome(t.getNome())
+                .build();
+    }
 
 	public static OggettiOrdiniDTO buildOgettiOrdiniDTO (OggettiOrdini oo) {
         return OggettiOrdiniDTO.builder()

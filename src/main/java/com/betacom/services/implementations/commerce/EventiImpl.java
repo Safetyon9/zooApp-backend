@@ -10,7 +10,7 @@ import com.betacom.dto.inputs.commerce.EventiReq;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
-import com.betacom.services.interfaces.commerce.items.IEventiServices;
+import com.betacom.services.interfaces.commerce.IEventiServices;
 import com.betacom.utilities.Mapper;
 
 import lombok.extern.slf4j.Slf4j;
