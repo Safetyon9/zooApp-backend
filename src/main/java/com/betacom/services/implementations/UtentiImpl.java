@@ -176,10 +176,13 @@ public class UtentiImpl implements IUtentiServices {
         log.debug("login {}", req);
         Utenti utente = repoU.findByUserName(req.getUsername())
                 .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
+        
+        utente.setIsActive(true);
+        repoU.save(utente);
+        log.debug("UTENTE ONLINE/OFFLINE: "+utente.getIsActive());
 
         if(!utente.getPwd().equals(req.getPwd()))
             throw new ZooException(msgS.get("login_invalid"));
-        	utente.setIsActive(true);
         return LoginDTO.builder()
                 .username(utente.getUserName())
                 .ruolo(utente.getRole().toString())
@@ -199,6 +202,7 @@ public class UtentiImpl implements IUtentiServices {
         u.setPwd(Ureq.getPwd());
         u.setIsActive(false);
         u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        
 
         u = repoU.save(u);
 

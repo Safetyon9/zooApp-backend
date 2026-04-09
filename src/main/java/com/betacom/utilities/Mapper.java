@@ -181,6 +181,7 @@ public class Mapper {
 			    .userName(u.getUserName())
 			    .email(u.getEmail())
 			    .role(u.getRole().name())
+			    .isActive(u.getIsActive())
 			    .build();
 		
 	}
