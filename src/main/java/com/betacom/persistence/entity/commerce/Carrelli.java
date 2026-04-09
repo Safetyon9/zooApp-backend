@@ -26,12 +26,13 @@ public class Carrelli {
     private Integer id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true, nullable = false)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true, nullable = true)
     private Clienti cliente;
 	
 	@OneToMany(
 			mappedBy = "carrello",
 			cascade = CascadeType.ALL,
+			orphanRemoval = true,
 			fetch = FetchType.EAGER
 			)
     private List<OggettiCarrelli> oggettiCarrello;

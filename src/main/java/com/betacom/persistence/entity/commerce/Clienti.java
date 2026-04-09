@@ -54,12 +54,13 @@ public class Clienti {
 	private String telefono;
 	
 	@OneToOne
-    @JoinColumn(name = "utente_user_name", referencedColumnName = "userName", nullable = false, unique = true)
+    @JoinColumn(name = "utente_user_name", referencedColumnName = "userName", nullable = true, unique = true)
     private Utenti utente;
 	
 	@OneToOne(
 			mappedBy = "cliente",
 			cascade = CascadeType.ALL,
+			orphanRemoval = true,
 			fetch = FetchType.LAZY
 			)
     private Carrelli carrello;

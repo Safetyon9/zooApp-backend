@@ -127,33 +127,15 @@ public class UtentiImpl implements IUtentiServices {
         repoU.save(u);
         repoC.save(c);
     }
-
+    
+    @Transactional(rollbackFor = ZooException.class)
+    @Override
     public void delete(String username) throws ZooException {
         log.debug("delete {}", username);
 
         Utenti u = repoU.findByUserName(username)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
-
-        Optional<Clienti> optCliente = repoC.findById(u.getCliente() != null ? u.getCliente().getId() : null);
-
-        if (optCliente.isEmpty()) {
-            repoU.delete(u);
-
-        } else {
-            Clienti cliente = optCliente.get();
-            Optional<Carrelli> optCarrello = repoCa.findById(
-                    cliente.getCarrello() != null ? cliente.getCarrello().getId() : null);
-
-            if (optCarrello.isEmpty()) {
-                repoC.delete(cliente);
-                repoU.delete(u);
-
-            } else {
-                repoCa.delete(optCarrello.get());
-                repoC.delete(cliente);
-                repoU.delete(u);
-            }
-        }
+        repoU.delete(u);
     }
 
     @Override

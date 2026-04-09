@@ -55,6 +55,7 @@ public class Utenti {
 	@OneToOne(
 			optional = true,
 			cascade = CascadeType.ALL,
+			orphanRemoval = true,
 			fetch = FetchType.LAZY
 			)
     @JoinColumn(name="dipendente_id", referencedColumnName="id", unique = true)
@@ -63,6 +64,7 @@ public class Utenti {
 	@OneToOne(
 			optional = true,
 			cascade = CascadeType.ALL,
+			orphanRemoval = true,
 			fetch = FetchType.LAZY
 			)
     @JoinColumn(name="cliente_id", referencedColumnName="id", unique = true)
