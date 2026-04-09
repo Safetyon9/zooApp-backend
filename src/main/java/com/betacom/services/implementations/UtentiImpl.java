@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
 import com.betacom.dto.inputs.commerce.ClientiReq;
+import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.UtentiResp;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
@@ -21,6 +23,8 @@ import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
+import com.betacom.persistence.specification.ProdottiSpecification;
+import com.betacom.persistence.specification.UtentiSpecification;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
@@ -249,6 +253,17 @@ public class UtentiImpl implements IUtentiServices {
 		   u.setPwd(req.getNewPwd());
 		   repoU.save(u);
 	}
+    
+    @Override
+    public List<UtentiDTO> find(UtentiReq req) {
+
+        log.debug("find con filtri {}", req);
+
+        return repoU.findAll(UtentiSpecification.filterByParams(req))
+                .stream()
+                .map(Mapper::buildUtentiDTO)
+                .toList();
+    }
 
 
 }
