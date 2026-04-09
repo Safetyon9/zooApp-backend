@@ -45,7 +45,7 @@ public class Ordini {
     private LocalDateTime dataOrdine = LocalDateTime.now();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "cliente_id", nullable = true)
     private Clienti cliente;
 	
 	@OneToMany(
