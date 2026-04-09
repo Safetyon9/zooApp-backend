@@ -70,8 +70,13 @@ public class EventiImpl implements IEventiServices {
 
         if (e.getDataFine() != null && e.getDataInizio() != null &&
                 e.getDataFine().isBefore(e.getDataInizio())) {
+<<<<<<< HEAD
             throw new Exception("Data fine non può essere prima della data inizio");
         }
+=======
+                throw new Exception("Data fine non può essere prima della data inizio");
+         }
+>>>>>>> 2d671effb043015064b0e31b3215502eb5355899
 
         repo.save(e);
     }
