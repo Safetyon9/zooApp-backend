@@ -18,10 +18,12 @@ import com.betacom.controllers.commerce.UtentiController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.UtentiReqResp;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.dto.outputs.UtentiResp;
 import com.betacom.enums.Roles;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Clienti;
@@ -255,6 +257,57 @@ public class UtentiControllerTest {
 	    RegisterDTO body = (RegisterDTO) resp.getBody();
 		Assertions.assertThat(body.getEmail()).isEqualTo("ciao@gmail.com");
 
+	}
+	
+	@Test
+	@Order(12)
+	public void findAllByUserName() {
+		log.debug("Test getUtenti");
+		
+		
+		
+		Utenti u = TestDataFactory.creaUtenteValido(utR,"104");
+		
+		Clienti c = new Clienti();
+		
+		c.setNome("Mario");
+        c.setCognome("Rossi");
+        c.setIndirizzo("Via Roma 1");
+        c.setUtente(u);
+        c.setComune("Roma");
+        c.setCap("00100");
+        c.setTelefono("3331234567");
+        c.setProvinca("RM");
+		
+		ResponseEntity<?> resp = utentiC.findAllByUserName("testuser104");
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		UtentiResp ute = (UtentiResp) resp.getBody();
+		Assertions.assertThat(ute.getEmail()).isEqualTo("test104@mail.com");
+	
+	}
+	@Test
+	@Order(13)	
+	public void updateAllUtenti() {
+		log.debug("******* Update utenti  *******");
+		
+		Utenti ut = TestDataFactory.creaUtenteValido(utR,"1");
+		
+		
+		UtentiReqResp c = new UtentiReqResp();
+        c.setUserName("testuser1");
+        c.setNome("ADSDAD");
+        c.setCognome("ADDAD");
+		
+		
+		ResponseEntity<Resp> resp = utentiC.Allupdate(c);
+	
+		
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp)resp.getBody();
+		log.debug(r.getMsg());
+		Assertions.assertThat(c.getNome())
+        .isEqualTo("ADSDAD");
+			
 	}
 	
 	

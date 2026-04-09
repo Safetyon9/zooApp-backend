@@ -110,6 +110,25 @@ public class TestDataFactory {
         c.setProvinca("RM");
         return clR.save(c);
     }
+    public static Clienti creaClienteValido(
+            IClientiRepository clR, 
+            IUtentiRepository utR, 
+            String unique) {
+
+        Utenti utente = creaUtenteValido(utR,unique);
+
+        Clienti c = new Clienti();
+
+        c.setNome("Mario");
+        c.setCognome("Rossi");
+        c.setIndirizzo("Via Roma 1");
+        c.setUtente(utente);
+        c.setComune("Roma");
+        c.setCap("00100");
+        c.setTelefono("3331234567");
+        c.setProvinca("RM");
+        return clR.save(c);
+    }
 
 
     public static Ordini creaOrdineValido(
