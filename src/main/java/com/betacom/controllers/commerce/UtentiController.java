@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.UtentiReqResp;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -66,19 +65,19 @@ public class UtentiController {
 	}
 	
 	@PutMapping("/Allupdate")
-	public ResponseEntity<Resp> Allupdate(@RequestBody(required = true)  UtentiReqResp req){
+	public ResponseEntity<Resp> Allupdate(@RequestBody(required = true)  RegisterReq req){
 		log.debug("REQUEST BODY: {}", req);
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			utS.Allupdate(req);
+			utS.Allupdate(req.getUtente(), req.getCliente());
 			r.setMsg(msgS.get("rest_updated"));
 		} catch (Exception e) {
 			log.debug("Error:" + e.getMessage());
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}
-		return ResponseEntity.status(status).body(r);		
+		return ResponseEntity.status(status).body(r);	
 	}
 
 	@DeleteMapping("/delete/{username}")

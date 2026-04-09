@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.UtentiReqResp;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
