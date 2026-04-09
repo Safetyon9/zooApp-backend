@@ -14,8 +14,11 @@ import com.betacom.exceptions.ZooException;
 public interface IUtentiServices {
 
     void create(UtentiReq req) throws ZooException;
+    
     void update(UtentiReq req) throws ZooException;
+    
     void Allupdate(UtentiReq Ureq, ClientiReq Creq) throws ZooException;
+    
     void delete(String username) throws ZooException;
 
     List<UtentiDTO> list() throws ZooException;
@@ -25,6 +28,8 @@ public interface IUtentiServices {
     UtentiResp getAllByUser(String userName) throws ZooException;
     
     LoginDTO login(LoginReq req) throws ZooException;
+    
+    void logout(String userName) throws ZooException; 
 	
 	RegisterDTO register(UtentiReq Ureq, ClientiReq Creq) throws ZooException;
 	

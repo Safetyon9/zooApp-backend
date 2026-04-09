@@ -148,6 +148,22 @@ public class UtentiController {
         return ResponseEntity.status(status).body(r);
     }
 	
+	@PostMapping("/logout/{userName}")
+    public ResponseEntity<Resp> logout(@PathVariable String userName) {
+        Resp r = new Resp();
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            utS.logout(userName);
+            r.setMsg("Logout eseguito correttamente");
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return ResponseEntity.status(status).body(r);
+    }
+	
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody RegisterReq req) {
 	    Object r;

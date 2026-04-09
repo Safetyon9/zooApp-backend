@@ -188,7 +188,15 @@ public class UtentiImpl implements IUtentiServices {
                 .build();
     }
 
+    @Override
+    @Transactional(rollbackFor = ZooException.class)
+    public void logout(String userName) throws ZooException {
+        Utenti utente = repoU.findByUserName(userName)
+                .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
+        utente.setIsActive(false);
+        repoU.save(utente);
+    }
 
     @Override
     @Transactional(rollbackFor = ZooException.class)
