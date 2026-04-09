@@ -123,6 +123,9 @@ public class UtentiImpl implements IUtentiServices {
         
         if(Creq.getProvincia() != null)
         	c.setProvinca(Creq.getProvincia());
+        
+        if(Ureq.getRole() != null)
+        	u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
 
         repoU.save(u);
         repoC.save(c);
