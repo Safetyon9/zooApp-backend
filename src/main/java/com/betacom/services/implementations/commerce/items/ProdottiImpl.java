@@ -114,8 +114,7 @@ public class ProdottiImpl implements IProdottiServices {
     }
 
     @Override
-    public List<ProdottiDTO> find(ProdottiReq req) {
-
+    public List<ProdottiDTO> search(ProdottiReq req) {
         log.debug("find con filtri {}", req);
 
         return repoP.findAll(ProdottiSpecification.filterByParams(req))

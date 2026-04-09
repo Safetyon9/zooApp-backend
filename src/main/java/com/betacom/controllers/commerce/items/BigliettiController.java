@@ -75,7 +75,7 @@ public class BigliettiController {
         Object r;
         HttpStatus status = HttpStatus.OK;
         try {
-            r = bigliettiS.findAll();
+            r = bigliettiS.list();
         } catch (Exception e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;

@@ -103,6 +103,6 @@ public class ProdottiController {
     
     @PostMapping("/search")
     public List<ProdottiDTO> search(@RequestBody ProdottiReq req) {
-        return prodS.find(req);
+        return prodS.search(req);
     }
 }

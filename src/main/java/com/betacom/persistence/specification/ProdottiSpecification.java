@@ -31,8 +31,7 @@ public class ProdottiSpecification {
             }
 
             if (req.getPrezzo() != null) {
-                predicates.add(criteriaBuilder.equal(
-                        root.get("prezzo"), req.getPrezzo()));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("prezzo"), req.getPrezzo()));
             }
 
             if (req.getPeso() != null) {

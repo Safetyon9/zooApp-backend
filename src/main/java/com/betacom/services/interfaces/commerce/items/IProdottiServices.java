@@ -16,6 +16,6 @@ public interface IProdottiServices {
 
     ProdottiDTO getBySku(Long sku) throws ZooException;
 
-    List<ProdottiDTO> find(ProdottiReq req) throws ZooException;
+    List<ProdottiDTO> search(ProdottiReq req) throws ZooException;
 	
 }

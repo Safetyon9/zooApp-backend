@@ -136,7 +136,7 @@ public class BigliettiImpl implements IBigliettiServices {
     }
 
     @Override
-    public List<BigliettiDTO> findAll() throws Exception {
+    public List<BigliettiDTO> list() throws Exception {
         log.debug("findAll");
 
         List<Biglietti> lista = bigliettiR.findAll();

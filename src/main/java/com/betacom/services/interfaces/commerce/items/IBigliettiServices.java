@@ -12,5 +12,5 @@ public interface IBigliettiServices {
     void delete(Integer id) throws Exception;
     BigliettiDTO getById(Integer id) throws Exception;
     List<BigliettiDTO> search(BigliettiReq filtro) throws Exception;
-    List<BigliettiDTO> findAll() throws Exception;
+    List<BigliettiDTO> list() throws Exception;
 }
