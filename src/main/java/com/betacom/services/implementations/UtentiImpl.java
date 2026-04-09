@@ -1,6 +1,7 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,10 @@ import com.betacom.dto.outputs.UtentiResp;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -32,6 +35,8 @@ public class UtentiImpl implements IUtentiServices {
 
 	private final IUtentiRepository repoU;
     private final IClientiRepository repoC;
+    private final ICarrelliRepository repoCa;
+    
 
     private final IMessaggiServices msgS;
 
@@ -123,14 +128,32 @@ public class UtentiImpl implements IUtentiServices {
         repoC.save(c);
     }
 
-    @Transactional(rollbackFor = ZooException.class)
-    @Override
     public void delete(String username) throws ZooException {
         log.debug("delete {}", username);
 
         Utenti u = repoU.findByUserName(username)
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
-        repoU.delete(u);
+
+        Optional<Clienti> optCliente = repoC.findById(u.getCliente() != null ? u.getCliente().getId() : null);
+
+        if (optCliente.isEmpty()) {
+            repoU.delete(u);
+
+        } else {
+            Clienti cliente = optCliente.get();
+            Optional<Carrelli> optCarrello = repoCa.findById(
+                    cliente.getCarrello() != null ? cliente.getCarrello().getId() : null);
+
+            if (optCarrello.isEmpty()) {
+                repoC.delete(cliente);
+                repoU.delete(u);
+
+            } else {
+                repoCa.delete(optCarrello.get());
+                repoC.delete(cliente);
+                repoU.delete(u);
+            }
+        }
     }
 
     @Override
