@@ -84,41 +84,41 @@ public class UtentiImpl implements IUtentiServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void Allupdate(UtentiReqResp req) throws ZooException {
-        log.debug("Allupdate {}", req);
+    public void Allupdate(UtentiReq Ureq, ClientiReq Creq) throws ZooException {
+        log.debug("Allupdate {} {}", Ureq, Creq);
 
-        Utenti u = repoU.findByUserName(req.getUserName())
+        Utenti u = repoU.findByUserName(Ureq.getUsername())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_id_ntfnd")));
         
         Clienti c = repoC.findById(u.getCliente().getId())
                 .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
         
-        if(req.getUserName() != null)
-        	u.setUserName(req.getUserName());
+        if(Ureq.getUsername() != null)
+        	u.setUserName(Ureq.getUsername());
         
-        if(req.getEmail() != null)
-        	u.setEmail(req.getEmail());
+        if(Ureq.getEmail() != null)
+        	u.setEmail(Ureq.getEmail());
         
-        if(req.getNome() != null)
-        	c.setNome(req.getNome());
+        if(Creq.getNome() != null)
+        	c.setNome(Creq.getNome());
         
-        if(req.getCognome() != null)
-        	c.setCognome(req.getCognome());
+        if(Creq.getCognome() != null)
+        	c.setCognome(Creq.getCognome());
         
-        if(req.getIndirizzo() != null)
-        	c.setIndirizzo(req.getIndirizzo());
+        if(Creq.getIndirizzo() != null)
+        	c.setIndirizzo(Creq.getIndirizzo());
         
-        if(req.getComune() != null)
-        	c.setComune(req.getComune());
+        if(Creq.getComune() != null)
+        	c.setComune(Creq.getComune());
         
-        if(req.getCap() != null)
-        	c.setCap(req.getCap());
+        if(Creq.getCap() != null)
+        	c.setCap(Creq.getCap());
         
-        if(req.getTelefono() != null)
-        	c.setTelefono(req.getTelefono());
+        if(Creq.getTelefono() != null)
+        	c.setTelefono(Creq.getTelefono());
         
-        if(req.getProvincia() != null)
-        	c.setProvinca(req.getProvincia());
+        if(Creq.getProvincia() != null)
+        	c.setProvinca(Creq.getProvincia());
 
         repoU.save(u);
         repoC.save(c);
