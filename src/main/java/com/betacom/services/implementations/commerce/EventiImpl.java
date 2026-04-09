@@ -52,30 +52,30 @@ public class EventiImpl implements IEventiServices {
 
         if (req.getId() == null || req.getId() <= 0)
             throw new Exception("Id evento non valido");
-        
+
         Eventi e = repo.findById(req.getId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
-         if (req.getTipoEvento() != null && !req.getTipoEvento().isBlank()) {
+        if (req.getTipoEvento() != null && !req.getTipoEvento().isBlank()) {
             e.setTipoEvento(req.getTipoEvento());
         }
-         if (req.getDataInizio() != null) {
-             e.setDataInizio(req.getDataInizio());
-         }
-         if (req.getDataFine() != null) {
-             e.setDataFine(req.getDataFine());
-         }
+
+        if (req.getDataInizio() != null) {
+            e.setDataInizio(req.getDataInizio());
+        }
+
+        if (req.getDataFine() != null) {
+            e.setDataFine(req.getDataFine());
+        }
+
         if (e.getDataFine() != null && e.getDataInizio() != null &&
                 e.getDataFine().isBefore(e.getDataInizio())) {
-                throw new Exception("Data fine non può essere prima della data inizio");
-         }
-        
-        e.setTipoEvento(req.getTipoEvento());
-        e.setDataInizio(req.getDataInizio());
-        e.setDataFine(req.getDataFine());
+            throw new Exception("Data fine non può essere prima della data inizio");
+        }
 
         repo.save(e);
     }
+  
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -98,4 +98,38 @@ public class EventiImpl implements IEventiServices {
 
         return Mapper.buildEventoDTO(e);
     }
+    
+    @Override
+    public List<EventiDTO> search(EventiReq req) throws Exception {
+
+        List<Eventi> list;
+
+        boolean hasTipoEvento = req.getTipoEvento() != null && !req.getTipoEvento().isBlank();
+        boolean hasDataInizio = req.getDataInizio() != null;
+        boolean hasDataFine = req.getDataFine() != null;
+
+        if (hasDataInizio && hasDataFine && req.getDataFine().isBefore(req.getDataInizio())) {
+            throw new Exception("Data fine non può essere prima della data inizio");
+        }
+
+        if (hasTipoEvento && hasDataInizio && hasDataFine) {
+            list = repo.findByTipoEventoContainingIgnoreCaseAndDataInizioBetween(
+                req.getTipoEvento(),
+                req.getDataInizio(),
+                req.getDataFine()
+            );
+        } else if (hasTipoEvento) {
+            list = repo.findByTipoEventoContainingIgnoreCase(req.getTipoEvento());
+        } else if (hasDataInizio && hasDataFine) {
+            list = repo.findByDataInizioBetween(req.getDataInizio(), req.getDataFine());
+        } else {
+            list = repo.findAll();
+        }
+
+        return list.stream()
+                .map(Mapper::buildEventoDTO)
+                .toList();
+    }
+    
+    
 }

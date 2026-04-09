@@ -101,7 +101,20 @@ public class EventiController {
 
 	    return ResponseEntity.status(status).body(r);
 	}
-	
+	@PostMapping("/search")
+	public ResponseEntity<Object> search(@RequestBody(required = true) EventiReq req){
+	    Object r = new Object();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        r = evE.search(req);
+	    } catch (Exception e) {
+	        r = e.getMessage();
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
+	}
 }
 
 
