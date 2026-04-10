@@ -29,15 +29,19 @@ public class UploadImpl implements IUploadServices {
     private final IMessaggiServices msgS;
     private final IProdottiRepository repoP;
     private final IBigliettiRepository bigP;
-    
-    public UploadImpl(@Value("${app.upload.dir:uploads}") String uploadDir,  // valore per default della value
-    		IMessaggiServices msgS, IProdottiRepository repoP, IBigliettiRepository bigP ) {
-	        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); // transform relative path in absolute  path
-	        this.msgS = msgS;
-	        this.repoP = repoP;
-	        this.bigP = bigP;
-	        init();
-	    }	
+
+    public UploadImpl(
+            @Value("${app.upload.dir:uploads}") String uploadDir,
+            IMessaggiServices msgS,
+            IProdottiRepository repoP,
+            IBigliettiRepository bigP
+    ) {
+        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+        this.msgS = msgS;
+        this.repoP = repoP;
+        this.bigP = bigP;
+        init();
+    }
 
     private void init() {
         try {
@@ -45,18 +49,22 @@ public class UploadImpl implements IUploadServices {
                 Files.createDirectories(uploadPath);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Errore creazione cartella upload");
+            throw new RuntimeException(msgS.get("upload_create"));
         }
     }
 
     @Override
     public String saveImage(MultipartFile file, Integer id, String tipo) throws Exception {
 
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             throw new RuntimeException("File vuoto");
         }
 
         String original = file.getOriginalFilename();
+        if (original == null) {
+            throw new RuntimeException("Nome file non valido");
+        }
+
         String cleanName = original.replaceAll("\\s+", "_");
 
         String extension = "";
@@ -72,25 +80,37 @@ public class UploadImpl implements IUploadServices {
 
         Path destinationFile = uploadPath.resolve(uniqueName);
 
-        Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
-        if ("prodotto".equalsIgnoreCase(tipo)) {
-            Prodotti p = repoP.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Prodotto non trovato"));
+            String fileUrl = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/files/")
+                    .path(uniqueName)
+                    .toUriString();
 
-            p.setUrlImmagine(uniqueName);
-            repoP.save(p);
+            if ("prodotto".equalsIgnoreCase(tipo)) {
+
+                Prodotti p = repoP.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Prodotto non trovato"));
+
+                p.setUrlImmagine(fileUrl);
+                repoP.save(p);
+
+            } else if ("biglietto".equalsIgnoreCase(tipo)) {
+
+                Biglietti b = bigP.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Biglietto non trovato"));
+
+                b.setUrlImmagine(fileUrl);
+                bigP.save(b);
+            }
+
+            return fileUrl;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Errore salvataggio file");
         }
-
-        else if ("biglietto".equalsIgnoreCase(tipo)) {
-            Biglietti b = bigP.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Biglietto non trovato"));
-
-            b.setUrlImmagine(uniqueName);
-            bigP.save(b);
-        }
-
-        return uniqueName;
     }
 
     @Override
