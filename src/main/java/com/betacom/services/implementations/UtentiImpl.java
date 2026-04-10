@@ -347,7 +347,7 @@ public class UtentiImpl implements IUtentiServices {
 	        ut.setValidationToken(token);
 	        repoU.save(ut);
 
-	        String link = resetPasswordURL + token;
+	        String link = resetPasswordURL+"/" + token;
 
 	        String template = loadTemplate("mail/reset-password-email.html");
 	        String body = fillTemplate(template, ut.getUserName(), link);
