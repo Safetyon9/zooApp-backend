@@ -149,7 +149,7 @@ public class UtentiControllerTest {
 	
 	@Test
 	@Order(5)	
-	public void deleteSocio() {
+	public void deleteUtenti() {
 		log.debug("******* delete utenti  *******");
 		
 		Utenti ut = TestDataFactory.creaUtenteValido(utR,"2z");
@@ -167,7 +167,7 @@ public class UtentiControllerTest {
 	
 	@Test
 	@Order(5)	
-	public void deleteSocioError() {
+	public void deleteUtentiErr() {
 		log.debug("******* delete utenti error *******");
 		
 		
@@ -285,8 +285,94 @@ public class UtentiControllerTest {
 	@Test
 	@Order(13)	
 	public void updateAllUtenti() {
-
+		
+		UtentiReq u = new UtentiReq();
+		u.setUsername("TEST1747");
+        u.setEmail("ciao@gmail.com");
+        u.setPwd("12341414");
+        u.setRole("USER");
+		
+        ClientiReq c = new ClientiReq();
+        c.setNome("Mario");
+        c.setCognome("Rossi");
+        c.setIndirizzo("Via Roma 1");
+        c.setComune("Roma");
+        c.setCap("00100");
+        c.setTelefono("3331234567");
+        
+        
+		RegisterReq req = new RegisterReq(u,c);
+		req.setUtente(u);
+		
+		
+		ResponseEntity<Resp> resp = utentiC.Allupdate(req);
+	
+		
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp)resp.getBody();
+		log.debug(r.getMsg());
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
 	}
+	
+	@Test
+	@Order(14)	
+	public void updateAllUtentiErr() {
+		
+		UtentiReq u = new UtentiReq();
+		u.setUsername("TEST1747");
+        u.setEmail("ciao@gmail.com");
+        u.setPwd("12341414");
+        u.setRole("USER");
+        
+		RegisterReq req = new RegisterReq(u,null);
+		req.setUtente(u);
+		
+		ResponseEntity<Resp> resp = utentiC.Allupdate(req);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+	}
+	
+	@Test
+	@Order(15)	
+	public void logout() {
+		log.debug("Test logout Utenti");
+		
+		Utenti u = TestDataFactory.creaUtenteValido(utR,"103");
+        
+		ResponseEntity<?> resp = utentiC.logout(u.getUserName());
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Assertions.assertThat(u.getIsActive()).isFalse();
+	}
+	@Test
+	@Order(16)	
+	public void changePwd() {
+		log.debug("******* change pwd utenti  *******");
+		
+		Utenti ut = TestDataFactory.creaUtenteValido(utR,"1");
+		
+		
+		UtentiReq req = new UtentiReq();
+		req.setUsername(ut.getUserName());
+		
+		
+		req.setOldPwd(ut.getPwd());
+		
+		req.setNewPwd(ut.getPwd()+"1");
+		req.setPwd(ut.getPwd()+"1");
+		
+		ResponseEntity<Resp> resp = utentiC.changePwd(req);
+	
+		
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Resp r = (Resp)resp.getBody();
+		log.debug(r.getMsg());
+		Assertions.assertThat(r.getMsg())
+        .isEqualTo(msgS.get("rest_updated"));
+			
+	}
+	
+	
 	
 	
 	

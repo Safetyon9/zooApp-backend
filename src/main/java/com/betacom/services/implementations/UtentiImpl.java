@@ -248,7 +248,7 @@ public class UtentiImpl implements IUtentiServices {
 		           .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
 		   if (!u.getPwd().equals(req.getOldPwd()))
-		       throw new ZooException("Password attuale non corretta");
+		       throw new ZooException("pwd_ntcrct");
 
 		   u.setPwd(req.getNewPwd());
 		   repoU.save(u);
