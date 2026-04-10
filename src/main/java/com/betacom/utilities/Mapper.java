@@ -171,7 +171,7 @@ public class Mapper {
                 .peso(p.getPeso())
                 .stock(p.getStock())
                 .sku(p.getSku())
-                .categoriaId(p.getCategoria() != null ? p.getCategoria().getId() : null)
+                .categoriaNome(p.getCategoria() != null ? p.getCategoria().getNome() : null)
                 .build();
 		
 	}
