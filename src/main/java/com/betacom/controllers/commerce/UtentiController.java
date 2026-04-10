@@ -207,16 +207,16 @@ public class UtentiController {
 	}
 
 	@GetMapping("/emailValidate")
-	public ResponseEntity<Resp> emailValidate(@RequestParam String id) {
+	public ResponseEntity<Resp> emailValidate(@RequestParam String token) {
 	    Resp r = new Resp();
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
-	        log.debug("emailValidate id={}", id);
-	        utS.emailValidate(id);
-	        r.setMsg("Email validata correttamente");
+	        log.debug("emailValidate token={}", token);
+	        utS.emailValidate(token);
+	        r.setMsg("Account verificato correttamente");
 	    } catch (Exception e) {
-	        log.error("Errore in emailValidate con id={}", id, e);
+	        log.error("Errore in emailValidate con token={}", token, e);
 	        r.setMsg(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;
 	    }

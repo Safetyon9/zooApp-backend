@@ -15,5 +15,7 @@ public interface IUtentiRepository extends JpaRepository<Utenti, String> , JpaSp
     Optional<Utenti> findByUserName(String userName);
 
     Optional<Utenti> findByEmail(String email);
+    
+    Optional<Utenti> findByValidationToken(String validationToken);
 
 }

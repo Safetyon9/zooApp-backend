@@ -2,6 +2,7 @@ package com.betacom.services.implementations;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -292,26 +293,31 @@ public class UtentiImpl implements IUtentiServices {
     }
     
     @Override
-	public void sendValidation(String userName) throws Exception {
-		log.debug("sendValidation {}", userName);
+    public void sendValidation(String userName) throws Exception {
+        log.debug("sendValidation {}", userName);
 
-		Utenti ut = repoU.findById(userName)
-				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
-		sendMailValidation(ut);
+        Utenti ut = repoU.findById(userName)
+                .orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
 
-	}
+        String token = UUID.randomUUID().toString();
+        ut.setValidationToken(token);
+        repoU.save(ut);
 
-	@Transactional (rollbackFor = Exception.class)
-	@Override
-	public void emailValidate(String userName) throws Exception {
-		log.debug("emailValidate {}", userName);
-		
-		Utenti ut = repoU.findById(userName)
-				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
-		ut.setIsValidate(true);
-		repoU.save(ut);
-		
-	}
+        sendMailValidation(ut);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void emailValidate(String token) throws Exception {
+        log.debug("emailValidate token={}", token);
+
+        Utenti ut = repoU.findByValidationToken(token)
+                .orElseThrow(() -> new ZooException("Token non valido o scaduto"));
+
+        ut.setIsValidate(true);
+        ut.setValidationToken(null);
+        repoU.save(ut);
+    }
 	
 	@Override
 	public void resetPassword(UtentiReq req) throws Exception {
@@ -348,7 +354,7 @@ public class UtentiImpl implements IUtentiServices {
 	}
 
 	private void sendMailValidation(Utenti acc) throws Exception {
-	    String link = validationURL + acc.getUserName();
+	    String link = validationURL + acc.getValidationToken();
 
 	    String template = loadTemplate("mail/validation-email.html");
 	    String body = fillTemplate(template, acc.getUserName(), link);
@@ -380,6 +386,8 @@ public class UtentiImpl implements IUtentiServices {
 	            .replace("{{username}}", username)
 	            .replace("{{link}}", link);
 	}
+	
+	
 
 
 }
