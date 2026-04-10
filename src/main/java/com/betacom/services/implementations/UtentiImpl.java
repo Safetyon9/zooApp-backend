@@ -316,23 +316,21 @@ public class UtentiImpl implements IUtentiServices {
         repoU.save(ut);
     }
 	
-	@Override
-	public void resetPassword(UtentiReq req) throws Exception {
-		log.debug("resetPssword {}", req);
-		Utenti ut = repoU.findById(req.getUsername())
-				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+    @Override
+    public void resetPassword(UtentiReq req) throws Exception {
+        log.debug("resetPassword {}", req);
 
-		Optional.ofNullable(req.getNewPwd())
-			.ifPresentOrElse(pwd -> {
-				ut.setPwd(req.getNewPwd());
-			}, () -> { 
-				throw new RuntimeException(msgS.get("user_no_newpwd"));
-			});
-		
-		repoU.save(ut);
+        Utenti ut = repoU.findByValidationToken(req.getValidationToken())
+                .orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
 
-		
-	}
+        if (req.getNewPwd() == null || req.getNewPwd().trim().isEmpty()) {
+            throw new ZooException(msgS.get("user_no_newpwd"));
+        }
+
+        ut.setPwd(req.getNewPwd());
+        ut.setValidationToken(null);
+        repoU.save(ut);
+    }
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void passwordDimenticata(String email) throws Exception {

@@ -23,4 +23,5 @@ public class UtentiResp {
 	private String provincia;
 	private Integer carrelloId;
 	private Boolean isValidate;
+	private String validationToken;
 }

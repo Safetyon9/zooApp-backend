@@ -224,7 +224,7 @@ public class UtentiController {
 	    return ResponseEntity.status(status).body(r);
 	}
 	@PostMapping("/passwordDimenticata/{email}")
-	public ResponseEntity<Resp> passwordDimenticata(@PathVariable String email) {
+	public ResponseEntity<Resp> passwordDimenticata(@RequestParam String email) {
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -237,8 +237,8 @@ public class UtentiController {
 		return ResponseEntity.status(status).body(r);
 	}
 
-	@PutMapping("/resetPassword")
-	public ResponseEntity<Resp> resetPssword(@RequestBody(required = true)  UtentiReq req){
+	@PostMapping("/resetPassword")
+	public ResponseEntity<Resp> resetPassword(@RequestBody(required = true)  UtentiReq req){
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {

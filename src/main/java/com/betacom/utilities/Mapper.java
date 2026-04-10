@@ -184,6 +184,7 @@ public class Mapper {
 			    .role(u.getRole().name())
 			    .isActive(u.getIsActive())
 			    .isValidate(u.getIsValidate())
+			    .validationToken(u.getValidationToken())
 			    .build();
 		
 	}
