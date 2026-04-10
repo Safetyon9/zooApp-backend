@@ -223,23 +223,18 @@ public class UtentiController {
 
 	    return ResponseEntity.status(status).body(r);
 	}
-
-	@GetMapping("/sendResetPassword")
-	public ResponseEntity<Resp> sendResetPassword(@RequestParam String id) {
-	    Resp r = new Resp();
-	    HttpStatus status = HttpStatus.OK;
-
-	    try {
-	        log.debug("sendResetPassword id={}", id);
-	        utS.sendResetPassword(id);
-	        r.setMsg("Mail reset password inviata correttamente");
-	    } catch (Exception e) {
-	        log.error("Errore in sendResetPassword con id={}", id, e);
-	        r.setMsg(e.getMessage());
-	        status = HttpStatus.BAD_REQUEST;
-	    }
-
-	    return ResponseEntity.status(status).body(r);
+	@PostMapping("/passwordDimenticata/{email}")
+	public ResponseEntity<Resp> passwordDimenticata(@PathVariable String email) {
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.passwordDimenticata(email);
+			r.setMsg("Se l’email è corretta, riceverai una mail per reimpostare la password.");
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
 	}
 
 	@PutMapping("/resetPassword")
