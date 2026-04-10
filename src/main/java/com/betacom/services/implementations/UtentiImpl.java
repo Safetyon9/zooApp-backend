@@ -40,6 +40,9 @@ public class UtentiImpl implements IUtentiServices {
 	@Value("${mail.validation}")
 	private String validationURL;
 	
+	@Value("${mail.resetPassword}")
+	private String resetPasswordURL;
+	
 	private final IUtentiRepository repoU;
     private final IClientiRepository repoC;
     private final ICarrelliRepository repoCa;
@@ -277,6 +280,65 @@ public class UtentiImpl implements IUtentiServices {
                 .map(Mapper::buildUtentiDTO)
                 .toList();
     }
+    
+    @Override
+	public void sendValidation(String userName) throws Exception {
+		log.debug("sendValidation {}", userName);
+
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+		sendMailValidation(ut);
+
+	}
+
+	@Transactional (rollbackFor = Exception.class)
+	@Override
+	public void emailValidate(String userName) throws Exception {
+		log.debug("emailValidate {}", userName);
+		
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
+		ut.setIsValidate(true);
+		repoU.save(ut);
+		
+	}
+	
+	@Override
+	public void resetPssword(UtentiReq req) throws Exception {
+		log.debug("resetPssword {}", req);
+		Utenti ut = repoU.findById(req.getUsername())
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+
+		Optional.ofNullable(req.getNewPwd())
+			.ifPresentOrElse(pwd -> {
+				ut.setPwd(req.getNewPwd());
+			}, () -> { 
+				throw new RuntimeException(msgS.get("user_no_newpwd"));
+			});
+		
+		repoU.save(ut);
+
+		
+	}
+
+
+	@Override
+	public void sendResetPassword(String userName) throws Exception {
+		log.debug("sendResetPssword {}", userName);
+		
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
+		StringBuilder body = new StringBuilder();
+		body.append("<h2>Vendita Veicoli</h2><br><br>");
+		body.append("Buongiorno ");
+		body.append(ut.getUserName());
+		body.append("<br><br>");
+		body.append("<br>Per inizializzare la tua password va sull'URL");
+		body.append("<br><a>"+ resetPasswordURL  + ut.getUserName()+ "</a><br>");
+		body.append("<br><br>Il team Vendita Veicoli <br><br>");
+
+		sendMail(ut, "Validazione email", body.toString());
+	}
     
     private void sendMailValidation(Utenti acc) throws Exception{
 		StringBuilder body = new StringBuilder();

@@ -44,6 +44,9 @@ public class Utenti {
     private Boolean isActive = true;
 	
 	@Column(nullable=false)
+    private Boolean isValidate = false;
+	
+	@Column(nullable=false)
 	private LocalDate dataIscrizione = LocalDate.now();
 	
 	@Enumerated(EnumType.STRING)
