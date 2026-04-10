@@ -36,6 +36,14 @@ public interface IUtentiServices {
 	void changePwd(UtentiReq req) throws ZooException;
 
 	List<UtentiDTO> find(UtentiReq req);
+
+	void sendValidation(String userName) throws Exception;
+
+	void emailValidate(String userName) throws Exception;
+
+	void sendResetPassword(String userName) throws Exception;
+
+	void resetPssword(UtentiReq req) throws Exception;
 	
 	
 }

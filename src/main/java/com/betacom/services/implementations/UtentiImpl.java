@@ -3,18 +3,18 @@ package com.betacom.services.implementations;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.inputs.LoginReq;
+import com.betacom.dto.inputs.MailReq;
 import com.betacom.dto.inputs.UtentiReq;
 import com.betacom.dto.inputs.commerce.ClientiReq;
-import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.LoginDTO;
 import com.betacom.dto.outputs.RegisterDTO;
 import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.UtentiResp;
-import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.enums.Roles;
 import com.betacom.exceptions.ZooException;
 import com.betacom.persistence.entity.Utenti;
@@ -23,8 +23,8 @@ import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
 import com.betacom.persistence.repository.commerce.ICarrelliRepository;
 import com.betacom.persistence.repository.commerce.IClientiRepository;
-import com.betacom.persistence.specification.ProdottiSpecification;
 import com.betacom.persistence.specification.UtentiSpecification;
+import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
@@ -37,9 +37,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UtentiImpl implements IUtentiServices {
 
+	@Value("${mail.validation}")
+	private String validationURL;
+	
+	@Value("${mail.resetPassword}")
+	private String resetPasswordURL;
+	
 	private final IUtentiRepository repoU;
     private final IClientiRepository repoC;
     private final ICarrelliRepository repoCa;
+    private final IMailServices mailS;
     
 
     private final IMessaggiServices msgS;
@@ -66,6 +73,9 @@ public class UtentiImpl implements IUtentiServices {
         u.setEmail(Ureq.getEmail());
         u.setPwd(Ureq.getPwd());
         u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        u.setIsValidate(true);
+        u.setIsActive(false);
+        
 
         repoU.save(u);
     }
@@ -221,6 +231,7 @@ public class UtentiImpl implements IUtentiServices {
         u.setPwd(Ureq.getPwd());
         u.setIsActive(false);
         u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        u.setIsValidate(false);
         
 
         u = repoU.save(u);
@@ -237,6 +248,10 @@ public class UtentiImpl implements IUtentiServices {
         c.setUtente(u); 
         u.setCliente(c);
         c = repoC.save(c);
+        
+        Carrelli carrello = new Carrelli();
+        carrello.setCliente(c);
+        repoCa.save(carrello);
 
         return Mapper.buildRegisterDTO(c, u);
     }
@@ -248,9 +263,14 @@ public class UtentiImpl implements IUtentiServices {
 		           .orElseThrow(() -> new ZooException(msgS.get("usr_ntfnd")));
 
 		   if (!u.getPwd().equals(req.getOldPwd()))
-		       throw new ZooException("Password attuale non corretta");
+		       throw new ZooException("pwd_ntcrct");
 
-		   u.setPwd(req.getNewPwd());
+		   Optional.ofNullable(req.getNewPwd())
+			.ifPresentOrElse(pwd -> {
+				u.setPwd(req.getNewPwd());
+			}, () -> { 
+				throw new RuntimeException(msgS.get("user_no_newpwd"));
+			});
 		   repoU.save(u);
 	}
     
@@ -264,6 +284,90 @@ public class UtentiImpl implements IUtentiServices {
                 .map(Mapper::buildUtentiDTO)
                 .toList();
     }
+    
+    @Override
+	public void sendValidation(String userName) throws Exception {
+		log.debug("sendValidation {}", userName);
+
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+		sendMailValidation(ut);
+
+	}
+
+	@Transactional (rollbackFor = Exception.class)
+	@Override
+	public void emailValidate(String userName) throws Exception {
+		log.debug("emailValidate {}", userName);
+		
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
+		ut.setIsValidate(true);
+		repoU.save(ut);
+		
+	}
+	
+	@Override
+	public void resetPssword(UtentiReq req) throws Exception {
+		log.debug("resetPssword {}", req);
+		Utenti ut = repoU.findById(req.getUsername())
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+
+		Optional.ofNullable(req.getNewPwd())
+			.ifPresentOrElse(pwd -> {
+				ut.setPwd(req.getNewPwd());
+			}, () -> { 
+				throw new RuntimeException(msgS.get("user_no_newpwd"));
+			});
+		
+		repoU.save(ut);
+
+		
+	}
+
+
+	@Override
+	public void sendResetPassword(String userName) throws Exception {
+		log.debug("sendResetPssword {}", userName);
+		
+		Utenti ut = repoU.findById(userName)
+				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
+		StringBuilder body = new StringBuilder();
+		body.append("<h2>Vendita Veicoli</h2><br><br>");
+		body.append("Buongiorno ");
+		body.append(ut.getUserName());
+		body.append("<br><br>");
+		body.append("<br>Per inizializzare la tua password va sull'URL");
+		body.append("<br><a>"+ resetPasswordURL  + ut.getUserName()+ "</a><br>");
+		body.append("<br><br>Il team Vendita Veicoli <br><br>");
+
+		sendMail(ut, "Validazione email", body.toString());
+	}
+    
+    private void sendMailValidation(Utenti acc) throws Exception{
+		StringBuilder body = new StringBuilder();
+		body.append("<h2>Vendita Veicoli</h2><br><br>");
+		body.append("Buongiorno ");
+		body.append(acc.getUserName());
+		body.append("<br><br>");
+		body.append("<br>Per validare tuo mail va sull'URL");
+		body.append("<br><a>"+ validationURL  + acc.getUserName()+ "</a><br>");
+		body.append("<br><br>Il team Vendita Veicoli <br><br>");
+
+		sendMail(acc, "Validazione email", body.toString());
+	}
+
+	private void sendMail(Utenti account, String oggetto, String body) throws Exception{
+		
+		mailS.sendMail(MailReq.builder()
+				.to(account.getEmail())
+				.oggetto(oggetto)
+				.body(body)
+				.build()
+				);
+		
+
+	}
 
 
 }

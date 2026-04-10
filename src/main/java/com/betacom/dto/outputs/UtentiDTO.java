@@ -15,5 +15,6 @@ public class UtentiDTO {
     private String email;
     private String role;   
     private Boolean isActive;
+    private Boolean isValidate;
 
 }

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.betacom.enums.Roles;
 import com.betacom.persistence.entity.commerce.Clienti;
-import com.betacom.persistence.entity.gestione.Dipendenti;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,7 +25,6 @@ import lombok.Setter;
 @Table (
 		name="utenti",
 		uniqueConstraints = {
-			@UniqueConstraint(columnNames = "dipendente_id"),
 	        @UniqueConstraint(columnNames = "cliente_id")
 	    	}
 		)
@@ -46,20 +44,14 @@ public class Utenti {
     private Boolean isActive = true;
 	
 	@Column(nullable=false)
+    private Boolean isValidate = false;
+	
+	@Column(nullable=false)
 	private LocalDate dataIscrizione = LocalDate.now();
 	
 	@Enumerated(EnumType.STRING)
     @Column(nullable=false)
 	private Roles role;
-	
-	@OneToOne(
-			optional = true,
-			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			fetch = FetchType.LAZY
-			)
-    @JoinColumn(name="dipendente_id", referencedColumnName="id", unique = true)
-    private Dipendenti dipendente;
 	
 	@OneToOne(
 			optional = true,

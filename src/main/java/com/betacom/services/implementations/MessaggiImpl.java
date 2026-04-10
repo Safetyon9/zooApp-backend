@@ -1,4 +1,4 @@
-package com.betacom.services.implementations.gestione;
+package com.betacom.services.implementations;
 
 import org.springframework.stereotype.Service;
 

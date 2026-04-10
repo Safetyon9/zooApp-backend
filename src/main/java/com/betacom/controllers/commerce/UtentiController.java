@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
-import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.UtentiDTO;
-import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -184,23 +182,87 @@ public class UtentiController {
 	    return ResponseEntity.status(status).body(r);
 	}
 	
-	@PutMapping("/changePwd")
-	public ResponseEntity<Resp> changePwd(@RequestBody UtentiReq req) {
-	    Resp r = new Resp();
-	    HttpStatus status = HttpStatus.OK;
-	    try {
-	        utS.changePwd(req);
-	        r.setMsg(msgS.get("rest_updated"));
-	    } catch (Exception e) {
-	        r.setMsg(e.getMessage());
-	        status = HttpStatus.BAD_REQUEST;
-	    }
-	    return ResponseEntity.status(status).body(r);
-	}
-	
 	@PostMapping("/search")
     public List<UtentiDTO> search(@RequestBody UtentiReq req) {
         return utS.find(req);
     }
+	
+	@GetMapping("/sendValidation")
+	public ResponseEntity<Resp> sendValidation (@RequestParam (required = true)  String id){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.sendValidation(id);
+			r.setMsg(msgS.get("rest_created"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST; 
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+
+
+	@GetMapping("/emailValidate")
+	public ResponseEntity<Resp> emailValidate (@RequestParam (required = true)  String id){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.emailValidate(id);
+			r.setMsg(msgS.get("rest_created"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST; 
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+
+	@GetMapping("/sendResetPassword")
+	public ResponseEntity<Resp> sendResetPssword (@RequestParam (required = true)  String id){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.sendResetPassword(id);
+			r.setMsg(msgS.get("rest_created"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST; 
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+
+	@PutMapping("/resetPassword")
+	public ResponseEntity<Resp> resetPssword(@RequestBody(required = true)  UtentiReq req){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.resetPssword(req);
+			r.setMsg(msgS.get("rest_updated"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);		
+	}
+
+	
+	@PutMapping("/changePwd")
+	public ResponseEntity<Resp> changePwd(@RequestBody(required = true)  UtentiReq req){
+		Resp r = new Resp();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			utS.changePwd(req);
+			r.setMsg(msgS.get("rest_updated"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);		
+	}
+
+	
+	
 
 }
