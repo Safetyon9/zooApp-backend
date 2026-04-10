@@ -261,6 +261,7 @@ public class Mapper {
 		
 		return OggettiCarrelliDTO.builder()
 				.id(oc.getId())
+				.prezzoUnitario(oc.getPrezzoUnitario())			
 				.prezzoTotale(oc.getPrezzoTotale())
 				.quantita(oc.getQuantita())
 				.carrelloId(oc.getCarrello().getId())

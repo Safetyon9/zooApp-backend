@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;
 
+<<<<<<< Updated upstream
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,4 +25,8 @@ public class ClientiDTO  {
     private String utenteUsername;
     private Integer carrelloId;
     private List<OrdiniDTO> ordini;
+=======
+public class ClientiDTO {
+	 
+>>>>>>> Stashed changes
 }
