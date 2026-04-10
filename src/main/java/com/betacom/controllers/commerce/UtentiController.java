@@ -189,49 +189,57 @@ public class UtentiController {
     }
 	
 	@GetMapping("/sendValidation")
-	public ResponseEntity<Resp> sendValidation (@RequestParam (required = true)  String id){
-		Resp r = new Resp();
-		HttpStatus status = HttpStatus.OK;
-		try {
-			utS.sendValidation(id);
-			r.setMsg(msgS.get("rest_created"));
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			status = HttpStatus.BAD_REQUEST; 
-		}
-		return ResponseEntity.status(status).body(r);
-		
+	public ResponseEntity<Resp> sendValidation(@RequestParam String id) {
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        log.debug("sendValidation id={}", id);
+	        utS.sendValidation(id);
+	        r.setMsg("Mail di validazione inviata correttamente");
+	    } catch (Exception e) {
+	        log.error("Errore in sendValidation con id={}", id, e);
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
 	}
 
-
 	@GetMapping("/emailValidate")
-	public ResponseEntity<Resp> emailValidate (@RequestParam (required = true)  String id){
-		Resp r = new Resp();
-		HttpStatus status = HttpStatus.OK;
-		try {
-			utS.emailValidate(id);
-			r.setMsg(msgS.get("rest_created"));
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			status = HttpStatus.BAD_REQUEST; 
-		}
-		return ResponseEntity.status(status).body(r);
-		
+	public ResponseEntity<Resp> emailValidate(@RequestParam String id) {
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        log.debug("emailValidate id={}", id);
+	        utS.emailValidate(id);
+	        r.setMsg("Email validata correttamente");
+	    } catch (Exception e) {
+	        log.error("Errore in emailValidate con id={}", id, e);
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
 	}
 
 	@GetMapping("/sendResetPassword")
-	public ResponseEntity<Resp> sendResetPssword (@RequestParam (required = true)  String id){
-		Resp r = new Resp();
-		HttpStatus status = HttpStatus.OK;
-		try {
-			utS.sendResetPassword(id);
-			r.setMsg(msgS.get("rest_created"));
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			status = HttpStatus.BAD_REQUEST; 
-		}
-		return ResponseEntity.status(status).body(r);
-		
+	public ResponseEntity<Resp> sendResetPassword(@RequestParam String id) {
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        log.debug("sendResetPassword id={}", id);
+	        utS.sendResetPassword(id);
+	        r.setMsg("Mail reset password inviata correttamente");
+	    } catch (Exception e) {
+	        log.error("Errore in sendResetPassword con id={}", id, e);
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
 	}
 
 	@PutMapping("/resetPassword")
@@ -239,7 +247,7 @@ public class UtentiController {
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			utS.resetPssword(req);
+			utS.resetPassword(req);
 			r.setMsg(msgS.get("rest_updated"));
 		} catch (Exception e) {
 			r.setMsg(e.getMessage());

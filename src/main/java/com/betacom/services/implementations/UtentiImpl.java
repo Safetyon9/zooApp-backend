@@ -29,6 +29,12 @@ import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.springframework.core.io.ClassPathResource;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -308,7 +314,7 @@ public class UtentiImpl implements IUtentiServices {
 	}
 	
 	@Override
-	public void resetPssword(UtentiReq req) throws Exception {
+	public void resetPassword(UtentiReq req) throws Exception {
 		log.debug("resetPssword {}", req);
 		Utenti ut = repoU.findById(req.getUsername())
 				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
@@ -328,45 +334,52 @@ public class UtentiImpl implements IUtentiServices {
 
 	@Override
 	public void sendResetPassword(String userName) throws Exception {
-		log.debug("sendResetPssword {}", userName);
-		
-		Utenti ut = repoU.findById(userName)
-				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));	
-		StringBuilder body = new StringBuilder();
-		body.append("<h2>Vendita Veicoli</h2><br><br>");
-		body.append("Buongiorno ");
-		body.append(ut.getUserName());
-		body.append("<br><br>");
-		body.append("<br>Per inizializzare la tua password va sull'URL");
-		body.append("<br><a>"+ resetPasswordURL  + ut.getUserName()+ "</a><br>");
-		body.append("<br><br>Il team Vendita Veicoli <br><br>");
+	    log.debug("sendResetPassword {}", userName);
 
-		sendMail(ut, "Validazione email", body.toString());
-	}
-    
-    private void sendMailValidation(Utenti acc) throws Exception{
-		StringBuilder body = new StringBuilder();
-		body.append("<h2>Vendita Veicoli</h2><br><br>");
-		body.append("Buongiorno ");
-		body.append(acc.getUserName());
-		body.append("<br><br>");
-		body.append("<br>Per validare tuo mail va sull'URL");
-		body.append("<br><a>"+ validationURL  + acc.getUserName()+ "</a><br>");
-		body.append("<br><br>Il team Vendita Veicoli <br><br>");
+	    Utenti ut = repoU.findById(userName)
+	            .orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
 
-		sendMail(acc, "Validazione email", body.toString());
+	    String link = resetPasswordURL + ut.getUserName();
+
+	    String template = loadTemplate("mail/reset-password-email.html");
+	    String body = fillTemplate(template, ut.getUserName(), link);
+
+	    sendMail(ut, "Zoo Betacom Roma - Reset Password", body);
 	}
 
-	private void sendMail(Utenti account, String oggetto, String body) throws Exception{
-		
-		mailS.sendMail(MailReq.builder()
-				.to(account.getEmail())
-				.oggetto(oggetto)
-				.body(body)
-				.build()
-				);
-		
+	private void sendMailValidation(Utenti acc) throws Exception {
+	    String link = validationURL + acc.getUserName();
 
+	    String template = loadTemplate("mail/validation-email.html");
+	    String body = fillTemplate(template, acc.getUserName(), link);
+
+	    sendMail(acc, "Zoo Betacom Roma - Validazione Account", body);
+	}
+
+	private void sendMail(Utenti account, String oggetto, String body) throws Exception {
+	    mailS.sendMail(MailReq.builder()
+	            .to(account.getEmail())
+	            .oggetto(oggetto)
+	            .body(body)
+	            .build()
+	    );
+	}
+
+	private String loadTemplate(String path) throws Exception {
+	    ClassPathResource resource = new ClassPathResource(path);
+	    log.debug("Template path: {}", path);
+	    log.debug("Template exists: {}", resource.exists());
+
+	    try (InputStream is = resource.getInputStream()) {
+	        byte[] bytes = is.readAllBytes();
+	        return new String(bytes, StandardCharsets.UTF_8);
+	    }
+	}
+
+	private String fillTemplate(String template, String username, String link) {
+	    return template
+	            .replace("{{username}}", username)
+	            .replace("{{link}}", link);
 	}
 
 
