@@ -1,5 +1,7 @@
 package com.betacom.controllers.commerce;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
 import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.commerce.items.ProdottiReq;
+import com.betacom.dto.outputs.UtentiDTO;
+import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
@@ -192,5 +197,10 @@ public class UtentiController {
 	    }
 	    return ResponseEntity.status(status).body(r);
 	}
+	
+	@PostMapping("/search")
+    public List<UtentiDTO> search(@RequestBody UtentiReq req) {
+        return utS.find(req);
+    }
 
 }
