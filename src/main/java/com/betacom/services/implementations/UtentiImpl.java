@@ -369,7 +369,7 @@ public class UtentiImpl implements IUtentiServices {
 	    ClassPathResource resource = new ClassPathResource(path);
 	    log.debug("Template path: {}", path);
 	    log.debug("Template exists: {}", resource.exists());
-
+//dasd
 	    try (InputStream is = resource.getInputStream()) {
 	        byte[] bytes = is.readAllBytes();
 	        return new String(bytes, StandardCharsets.UTF_8);
