@@ -73,6 +73,9 @@ public class UtentiImpl implements IUtentiServices {
         u.setEmail(Ureq.getEmail());
         u.setPwd(Ureq.getPwd());
         u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        u.setIsValidate(true);
+        u.setIsActive(false);
+        
 
         repoU.save(u);
     }
@@ -228,6 +231,7 @@ public class UtentiImpl implements IUtentiServices {
         u.setPwd(Ureq.getPwd());
         u.setIsActive(false);
         u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        u.setIsValidate(false);
         
 
         u = repoU.save(u);

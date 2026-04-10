@@ -182,6 +182,7 @@ public class Mapper {
 			    .email(u.getEmail())
 			    .role(u.getRole().name())
 			    .isActive(u.getIsActive())
+			    .isValidate(u.getIsValidate())
 			    .build();
 		
 	}
