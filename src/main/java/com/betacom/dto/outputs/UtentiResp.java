@@ -21,4 +21,5 @@ public class UtentiResp {
     private String cap;
 	private String telefono; 
 	private String provincia;
+	private Integer carrelloId;
 }

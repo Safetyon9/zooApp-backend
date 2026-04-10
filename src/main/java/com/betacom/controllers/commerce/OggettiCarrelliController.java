@@ -31,6 +31,7 @@ public class OggettiCarrelliController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Resp> create(@RequestBody(required = true) OggettiCarrelliReq req) {
+		log.debug("REQUEST: {}", req);
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		

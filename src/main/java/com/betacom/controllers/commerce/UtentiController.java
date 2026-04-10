@@ -130,6 +130,7 @@ public class UtentiController {
 		try {
 			r= utS.getAllByUser(userName);
 		} catch (Exception e) {
+			log.debug("ERRORE findAllByUserName: " + e.getMessage());
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}

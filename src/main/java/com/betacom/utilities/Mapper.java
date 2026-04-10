@@ -207,6 +207,7 @@ public class Mapper {
 			    .cap(c.getCap())
 			    .telefono(c.getTelefono())
 			    .provincia(c.getProvinca())
+			    .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
 			    .build();
 		
 	}
