@@ -16,6 +16,7 @@ public class ProdottiDTO {
     private Integer id;
     private String nome;
     private String descrizione;
+    private String urlImmagine;
     private BigDecimal prezzo;
     private BigDecimal dimensioni;
     private BigDecimal peso;

@@ -94,7 +94,7 @@ public class UploadImpl implements IUploadServices {
                 Prodotti p = repoP.findById(id)
                         .orElseThrow(() -> new RuntimeException("Prodotto non trovato"));
 
-                p.setUrlImmagine(fileUrl);
+                p.setUrlImmagine(uniqueName);
                 repoP.save(p);
 
             } else if ("biglietto".equalsIgnoreCase(tipo)) {
@@ -102,11 +102,11 @@ public class UploadImpl implements IUploadServices {
                 Biglietti b = bigP.findById(id)
                         .orElseThrow(() -> new RuntimeException("Biglietto non trovato"));
 
-                b.setUrlImmagine(fileUrl);
+                b.setUrlImmagine(uniqueName);
                 bigP.save(b);
             }
 
-            return fileUrl;
+            return uniqueName;
 
         } catch (IOException e) {
             throw new RuntimeException("Errore salvataggio file");
