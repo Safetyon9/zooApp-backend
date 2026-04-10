@@ -49,6 +49,9 @@ public class Utenti {
 	@Column(nullable=false)
 	private LocalDate dataIscrizione = LocalDate.now();
 	
+	@Column(name = "validationToken")
+	private String validationToken;
+	
 	@Enumerated(EnumType.STRING)
     @Column(nullable=false)
 	private Roles role;

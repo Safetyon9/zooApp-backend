@@ -43,7 +43,9 @@ public interface IUtentiServices {
 
 	void sendResetPassword(String userName) throws Exception;
 
-	void resetPssword(UtentiReq req) throws Exception;
+	void resetPassword(UtentiReq req) throws Exception;
+	
+	
 	
 	
 }

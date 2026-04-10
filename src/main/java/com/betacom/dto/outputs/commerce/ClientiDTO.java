@@ -24,4 +24,5 @@ public class ClientiDTO  {
     private String utenteUsername;
     private Integer carrelloId;
     private List<OrdiniDTO> ordini;
+
 }

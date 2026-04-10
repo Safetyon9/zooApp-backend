@@ -10,6 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class OggettiCarrelliReq {
+
 	
 	private Integer id;
 	private Integer quantita;
@@ -18,4 +19,5 @@ public class OggettiCarrelliReq {
 
 	private BigDecimal prezzoUnitario;
 	private BigDecimal prezzoTotale;
+
 }

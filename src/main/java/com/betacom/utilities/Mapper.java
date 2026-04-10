@@ -193,6 +193,7 @@ public class Mapper {
 				    .userName(u.getUserName())
 				    .email(u.getEmail())
 				    .role(u.getRole().name())
+				    .isValidate(u.getIsValidate())
 				    .build();
 		}
 			
@@ -207,6 +208,8 @@ public class Mapper {
 			    .cap(c.getCap())
 			    .telefono(c.getTelefono())
 			    .provincia(c.getProvinca())
+			    .isValidate(u.getIsValidate())
+			    .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
 			    .build();
 		
 	}
@@ -260,6 +263,7 @@ public class Mapper {
 		
 		return OggettiCarrelliDTO.builder()
 				.id(oc.getId())
+				.prezzoUnitario(oc.getPrezzoUnitario())			
 				.prezzoTotale(oc.getPrezzoTotale())
 				.quantita(oc.getQuantita())
 				.carrelloId(oc.getCarrello().getId())

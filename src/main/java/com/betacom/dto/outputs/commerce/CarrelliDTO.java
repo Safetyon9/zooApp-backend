@@ -2,8 +2,6 @@ package com.betacom.dto.outputs.commerce;
 
 import java.util.List;
 
-import com.betacom.persistence.entity.commerce.OggettiCarrelli;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +11,10 @@ import lombok.Setter;
 @Builder
 public class CarrelliDTO {
 	private Integer id;
+
 	private Integer clienteId;                        
+
+	private ClientiDTO cliente;                        
+
 	private List<OggettiCarrelliDTO> oggettiCarrello;
 }

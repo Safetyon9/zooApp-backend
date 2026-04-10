@@ -28,6 +28,7 @@ public class CarrelliImpl implements ICarrelliServices{
 	private final ICarrelliRepository carrelliRepo;
 	private final IClientiRepository clientiRepo;
 	private final IMessaggiServices msgS;
+
 	
 	@Override
 	public void create(CarrelliReq req) throws Exception {
@@ -42,10 +43,15 @@ public class CarrelliImpl implements ICarrelliServices{
 		
 		Carrelli c = new Carrelli();
 		
+
 		c.setCliente(cliente);
 		c.setOggettiCarrello(new ArrayList<OggettiCarrelli>());
 		 
 		carrelliRepo.save(c);
+
+		 c.setCliente(cliente);
+		 
+		 carrelliRepo.save(c);
 		
 	}
 	
@@ -63,19 +69,24 @@ public class CarrelliImpl implements ICarrelliServices{
 
 	@Override
 	public List<CarrelliDTO> findAll() throws Exception {
+
 		List<Carrelli> lC = carrelliRepo.findAll();
 		
 		return lC.stream()
 				.map(c -> Mapper.buildCarrelliDTO(c)).toList();
+
+
 	}
 
 	@Override
 	public CarrelliDTO getById(Integer id) throws Exception {
+
 		
 		Carrelli carrelli = carrelliRepo.findById(id)
 				.orElseThrow(() -> new ZooException("carrello non trovato nel DB: "));
 		
 		return Mapper.buildCarrelliDTO(carrelli);
+
 	}
 
 }
