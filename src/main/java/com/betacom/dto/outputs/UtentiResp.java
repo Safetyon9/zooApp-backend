@@ -22,4 +22,5 @@ public class UtentiResp {
 	private String telefono; 
 	private String provincia;
 	private Integer carrelloId;
+	private Boolean isValidate;
 }
