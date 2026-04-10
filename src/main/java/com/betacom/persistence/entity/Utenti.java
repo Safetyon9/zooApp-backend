@@ -25,7 +25,6 @@ import lombok.Setter;
 @Table (
 		name="utenti",
 		uniqueConstraints = {
-			@UniqueConstraint(columnNames = "dipendente_id"),
 	        @UniqueConstraint(columnNames = "cliente_id")
 	    	}
 		)
