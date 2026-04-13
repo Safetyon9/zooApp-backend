@@ -1,6 +1,7 @@
 package com.betacom.services.implementations;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,9 @@ public class MailImpl implements IMailServices{
 		helper.setFrom(from);
 		helper.setSubject(req.getOggetto());
 		helper.setText(req.getBody(), true);
+		if (req.getAttachment() != null && req.getAttachment().length > 0) {
+			helper.addInline("email-bg", new ByteArrayResource(req.getAttachment()), "image/jpeg");
+		}
 		mailSender.send(mimeMessage);
 		log.debug("dopo  send");
 		

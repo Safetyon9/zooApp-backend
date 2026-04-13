@@ -349,8 +349,9 @@ public class UtentiImpl implements IUtentiServices {
 
 	        String template = loadTemplate("mail/reset-password-email.html");
 	        String body = fillTemplate(template, ut.getUserName(), link);
+            byte[] backgroundImage = loadBinaryResource("mail/pexel.jpg");
 
-	        sendMail(ut, "Zoo Betacom Roma - Reset Password", body);
+            sendMail(ut, "Zoo Betacom Roma - Reset Password", body, backgroundImage);
 	    }
 	}
 
@@ -359,15 +360,17 @@ public class UtentiImpl implements IUtentiServices {
 
 	    String template = loadTemplate("mail/validation-email.html");
 	    String body = fillTemplate(template, acc.getUserName(), link);
+        byte[] backgroundImage = loadBinaryResource("mail/pexel.jpg");
 
-	    sendMail(acc, "Zoo Betacom Roma - Validazione Account", body);
+        sendMail(acc, "Zoo Betacom Roma - Validazione Account", body, backgroundImage);
 	}
 
-	private void sendMail(Utenti account, String oggetto, String body) throws Exception {
+    private void sendMail(Utenti account, String oggetto, String body, byte[] attachment) throws Exception {
 	    mailS.sendMail(MailReq.builder()
 	            .to(account.getEmail())
 	            .oggetto(oggetto)
 	            .body(body)
+                .attachment(attachment)
 	            .build()
 	    );
 	}
@@ -387,6 +390,13 @@ public class UtentiImpl implements IUtentiServices {
 	            .replace("{{username}}", username)
 	            .replace("{{link}}", link);
 	}
+
+    private byte[] loadBinaryResource(String path) throws Exception {
+        ClassPathResource resource = new ClassPathResource(path);
+        try (InputStream is = resource.getInputStream()) {
+            return is.readAllBytes();
+        }
+    }
 	
 	
 
