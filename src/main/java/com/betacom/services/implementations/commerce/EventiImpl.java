@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.dto.inputs.UtentiReq;
 import com.betacom.dto.inputs.commerce.EventiReq;
+import com.betacom.dto.outputs.UtentiDTO;
 import com.betacom.dto.outputs.commerce.EventiDTO;
 import com.betacom.persistence.entity.commerce.Eventi;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
+import com.betacom.persistence.specification.EventiSpecification;
+import com.betacom.persistence.specification.UtentiSpecification;
 import com.betacom.services.interfaces.commerce.IEventiServices;
 import com.betacom.utilities.Mapper;
 
@@ -32,13 +36,12 @@ public class EventiImpl implements IEventiServices {
         if (req.getDataInizio() == null)
             throw new Exception("Data inizio obbligatoria");
 
-        if (req.getDataFine() == null)
-            throw new Exception("Data fine obbligatoria");
-
         if (req.getDataFine().isBefore(req.getDataInizio()))
             throw new Exception("Data fine non può essere prima della data inizio");
-
+        
+        
         Eventi e = new Eventi();
+        e.setDescrizione(req.getDescrizione());
         e.setTipoEvento(req.getTipoEvento());
         e.setDataInizio(req.getDataInizio());
         e.setDataFine(req.getDataFine());
@@ -66,6 +69,9 @@ public class EventiImpl implements IEventiServices {
 
         if (req.getDataFine() != null) {
             e.setDataFine(req.getDataFine());
+        }
+        if(req.getDescrizione() != null) {
+        	e.setDescrizione(req.getDescrizione());
         }
 
         if (e.getDataFine() != null && e.getDataInizio() != null &&
@@ -103,34 +109,14 @@ public class EventiImpl implements IEventiServices {
         return Mapper.buildEventoDTO(e);
     }
     
+    
     @Override
-    public List<EventiDTO> search(EventiReq req) throws Exception {
+    public List<EventiDTO> find(EventiReq req) {
 
-        List<Eventi> list;
+        log.debug("find con filtri {}", req);
 
-        boolean hasTipoEvento = req.getTipoEvento() != null && !req.getTipoEvento().isBlank();
-        boolean hasDataInizio = req.getDataInizio() != null;
-        boolean hasDataFine = req.getDataFine() != null;
-
-        if (hasDataInizio && hasDataFine && req.getDataFine().isBefore(req.getDataInizio())) {
-            throw new Exception("Data fine non può essere prima della data inizio");
-        }
-
-        if (hasTipoEvento && hasDataInizio && hasDataFine) {
-            list = repo.findByTipoEventoContainingIgnoreCaseAndDataInizioBetween(
-                req.getTipoEvento(),
-                req.getDataInizio(),
-                req.getDataFine()
-            );
-        } else if (hasTipoEvento) {
-            list = repo.findByTipoEventoContainingIgnoreCase(req.getTipoEvento());
-        } else if (hasDataInizio && hasDataFine) {
-            list = repo.findByDataInizioBetween(req.getDataInizio(), req.getDataFine());
-        } else {
-            list = repo.findAll();
-        }
-
-        return list.stream()
+        return repo.findAll(EventiSpecification.filterByParams(req))
+                .stream()
                 .map(Mapper::buildEventoDTO)
                 .toList();
     }

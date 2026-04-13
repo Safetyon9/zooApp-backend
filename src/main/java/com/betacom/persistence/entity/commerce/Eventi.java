@@ -28,6 +28,9 @@ public class Eventi {
 	@Column(nullable = false)
 	private String tipoEvento;
 	
+	@Column(nullable = false)
+	private String descrizione;
+	
 	@Column(name = "data_inizio", nullable = false)
     private LocalDate dataInizio;
 

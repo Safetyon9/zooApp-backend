@@ -95,6 +95,7 @@ public class Mapper {
 	            .tipoEvento(e.getTipoEvento())
 	            .dataInizio(e.getDataInizio())
 	            .dataFine(e.getDataFine())
+	            .descrizione(e.getDescrizione())
 	            .build();
 	}
 	

@@ -18,4 +18,5 @@ public class EventiDTO {
     private String tipoEvento;
     private LocalDate dataInizio;
     private LocalDate dataFine;
+    private String descrizione;
 }
