@@ -101,6 +101,8 @@ public class UtentiImpl implements IUtentiServices {
         if(req.getRole() != null) {
         	u.setRole(Roles.valueOf(req.getRole().toUpperCase()));
         }
+        
+        u.setValidationToken(null);
     }
     
 
@@ -145,6 +147,8 @@ public class UtentiImpl implements IUtentiServices {
         if(Ureq.getRole() != null)
         	u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
 
+        u.setValidationToken(null);
+        
         repoU.save(u);
         repoC.save(c);
     }
