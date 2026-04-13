@@ -200,23 +200,32 @@ public class UtentiImpl implements IUtentiServices {
         return Mapper.buildUtentiResp(u, c);
 	}
     
-    @Override
-    public LoginDTO login(LoginReq req) throws ZooException {
-        log.debug("login {}", req);
-        Utenti utente = repoU.findByUserName(req.getUsername())
-                .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
-        
-        utente.setIsActive(true);
-        repoU.save(utente);
-        log.debug("UTENTE ONLINE/OFFLINE: "+utente.getIsActive());
+	@Override
+	public LoginDTO login(LoginReq req) throws ZooException {
 
-        if(!utente.getPwd().equals(req.getPwd()))
-            throw new ZooException(msgS.get("login_invalid"));
-        return LoginDTO.builder()
-                .username(utente.getUserName())
-                .ruolo(utente.getRole().toString())
-                .build();
-    }
+	    log.debug("login {}", req);
+
+	    Utenti utente = repoU.findByUserName(req.getUsername())
+	            .orElseThrow(() -> new ZooException(msgS.get("login_invalid")));
+
+	    if (!utente.getPwd().equals(req.getPwd()))
+	        throw new ZooException(msgS.get("login_invalid"));
+
+	    utente.setIsActive(true);
+	    repoU.save(utente);
+
+	    Integer carrelloId = null;
+
+	    if (utente.getCliente() != null && utente.getCliente().getCarrello() != null) {
+	        carrelloId = utente.getCliente().getCarrello().getId();
+	    }
+
+	    return LoginDTO.builder()
+	            .username(utente.getUserName())
+	            .ruolo(utente.getRole().toString())
+	            .carrelloId(carrelloId)
+	            .build();
+	}
 
     @Override
     @Transactional(rollbackFor = ZooException.class)

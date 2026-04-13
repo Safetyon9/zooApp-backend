@@ -15,6 +15,6 @@ public class LoginDTO {
 
     private String username;
     private String ruolo;
-
+    private Integer carrelloId;
 }
 

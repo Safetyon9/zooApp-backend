@@ -1,6 +1,7 @@
 package com.betacom.services.implementations.commerce;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,15 +45,31 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		Items item = itemRepo.findById(req.getItemId())
 		        .orElseThrow(() -> new ZooException("item non trovato nel DB: " + req.getItemId()));
 		
-		OggettiCarrelli oggettiCarrelli = new OggettiCarrelli();
+		Optional<OggettiCarrelli> existing =
+				oggRepo.findByCarrelloIdAndItemId(req.getCarrelloId(), req.getItemId());
 		
-		oggettiCarrelli.setPrezzoUnitario(req.getPrezzoUnitario());
-		oggettiCarrelli.setQuantita(req.getQuantita());
-		oggettiCarrelli.setPrezzoTotale(Utils.calcolaPrezzoTotale(req.getQuantita(), req.getPrezzoUnitario()));
-		oggettiCarrelli.setCarrello(c);
-		oggettiCarrelli.setItem(item);
-		
-		oggRepo.save(oggettiCarrelli);
+		OggettiCarrelli obj;
+
+		if (existing.isPresent()) {
+
+		    obj = existing.get();
+
+		    obj.setQuantita(obj.getQuantita() + req.getQuantita());
+
+		} else {
+
+		    obj = new OggettiCarrelli();
+		    obj.setCarrello(c);
+		    obj.setItem(item);
+		    obj.setPrezzoUnitario(item.getPrezzo());
+		    obj.setQuantita(req.getQuantita());
+		}
+
+		obj.setPrezzoTotale(
+		    Utils.calcolaPrezzoTotale(obj.getQuantita(), obj.getPrezzoUnitario())
+		);
+
+		oggRepo.save(obj);
 		
 	}
 
@@ -66,7 +83,12 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 				.orElseThrow(() -> new ZooException("oggetto carrello non trovato nel DB: "+ req.getId()));
 		
 		if(req.getPrezzoTotale() != null)
-			oggettiCarrelli.setPrezzoTotale(req.getPrezzoTotale());
+			oggettiCarrelli.setPrezzoTotale(
+				    Utils.calcolaPrezzoTotale(
+				        oggettiCarrelli.getQuantita(),
+				        oggettiCarrelli.getPrezzoUnitario()
+				    )
+				);
 		
 		if(req.getQuantita() != null)
 			oggettiCarrelli.setQuantita(req.getQuantita());

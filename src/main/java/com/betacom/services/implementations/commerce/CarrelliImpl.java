@@ -47,10 +47,6 @@ public class CarrelliImpl implements ICarrelliServices{
 		c.setCliente(cliente);
 		c.setOggettiCarrello(new ArrayList<OggettiCarrelli>());
 		 
-		carrelliRepo.save(c);
-
-		 c.setCliente(cliente);
-		 
 		 carrelliRepo.save(c);
 		
 	}
