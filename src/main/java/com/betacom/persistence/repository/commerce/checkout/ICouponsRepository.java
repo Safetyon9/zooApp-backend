@@ -8,4 +8,6 @@ import com.betacom.persistence.entity.commerce.checkout.Coupons;
 @Repository
 public interface ICouponsRepository extends JpaRepository<Coupons, Integer>{
 
+	boolean existsByCodice(String codiceFinale);
+
 }
