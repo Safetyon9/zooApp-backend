@@ -28,7 +28,7 @@ public class Eventi {
 	@Column(nullable = false)
 	private String tipoEvento;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String descrizione;
 	
 	@Column(name = "data_inizio", nullable = false)
