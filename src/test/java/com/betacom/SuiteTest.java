@@ -12,6 +12,7 @@ import com.betacom.corrieri.CorrieriControllerTest;
 import com.betacom.coupons.CouponsControllerTest;
 import com.betacom.eventi.EventiControllerTest;
 import com.betacom.giornate.GiornateControllerTest;
+import com.betacom.mail.MailControllerTest;
 import com.betacom.metodiPagamento.MetodiPagamentoControllerTest;
 import com.betacom.oggettiCarrelli.OggettiCarrelliControllerTest;
 import com.betacom.oggettiordini.OggettiOrdiniControllerTest;
@@ -25,42 +26,9 @@ import com.betacom.utenti.UtentiImplTest;
 
 @Suite
 @SelectClasses({
-	BigliettiControllerTest.class,
+	OggettiCarrelliControllerTest.class
 
-	BigliettiGiornataControllerTest.class,
 
-	CarrelliControllerTest.class,
-	
-	CategorieControllerTest.class,
-
-	ClientiControllerTest.class,
-	
-	CorrieriControllerTest.class,
-	
-	CouponsControllerTest.class,
-
-	EventiControllerTest.class,
-
-	GiornateControllerTest.class,
-
-	MetodiPagamentoControllerTest.class,
-
-	OggettiCarrelliControllerTest.class,
-
-	OggettiOrdiniControllerTest.class,
-
-	OrdiniControllerTest.class,
-
-	PagamentiControllerTest.class,
-
-	ProdottiControllerTest.class,
-
-	RecensioniControllerTest.class,
-
-	SpedizioniControllerTest.class,
-
-	UtentiImplTest.class,
-	UtentiControllerTest.class
 })
 
 public class SuiteTest {

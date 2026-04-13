@@ -12,8 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.betacom.controllers.commerce.checkout.OggettiOrdiniController;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
@@ -39,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OggettiOrdiniControllerTest {
-
+	
     @Autowired
     private OggettiOrdiniController ooC;
 
