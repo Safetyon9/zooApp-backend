@@ -166,6 +166,7 @@ public class Mapper {
                 .id(p.getId())
                 .nome(p.getNome())
                 .descrizione(p.getDescrizione())
+                .urlImmagine(p.getUrlImmagine())
                 .prezzo(p.getPrezzo())
                 .dimensioni(p.getDimensioni())
                 .peso(p.getPeso())
@@ -183,6 +184,7 @@ public class Mapper {
 			    .role(u.getRole().name())
 			    .isActive(u.getIsActive())
 			    .isValidate(u.getIsValidate())
+			    .validationToken(u.getValidationToken())
 			    .build();
 		
 	}

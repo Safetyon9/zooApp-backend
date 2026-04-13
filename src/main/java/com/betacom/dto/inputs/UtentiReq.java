@@ -16,5 +16,6 @@ public class UtentiReq {
     private String oldPwd;
     private String newPwd;
     private Boolean isValidate;
+    private String validationToken;
 
 }

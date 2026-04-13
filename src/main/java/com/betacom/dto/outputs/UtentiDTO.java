@@ -16,5 +16,6 @@ public class UtentiDTO {
     private String role;   
     private Boolean isActive;
     private Boolean isValidate;
+    private String validationToken;
 
 }

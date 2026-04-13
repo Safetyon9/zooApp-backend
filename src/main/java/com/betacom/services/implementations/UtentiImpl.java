@@ -1,10 +1,13 @@
 package com.betacom.services.implementations;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +32,6 @@ import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.IUtentiServices;
 import com.betacom.utilities.Mapper;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.springframework.core.io.ClassPathResource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -319,38 +316,42 @@ public class UtentiImpl implements IUtentiServices {
         repoU.save(ut);
     }
 	
+    @Override
+    public void resetPassword(UtentiReq req) throws Exception {
+        log.debug("resetPassword {}", req);
+
+        Utenti ut = repoU.findByValidationToken(req.getValidationToken())
+                .orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+
+        if (req.getNewPwd() == null || req.getNewPwd().trim().isEmpty()) {
+            throw new ZooException(msgS.get("user_no_newpwd"));
+        }
+
+        ut.setPwd(req.getNewPwd());
+        ut.setValidationToken(null);
+        repoU.save(ut);
+    }
 	@Override
-	public void resetPassword(UtentiReq req) throws Exception {
-		log.debug("resetPssword {}", req);
-		Utenti ut = repoU.findById(req.getUsername())
-				.orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+	@Transactional(rollbackFor = Exception.class)
+	public void passwordDimenticata(String email) throws Exception {
+	    log.debug("passwordDimenticata {}", email);
 
-		Optional.ofNullable(req.getNewPwd())
-			.ifPresentOrElse(pwd -> {
-				ut.setPwd(req.getNewPwd());
-			}, () -> { 
-				throw new RuntimeException(msgS.get("user_no_newpwd"));
-			});
-		
-		repoU.save(ut);
+	    Optional<Utenti> opt = repoU.findByEmail(email);
 
-		
-	}
+	    if (opt.isPresent()) {
+	        Utenti ut = opt.get();
 
+	        String token = UUID.randomUUID().toString();
+	        ut.setValidationToken(token);
+	        repoU.save(ut);
 
-	@Override
-	public void sendResetPassword(String userName) throws Exception {
-	    log.debug("sendResetPassword {}", userName);
+	        String link = resetPasswordURL+"/" + token;
 
-	    Utenti ut = repoU.findById(userName)
-	            .orElseThrow(() -> new ZooException(msgS.get("user_ntfnd")));
+	        String template = loadTemplate("mail/reset-password-email.html");
+	        String body = fillTemplate(template, ut.getUserName(), link);
 
-	    String link = resetPasswordURL + ut.getUserName();
-
-	    String template = loadTemplate("mail/reset-password-email.html");
-	    String body = fillTemplate(template, ut.getUserName(), link);
-
-	    sendMail(ut, "Zoo Betacom Roma - Reset Password", body);
+	        sendMail(ut, "Zoo Betacom Roma - Reset Password", body);
+	    }
 	}
 
 	private void sendMailValidation(Utenti acc) throws Exception {

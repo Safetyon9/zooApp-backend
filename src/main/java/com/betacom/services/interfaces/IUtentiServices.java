@@ -41,9 +41,10 @@ public interface IUtentiServices {
 
 	void emailValidate(String userName) throws Exception;
 
-	void sendResetPassword(String userName) throws Exception;
 
 	void resetPassword(UtentiReq req) throws Exception;
+
+	void passwordDimenticata(String email) throws Exception;
 	
 	
 	
