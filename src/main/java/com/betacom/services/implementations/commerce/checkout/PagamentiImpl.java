@@ -75,9 +75,13 @@ public class PagamentiImpl implements IPagamentiServices{
 	            throw new ZooException("Coupon non attivo");
 	        }
 
+	        BigDecimal valoreCoupon = coupon.getValore();
+	        if (valoreCoupon == null || valoreCoupon.compareTo(BigDecimal.ZERO) < 0) {
+	            throw new ZooException("Il valore dello sconto non può essere negativo");
+	        }
+
 	        pag.setCoupon(coupon);
 
-	        BigDecimal valoreCoupon = coupon.getValore();
 	        TipoCoupon tipoCoupon = coupon.getTipo() != null ? coupon.getTipo() : TipoCoupon.FISSO;
 
 	        if (tipoCoupon == TipoCoupon.FISSO) {
