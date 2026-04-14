@@ -26,6 +26,7 @@ import com.betacom.testutils.TestDataFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
+@ActiveProfiles("test")
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
