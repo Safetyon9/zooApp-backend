@@ -21,6 +21,7 @@ import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepository;
+import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -38,6 +39,7 @@ public class PagamentiImpl implements IPagamentiServices{
 	private final IPagamentiRepository pagaR;
 	private final IMessaggiServices msgS;
 	
+	private final IOggettiOrdiniRepository oggR;
 	private final IOrdiniRepository ordR;
 	private final IMetodiPagamentiRepository metR;
 	private final ICouponsRepository couR;
@@ -65,7 +67,13 @@ public class PagamentiImpl implements IPagamentiServices{
 	    pag.setDataCreazione(LocalDateTime.now());
 	    pag.setStato(StatoPagamento.ATTESA);
 
-	    BigDecimal importoTotale = calcolaPrezzoTot(ordine.getOggettiOrdine());
+	    List<OggettiOrdini> oggetti = oggR.findByOrdineId(ordine.getId());
+
+	    if (oggetti == null || oggetti.isEmpty()) {
+	        throw new ZooException("Impossibile creare pagamento: nessun oggetto ordine presente");
+	    }
+
+	    BigDecimal importoTotale = calcolaPrezzoTot(oggetti);
 
 	    if (req.getCouponId() != null) {
 	        Coupons coupon = couR.findById(req.getCouponId())
