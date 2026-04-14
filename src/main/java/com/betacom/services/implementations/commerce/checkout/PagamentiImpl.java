@@ -100,6 +100,8 @@ public class PagamentiImpl implements IPagamentiServices{
 
 	    pag.setImporto(importoTotale);
 
+	    ordine.setPagamenti(pag);
+	    
 	    pagaR.save(pag);
 	}
 	
@@ -159,11 +161,11 @@ public class PagamentiImpl implements IPagamentiServices{
 	private static BigDecimal calcolaPrezzoTot(List<OggettiOrdini> o) {
 	    BigDecimal totale = BigDecimal.ZERO;
 
-	    for (OggettiOrdini oggettiOrdini : o) {
-	        if (oggettiOrdini != null && oggettiOrdini.getPrezzoTotale() != null) {
-	            totale = totale.add(oggettiOrdini.getPrezzoTotale());
-	        }
-	    }
+//	    for (OggettiOrdini oggettiOrdini : o) {
+//	        if (oggettiOrdini != null && oggettiOrdini.getPrezzoTotale() != null) {
+//	            totale = totale.add(oggettiOrdini.getPrezzoTotale());
+//	        }
+//	    }
 
 	    return totale;
 	}

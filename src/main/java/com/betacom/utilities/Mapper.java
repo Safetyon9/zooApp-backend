@@ -124,11 +124,10 @@ public class Mapper {
                 .build();
     }
 	
-	public static List<OggettiOrdiniDTO> buildOgettiOrdiniDTO(List<OggettiOrdini> lO) {
+	public static List<OggettiOrdiniDTO> buildOgettiOrdiniDTO(List<OggettiOrdini> lO) {  
 	    return lO.stream()
-	            .map(oo -> buildOgettiOrdiniDTO(oo)
-	            )
-	            .collect(Collectors.toList());
+	              .map(Mapper::buildOgettiOrdiniDTO)
+	              .collect(Collectors.toList());
 	}
 
 	
@@ -147,6 +146,7 @@ public class Mapper {
 		                : Collections.emptyList()
 		        )
 		        .build();
+      
 	}
 	
 	public static RecensioniDTO buildRecensioniDTO (Recensioni r) {
