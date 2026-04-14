@@ -30,19 +30,23 @@ public class OggettiCarrelliController {
 	private final IMessaggiServices msgS;
 	
 	@PostMapping("/create")
-	public ResponseEntity<Resp> create(@RequestBody(required = true) OggettiCarrelliReq req) {
-		log.debug("REQUEST: {}", req);
-		Resp r = new Resp();
-		HttpStatus status = HttpStatus.OK;
-		
-		try {
-			oggettiCarrelliS.create(req);
-			r.setMsg(msgS.get("rest_created"));
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			status = HttpStatus.BAD_REQUEST;
-		}
-		return ResponseEntity.status(status).body(r);
+	public ResponseEntity<Resp> create(@RequestBody OggettiCarrelliReq req) {
+
+	    log.debug("REQUEST: {}", req);
+
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        Integer id = oggettiCarrelliS.create(req);
+
+	        r.setMsg(msgS.get("rest_created"));
+	        r.setData(id);
+	    } catch (Exception e) {
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+	    return ResponseEntity.status(status).body(r);
 	}
 	
 	@PutMapping("/update")

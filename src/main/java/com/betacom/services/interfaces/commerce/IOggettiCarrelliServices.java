@@ -6,7 +6,7 @@ import com.betacom.dto.inputs.commerce.OggettiCarrelliReq;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 
 public interface IOggettiCarrelliServices {
-	void create(OggettiCarrelliReq req) throws Exception;
+	Integer create(OggettiCarrelliReq req) throws Exception;
 	void update(OggettiCarrelliReq req) throws Exception;
 	void delete(Integer id) throws Exception;
 	

@@ -8,4 +8,5 @@ import lombok.Setter;
 public class Resp {
 	
 	private String msg;
+	private Object data;
 }

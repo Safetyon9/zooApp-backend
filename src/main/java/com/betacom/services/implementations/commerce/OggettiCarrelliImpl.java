@@ -36,7 +36,7 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 
     @Transactional(rollbackFor = ZooException.class)
 	@Override
-	public void create(OggettiCarrelliReq req) throws Exception {
+	public Integer create(OggettiCarrelliReq req) throws Exception {
 		log.debug("create {}", req);
 		
 		Carrelli c = carrRepo.findById(req.getCarrelloId())
@@ -69,7 +69,7 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		    Utils.calcolaPrezzoTotale(obj.getQuantita(), obj.getPrezzoUnitario())
 		);
 
-		oggRepo.save(obj);
+		return oggRepo.save(obj).getId();
 		
 	}
 
