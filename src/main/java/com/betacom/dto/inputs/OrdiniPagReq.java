@@ -1,5 +1,8 @@
 package com.betacom.dto.inputs;
 
+import java.util.List;
+
+import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.inputs.commerce.checkout.OrdiniReq;
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 
@@ -16,5 +19,6 @@ public class OrdiniPagReq {
 	
 	private OrdiniReq ordini;
 	private PagamentiReq pagamenti;
+	private List<OggettiOrdiniReq> righe;
 
 }

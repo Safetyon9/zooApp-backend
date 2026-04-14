@@ -160,12 +160,16 @@ public class PagamentiImpl implements IPagamentiServices{
 	
 	private static BigDecimal calcolaPrezzoTot(List<OggettiOrdini> o) {
 	    BigDecimal totale = BigDecimal.ZERO;
+	    
+	    if (o == null) {
+	        return totale;
+	    }
 
-//	    for (OggettiOrdini oggettiOrdini : o) {
-//	        if (oggettiOrdini != null && oggettiOrdini.getPrezzoTotale() != null) {
-//	            totale = totale.add(oggettiOrdini.getPrezzoTotale());
-//	        }
-//	    }
+	    for (OggettiOrdini oggettiOrdini : o) {
+	        if (oggettiOrdini != null && oggettiOrdini.getPrezzoTotale() != null) {
+	            totale = totale.add(oggettiOrdini.getPrezzoTotale());
+	        }
+	    }
 
 	    return totale;
 	}

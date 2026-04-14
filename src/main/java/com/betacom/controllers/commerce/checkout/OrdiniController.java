@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.inputs.OrdiniPagReq;
+import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.inputs.commerce.checkout.OrdiniReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
+import com.betacom.services.interfaces.commerce.checkout.IOggettiOrdiniServices;
 import com.betacom.services.interfaces.commerce.checkout.IOrdiniServices;
 import com.betacom.services.interfaces.commerce.checkout.IPagamentiServices;
 
@@ -30,6 +32,7 @@ public class OrdiniController {
 
     private final IOrdiniServices ordS;
     private final IPagamentiServices pagS;
+    private final IOggettiOrdiniServices ooS;
     private final IMessaggiServices msgS;
 
     @PostMapping("/create")
@@ -38,6 +41,10 @@ public class OrdiniController {
         HttpStatus status = HttpStatus.OK;
         try {
             Integer idOrdine = ordS.create(req.getOrdini());
+            for(OggettiOrdiniReq riga: req.getRighe()) {
+            	riga.setOrdineId(idOrdine);
+            	ooS.create(riga);
+            }
             req.getPagamenti().setOrdineId(idOrdine);
             pagS.create(req.getPagamenti());
             r.setMsg(msgS.get("rest_created"));
