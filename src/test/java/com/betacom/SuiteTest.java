@@ -24,11 +24,24 @@ import com.betacom.utenti.UtentiControllerTest;
 
 @Suite
 @SelectClasses({
-	OggettiCarrelliControllerTest.class
-
-
+    BigliettiControllerTest.class,
+    CarrelliControllerTest.class,
+    CategorieControllerTest.class,
+    ClientiControllerTest.class,
+    CorrieriControllerTest.class,
+    CouponsControllerTest.class,
+    EventiControllerTest.class,
+    GiornateControllerTest.class,
+    MailControllerTest.class,
+    MetodiPagamentoControllerTest.class,
+    OggettiCarrelliControllerTest.class,
+    OggettiOrdiniControllerTest.class,
+    OrdiniControllerTest.class,
+    PagamentiControllerTest.class,
+    ProdottiControllerTest.class,
+    RecensioniControllerTest.class,
+    SpedizioniControllerTest.class,
+    UtentiControllerTest.class
 })
-
 public class SuiteTest {
-	
 }
