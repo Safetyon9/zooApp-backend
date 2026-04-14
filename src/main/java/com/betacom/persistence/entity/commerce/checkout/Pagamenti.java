@@ -44,8 +44,7 @@ public class Pagamenti {
     private LocalDateTime dataEsecuzione;
 	
 	@OneToOne(
-			fetch = FetchType.LAZY,
-			optional = false
+			fetch = FetchType.LAZY
 			)
     @JoinColumn(name = "ordine_id")
     private Ordini ordine;

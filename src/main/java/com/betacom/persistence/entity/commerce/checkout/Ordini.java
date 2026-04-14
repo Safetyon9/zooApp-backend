@@ -57,8 +57,7 @@ public class Ordini {
     private List<OggettiOrdini> oggettiOrdine;
 	
 	@OneToOne(
-			fetch = FetchType.LAZY,
-			optional = false
+			fetch = FetchType.LAZY
 			)
     @JoinColumn(name = "pagamenti_id")
     private Pagamenti pagamenti;

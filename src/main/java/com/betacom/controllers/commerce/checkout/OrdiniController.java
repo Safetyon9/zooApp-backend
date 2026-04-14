@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.dto.inputs.OrdiniPagReq;
 import com.betacom.dto.inputs.commerce.checkout.OrdiniReq;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.services.interfaces.commerce.checkout.IOrdiniServices;
+import com.betacom.services.interfaces.commerce.checkout.IPagamentiServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +29,17 @@ import lombok.extern.slf4j.Slf4j;
 public class OrdiniController {
 
     private final IOrdiniServices ordS;
+    private final IPagamentiServices pagS;
     private final IMessaggiServices msgS;
 
     @PostMapping("/create")
-    public ResponseEntity<Resp> create(@RequestBody(required = true) OrdiniReq req) {
+    public ResponseEntity<Resp> create(@RequestBody(required = true) OrdiniPagReq req) {
         Resp r = new Resp();
         HttpStatus status = HttpStatus.OK;
         try {
-            ordS.create(req);
+            Integer idOrdine = ordS.create(req.getOrdini());
+            req.getPagamenti().setOrdineId(idOrdine);
+            pagS.create(req.getPagamenti());
             r.setMsg(msgS.get("rest_created"));
         } catch (Exception e) {
             r.setMsg(e.getMessage());

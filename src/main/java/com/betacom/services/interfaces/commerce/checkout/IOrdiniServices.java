@@ -9,7 +9,7 @@ import com.betacom.exceptions.ZooException;
 
 public interface IOrdiniServices {
 
-    void create(OrdiniReq req) throws ZooException;
+    Integer create(OrdiniReq req) throws ZooException;
     void update(OrdiniReq req) throws ZooException;
     void updateStato(Integer id, StatoOrdine stato) throws ZooException;
     void delete(Integer id) throws ZooException;

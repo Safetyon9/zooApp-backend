@@ -32,7 +32,7 @@ public class OrdiniImpl implements IOrdiniServices {
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
-    public void create(OrdiniReq req) throws ZooException {
+    public Integer create(OrdiniReq req) throws ZooException {
         log.debug("create {}", req);
 
         Clienti cliente = repoC.findById(req.getClienteId())
@@ -45,7 +45,7 @@ public class OrdiniImpl implements IOrdiniServices {
         o.setIndirizzo(req.getIndirizzo() != null ? req.getIndirizzo() : cliente.getIndirizzo());
         o.setDataOrdine(LocalDateTime.now());
 
-        repoO.save(o);
+        return repoO.save(o).getId();
     }
 
     @Transactional(rollbackFor = ZooException.class)
