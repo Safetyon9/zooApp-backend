@@ -1,6 +1,8 @@
 package com.betacom.services.implementations.commerce;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -42,7 +44,6 @@ public class CarrelliImpl implements ICarrelliServices{
 	        throw new ZooException("il cliente ha già un carrello: " + req.getClienteId());
 		
 		Carrelli c = new Carrelli();
-		
 
 		c.setCliente(cliente);
 		c.setOggettiCarrello(new ArrayList<OggettiCarrelli>());
@@ -84,5 +85,7 @@ public class CarrelliImpl implements ICarrelliServices{
 		return Mapper.buildCarrelliDTO(carrelli);
 
 	}
+	
+	
 
 }

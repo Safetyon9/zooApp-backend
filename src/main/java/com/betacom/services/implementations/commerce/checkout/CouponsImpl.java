@@ -114,9 +114,7 @@ public class CouponsImpl implements ICouponsServices {
         TipoCoupon tipo = TipoCoupon.valueOf(req.getTipo());
         BigDecimal valore = req.getValore();
 
-        if (tipo != TipoCoupon.PERCENTUALE) {
-            throw new ZooException("Generazione automatica supportata solo per coupon percentuali");
-        }
+        
 
         if (valore == null) {
             throw new ZooException("Valore coupon obbligatorio per generare il codice");
@@ -129,13 +127,22 @@ public class CouponsImpl implements ICouponsServices {
         }
 
         int progressivo = 1;
-        String codice;
+        String codice="";
 
         do {
-            codice = String.format("ZOO-P%d-%04d", percentuale, progressivo);
-            progressivo++;
+        	if (tipo == TipoCoupon.PERCENTUALE) {
+        		codice = String.format("ZOO-P%d-%04d", percentuale, progressivo);
+                          
+            }
+        	else {
+        		codice = String.format("ZOO-%d-%04d", valore, progressivo);
+
+        	}
+        	progressivo++; 
         } while (couponsRepo.existsByCodice(codice));
 
         return codice;
     }
+    
+    
 }

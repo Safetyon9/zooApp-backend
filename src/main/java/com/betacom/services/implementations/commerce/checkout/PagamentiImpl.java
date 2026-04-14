@@ -1,5 +1,6 @@
 package com.betacom.services.implementations.commerce.checkout;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.enums.StatoPagamento;
+import com.betacom.enums.TipoCoupon;
 import com.betacom.exceptions.ZooException;
+import com.betacom.persistence.entity.commerce.OggettiCarrelli;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
+import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.repository.commerce.checkout.ICouponsRepository;
@@ -48,8 +52,6 @@ public class PagamentiImpl implements IPagamentiServices{
 			throw new ZooException("Ordine collegato non trovato.");
 		if (req.getMetodoPagamentoId() == null)
 			throw new ZooException("Metodo di pagamento collegato non trovato.");
-		if (req.getCouponId() == null)
-			throw new ZooException("Coupon collegato non trovato.");
 		if (req.getImporto() == null)
 			throw new ZooException("Importo non trovato.");
 		
@@ -58,14 +60,25 @@ public class PagamentiImpl implements IPagamentiServices{
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
 		MetodiPagamento metodo = metR.findById(req.getMetodoPagamentoId())
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
-		Coupons coupon = couR.findById(req.getCouponId())
-	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
 		
 		Pagamenti pag = new Pagamenti();
-		pag.setImporto(req.getImporto());
 		pag.setOrdine(ordine);
 		pag.setMetodoPagamento(metodo);
-		pag.setCoupon(coupon);
+		pag.setImporto(calcolaPrezzoTot(ordine.getOggettiOrdine()));
+		
+		if(req.getCouponId()!=null) {
+			Coupons coupon = couR.findById(req.getCouponId())
+		            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
+			if(coupon.getAttivo()) {
+				pag.setCoupon(coupon);
+			}
+			
+			
+			if(pag.getCoupon().getTipo() == (TipoCoupon.FISSO)) {
+			}
+			
+			
+		}
 		
 		pagaR.save(pag);
 		
@@ -112,6 +125,7 @@ public class PagamentiImpl implements IPagamentiServices{
 	    		.collect(Collectors.toList());
 	}
 	
+	
 	@Override
 	public PagamentiDTO getById(Integer id) throws Exception {
 		log.debug("list by id, {}", id);
@@ -121,6 +135,18 @@ public class PagamentiImpl implements IPagamentiServices{
 			throw new ZooException("Pagamento non trovato in DB");
 
 		return Mapper.buildPagamentoDTO(pag.get());
+	}
+	
+	private static BigDecimal calcolaPrezzoTot(List<OggettiOrdini> o) {
+	    BigDecimal totale = BigDecimal.ZERO;
+
+	    for (OggettiOrdini oggettiOrdini : o) {
+	        if (oggettiOrdini != null && oggettiOrdini.getPrezzoTotale() != null) {
+	            totale = totale.add(oggettiOrdini.getPrezzoTotale());
+	        }
+	    }
+
+	    return totale;
 	}
 
 }

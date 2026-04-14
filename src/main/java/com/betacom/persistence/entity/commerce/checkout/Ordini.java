@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,6 +55,13 @@ public class Ordini {
 			fetch = FetchType.EAGER
 			)
     private List<OggettiOrdini> oggettiOrdine;
+	
+	@OneToOne(
+			fetch = FetchType.LAZY,
+			optional = false
+			)
+    @JoinColumn(name = "pagamenti_id")
+    private Pagamenti pagamenti;
 	
 	@Column(nullable = false)
     @Enumerated(EnumType.STRING)

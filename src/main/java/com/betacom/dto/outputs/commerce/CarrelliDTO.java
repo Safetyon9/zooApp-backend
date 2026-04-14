@@ -1,5 +1,6 @@
 package com.betacom.dto.outputs.commerce;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.Builder;
@@ -14,7 +15,9 @@ public class CarrelliDTO {
 
 	private Integer clienteId;                        
 
-	private ClientiDTO cliente;                        
+	private ClientiDTO cliente; 
+	
+	private BigDecimal prezzoTotale;
 
 	private List<OggettiCarrelliDTO> oggettiCarrello;
 }

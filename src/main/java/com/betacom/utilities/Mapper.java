@@ -1,4 +1,5 @@
 package com.betacom.utilities;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -284,6 +285,7 @@ public class Mapper {
 	    return CarrelliDTO.builder()
 	            .id(carrelli.getId())
 	            .clienteId(carrelli.getCliente() != null ? carrelli.getCliente().getId() : null)
+	            .prezzoTotale(calcolaPrezzoTot(carrelli.getOggettiCarrello()))
 	            .oggettiCarrello(
 	                carrelli.getOggettiCarrello() != null 
 	                    ? buildOggettiCarrelliDTO(carrelli.getOggettiCarrello())
@@ -317,6 +319,18 @@ public class Mapper {
 				.id(c.getId())
                 .nome(c.getNome())
                 .build();
+	}
+	
+	private static BigDecimal calcolaPrezzoTot(List<OggettiCarrelli> o) {
+	    BigDecimal totale = BigDecimal.ZERO;
+
+	    for (OggettiCarrelli oggetto : o) {
+	        if (oggetto != null && oggetto.getPrezzoTotale() != null) {
+	            totale = totale.add(oggetto.getPrezzoTotale());
+	        }
+	    }
+
+	    return totale;
 	}
 
 }
