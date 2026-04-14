@@ -1,5 +1,6 @@
 package com.betacom.services.implementations.commerce.checkout;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,31 +46,32 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         Ordini o = ordR.findById(req.getOrdineId())
 				.orElseThrow(() -> new ZooException("ordine non trovato nel DB: "+ req.getOrdineId()));
 		
-		Items item = itemRepo.findById(req.getItemId())
-		        .orElseThrow(() -> new ZooException("item non trovato nel DB: " + req.getItemId()));
-
-        if (req.getDataVisita() != null) {
-            Giornate giornata = giornateR.findByData(req.getDataVisita())
-                    .orElseThrow(() -> new ZooException("Nessuna giornata configurata per la data: " + req.getDataVisita()));
-
-            if (!Boolean.TRUE.equals(giornata.getAperto()))
-                throw new ZooException("Il parco è chiuso nella data selezionata: " + req.getDataVisita());
-
-            int quantita = req.getQuantita() != null ? req.getQuantita() : 1;
-            if (giornata.getStock() < quantita)
-                throw new ZooException("Stock insufficiente per la data " + req.getDataVisita() + ". Disponibili: " + giornata.getStock());
-
-            giornata.setStock(giornata.getStock() - quantita);
-            giornateR.save(giornata);
-        }
-
         OggettiOrdini oo = new OggettiOrdini();
         oo.setQuantita(req.getQuantita());
         oo.setPrezzoUnitario(item.getPrezzo());
         oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(oo.getQuantita(),oo.getPrezzoUnitario()));
         oo.setOrdine(o);
         oo.setItem(item);
-        oo.setDataVisita(req.getDataVisita());
+
+        log.debug("ELABORAZIONE RIGA ORDINE: item={}, dataVisita={}", item.getNome(), req.getDataVisita());
+
+        if (req.getDataVisita() != null && !req.getDataVisita().isBlank()) {
+            LocalDate dVisita = LocalDate.parse(req.getDataVisita().substring(0, 10)); // Safe parse for YYYY-MM-DD
+            Giornate giornata = giornateR.findByData(dVisita)
+                    .orElseThrow(() -> new ZooException("Nessuna giornata configurata per la data: " + dVisita));
+
+            if (!Boolean.TRUE.equals(giornata.getAperto()))
+                throw new ZooException("Il parco è chiuso nella data selezionata: " + dVisita);
+
+            int quantita = req.getQuantita() != null ? req.getQuantita() : 1;
+            if (giornata.getStock() < quantita)
+                throw new ZooException("Stock insufficiente per la data " + dVisita + ". Disponibili: " + giornata.getStock());
+
+            giornata.setStock(giornata.getStock() - quantita);
+            giornateR.save(giornata);
+            oo.setDataVisita(dVisita);
+            log.debug("STOCK AGGIORNATO per data {}: nuovo stock={}", dVisita, giornata.getStock());
+        }
 
         ooR.save(oo);
     }
