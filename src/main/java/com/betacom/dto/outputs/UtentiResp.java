@@ -24,4 +24,5 @@ public class UtentiResp {
 	private Integer carrelloId;
 	private Boolean isValidate;
 	private String validationToken;
+	private Integer clienteId;
 }

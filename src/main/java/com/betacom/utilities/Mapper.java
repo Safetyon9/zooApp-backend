@@ -214,6 +214,7 @@ public class Mapper {
 			    .provincia(c.getProvinca())
 			    .isValidate(u.getIsValidate())
 			    .carrelloId(c.getCarrello() != null ? c.getCarrello().getId() : null)
+			    .clienteId(c.getId())
 			    .build();
 		
 	}
