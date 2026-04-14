@@ -21,7 +21,6 @@ import com.betacom.prodotti.ProdottiControllerTest;
 import com.betacom.recensioni.RecensioniControllerTest;
 import com.betacom.spedizioni.SpedizioniControllerTest;
 import com.betacom.utenti.UtentiControllerTest;
-import com.betacom.utenti.UtentiImplTest;
 
 @Suite
 @SelectClasses({
