@@ -6,22 +6,22 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.items.ProdottiController;
 import com.betacom.dto.inputs.commerce.items.ProdottiReq;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.persistence.entity.commerce.items.Categorie;
-import com.betacom.persistence.entity.commerce.items.Items;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.items.ICategorieRepository;
@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @ActiveProfiles("test")
+@Import(TestMailConfig.class)
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

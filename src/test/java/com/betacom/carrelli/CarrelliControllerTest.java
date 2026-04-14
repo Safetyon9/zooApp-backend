@@ -2,7 +2,6 @@ package com.betacom.carrelli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -12,16 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
-import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.CarrelliController;
 import com.betacom.dto.inputs.commerce.CarrelliReq;
 import com.betacom.dto.outputs.commerce.CarrelliDTO;
-import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
@@ -34,8 +29,6 @@ import com.betacom.testutils.TestDataFactory;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Import(TestMailConfig.class)
-@ActiveProfiles("test")
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

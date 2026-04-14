@@ -22,6 +22,7 @@ import com.betacom.recensioni.RecensioniControllerTest;
 import com.betacom.spedizioni.SpedizioniControllerTest;
 import com.betacom.utenti.UtentiControllerTest;
 
+
 @Suite
 @SelectClasses({
     BigliettiControllerTest.class,
