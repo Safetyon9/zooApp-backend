@@ -1,14 +1,12 @@
-package com.betacom.configuration;
+package com.betacom.config;
 
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-@Configuration
-@Profile("!test")
-public class MailConfig {
+@TestConfiguration
+public class TestMailConfig {
 
     @Bean
     public JavaMailSender javaMailSender() {

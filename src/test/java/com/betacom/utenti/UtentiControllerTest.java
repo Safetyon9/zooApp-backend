@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.UtentiController;
 import com.betacom.dto.inputs.LoginReq;
 import com.betacom.dto.inputs.RegisterReq;
@@ -35,9 +37,10 @@ import com.betacom.testutils.TestDataFactory;
 import lombok.extern.slf4j.Slf4j;
 
 
-@ActiveProfiles("test")
-@Slf4j
 @SpringBootTest
+@ActiveProfiles("test")
+@Import(TestMailConfig.class)
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UtentiControllerTest {
 	
