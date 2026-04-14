@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Getter
 @Setter
 @ToString
@@ -22,6 +24,7 @@ public class OggettiOrdiniReq {
     private Integer itemId;
     private BigDecimal prezzoUnitario;
     private BigDecimal prezzoTotale;
-    private LocalDate dataVisita;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dataVisita;
 }

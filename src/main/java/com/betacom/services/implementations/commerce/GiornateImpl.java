@@ -31,27 +31,22 @@ public class GiornateImpl implements IGiornateServices {
         if (req.getData() == null)
             throw new Exception("Data obbligatoria");
 
-        if (req.getEventoId() == null || req.getEventoId() <= 0)
-            throw new Exception("EventoId non valido");
-        
         if (req.getStock() == null)
             throw new Exception("Stock obbligatorio");
-        
+
         if (req.getAperto() == null)
             throw new Exception("Condizione obbligatoria");
 
-
-        
-        Eventi e = evE.findById(req.getEventoId())
-                .orElseThrow(() -> new Exception("Evento non trovato"));
-
         Giornate g = new Giornate();
         g.setData(req.getData());
-        g.setEvento(e);
         g.setStock(req.getStock());
         g.setAperto(req.getAperto());
 
-        repo.save(g);
+        if (req.getEventoId() != null && req.getEventoId() > 0) {
+            Eventi e = evE.findById(req.getEventoId())
+                    .orElseThrow(() -> new Exception("Evento non trovato"));
+            g.setEvento(e);
+        }
 
         repo.save(g);
     }
@@ -74,6 +69,8 @@ public class GiornateImpl implements IGiornateServices {
             Eventi e = evE.findById(req.getEventoId())
                     .orElseThrow(() -> new Exception("Evento non trovato"));
             g.setEvento(e);
+        } else if (req.getEventoId() != null && req.getEventoId() <= 0) {
+            g.setEvento(null);
         }
 
         if (req.getStock() != null) {
@@ -88,7 +85,6 @@ public class GiornateImpl implements IGiornateServices {
         }
 
         repo.save(g);
-    
     }
     @Transactional(rollbackFor = Exception.class)
     @Override
