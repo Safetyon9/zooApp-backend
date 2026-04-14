@@ -43,45 +43,61 @@ public class PagamentiImpl implements IPagamentiServices{
 	private final IMetodiPagamentiRepository metR;
 	private final ICouponsRepository couR;
 	
-	@Transactional (rollbackFor = ZooException.class)
+	@Transactional(rollbackFor = ZooException.class)
 	@Override
 	public void create(PagamentiReq req) throws ZooException {
-		log.debug("create {}", req);
-		
-		if (req.getOrdineId() == null)
-			throw new ZooException("Ordine collegato non trovato.");
-		if (req.getMetodoPagamentoId() == null)
-			throw new ZooException("Metodo di pagamento collegato non trovato.");
-		if (req.getImporto() == null)
-			throw new ZooException("Importo non trovato.");
-		
-		
-		Ordini ordine = ordR.findById(req.getOrdineId())
+	    log.debug("create {}", req);
+
+	    if (req.getOrdineId() == null)
+	        throw new ZooException("Ordine collegato non trovato.");
+
+	    if (req.getMetodoPagamentoId() == null)
+	        throw new ZooException("Metodo di pagamento collegato non trovato.");
+
+	    Ordini ordine = ordR.findById(req.getOrdineId())
 	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
-		MetodiPagamento metodo = metR.findById(req.getMetodoPagamentoId())
-	            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
-		
-		Pagamenti pag = new Pagamenti();
-		pag.setOrdine(ordine);
-		pag.setMetodoPagamento(metodo);
-		pag.setImporto(calcolaPrezzoTot(ordine.getOggettiOrdine()));
-		
-		if(req.getCouponId()!=null) {
-			Coupons coupon = couR.findById(req.getCouponId())
-		            .orElseThrow(() -> new ZooException("Ordine non trovato nel DB"));
-			if(coupon.getAttivo()) {
-				pag.setCoupon(coupon);
-			}
-			
-			
-			if(pag.getCoupon().getTipo() == (TipoCoupon.FISSO)) {
-			}
-			
-			
-		}
-		
-		pagaR.save(pag);
-		
+
+	    MetodiPagamento metodo = metR.findById(req.getMetodoPagamentoId())
+	            .orElseThrow(() -> new ZooException("Metodo di pagamento non trovato nel DB"));
+
+	    Pagamenti pag = new Pagamenti();
+	    pag.setOrdine(ordine);
+	    pag.setMetodoPagamento(metodo);
+	    pag.setDataCreazione(LocalDateTime.now());
+	    pag.setStato(StatoPagamento.ATTESA);
+
+	    BigDecimal importoTotale = calcolaPrezzoTot(ordine.getOggettiOrdine());
+
+	    if (req.getCouponId() != null) {
+	        Coupons coupon = couR.findById(req.getCouponId())
+	                .orElseThrow(() -> new ZooException("Coupon non trovato nel DB"));
+
+	        if (!Boolean.TRUE.equals(coupon.getAttivo())) {
+	            throw new ZooException("Coupon non attivo");
+	        }
+
+	        pag.setCoupon(coupon);
+
+	        BigDecimal valoreCoupon = coupon.getValore();
+	        TipoCoupon tipoCoupon = coupon.getTipo() != null ? coupon.getTipo() : TipoCoupon.FISSO;
+
+	        if (tipoCoupon == TipoCoupon.FISSO) {
+	            importoTotale = importoTotale.subtract(valoreCoupon);
+	        } else {
+	            BigDecimal sconto = importoTotale
+	                    .multiply(valoreCoupon)
+	                    .divide(BigDecimal.valueOf(100));
+	            importoTotale = importoTotale.subtract(sconto);
+	        }
+
+	        if (importoTotale.compareTo(BigDecimal.ZERO) < 0) {
+	            importoTotale = BigDecimal.ZERO;
+	        }
+	    }
+
+	    pag.setImporto(importoTotale);
+
+	    pagaR.save(pag);
 	}
 	
 	@Transactional (rollbackFor = ZooException.class)
