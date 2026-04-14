@@ -129,4 +129,15 @@ public class CarrelliControllerTest {
 
         list.forEach(c -> log.debug(c.toString()));
     }
+    
+    @Test
+    @Order(5)
+    public void deleteCarrelloTestErr() {
+        log.debug("delete carrello err");
+
+
+        ResponseEntity<Resp> resp = carrelliC.delete(999);
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
 }

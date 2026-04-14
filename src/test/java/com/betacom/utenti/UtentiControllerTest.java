@@ -21,7 +21,9 @@ import com.betacom.dto.inputs.*;
 import com.betacom.dto.inputs.commerce.ClientiReq;
 import com.betacom.dto.outputs.*;
 import com.betacom.persistence.entity.Utenti;
+import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
+import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
 import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -40,10 +42,10 @@ public class UtentiControllerTest {
 
     @Autowired
     private IUtentiRepository utR;
+    
+    @Autowired
+    private IClientiRepository clR;
 
-    // =========================
-    // CREATE
-    // =========================
 
     @Test
     @Order(1)
@@ -76,18 +78,17 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // LOGIN
-    // =========================
 
     @Test
     @Order(3)
     public void login_ok() {
 
-        // se esiste già da DB/testdata
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "123213");
+
+    	
         LoginReq req = new LoginReq();
-        req.setUsername("Test3");
-        req.setPwd("LaBella");
+        req.setUsername(ut.getUserName());
+        req.setPwd(ut.getPwd());
 
         ResponseEntity<Object> resp = controller.login(req);
 
@@ -109,9 +110,6 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // LIST
-    // =========================
 
     @Test
     @Order(5)
@@ -127,9 +125,6 @@ public class UtentiControllerTest {
         Assertions.assertThat(list).isNotNull();
     }
 
-    // =========================
-    // UPDATE
-    // =========================
 
     @Test
     @Order(6)
@@ -159,9 +154,6 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // DELETE
-    // =========================
 
     @Test
     @Order(8)
@@ -184,9 +176,6 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // REGISTER
-    // =========================
 
     @Test
     @Order(10)
@@ -217,9 +206,6 @@ public class UtentiControllerTest {
                 .isInstanceOf(RegisterDTO.class);
     }
 
-    // =========================
-    // CHANGE PWD
-    // =========================
 
     @Test
     @Order(11)
@@ -251,9 +237,6 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // PASSWORD DIMENTICATA
-    // =========================
 
     @Test
     @Order(13)
@@ -265,9 +248,7 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.OK, resp.getStatusCode());
     }
 
-    // =========================
-    // EMAIL VALIDATE
-    // =========================
+
 
     @Test
     @Order(14)
@@ -279,9 +260,6 @@ public class UtentiControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
     }
 
-    // =========================
-    // SEARCH
-    // =========================
 
     @Test
     @Order(15)
@@ -295,9 +273,6 @@ public class UtentiControllerTest {
         Assertions.assertThat(resp).isNotNull();
     }
 
-    // =========================
-    // LOGOUT
-    // =========================
 
     @Test
     @Order(16)
@@ -319,5 +294,86 @@ public class UtentiControllerTest {
                 controller.logout("utente_fake");
 
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+    
+    @Test
+    @Order(18)
+    public void findByUsername() {
+    	Utenti ut = TestDataFactory.creaUtenteValido(utR, "993");
+
+        var resp = controller.findByUserName(ut.getUserName());
+
+        Assertions.assertThat(resp).isNotNull();
+    }
+    
+    @Test
+    @Order(19)
+    public void findByUsernameErr() {
+
+    	String username = "ERRORRRR";
+
+        var resp = controller.findByUserName(username);
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+    
+    @Test
+    @Order(20)
+    public void findAllByUserName() {
+    	Utenti ut = TestDataFactory.creaUtenteValido(utR, "993");
+
+        var resp = controller.findAllByUserName(ut.getUserName());
+
+        Assertions.assertThat(resp).isNotNull();
+    }
+    
+    @Test
+    @Order(21)
+    public void findAllByUserNameErr() {
+    	String username = "ERRORRRR";
+
+        var resp = controller.findAllByUserName(username);
+
+        Assertions.assertThat(resp).isNotNull();
+    }
+    
+    @Test
+    @Order(22)
+    public void resetPassword() {
+    	Utenti ut = TestDataFactory.creaUtenteValido(utR, "22");
+
+    	UtentiReq uReq = new UtentiReq();
+    	uReq.setUsername(ut.getUserName());
+    	uReq.setPwd(ut.getPwd());
+    	uReq.setValidationToken("1");
+    	uReq.setEmail(ut.getEmail());
+    	uReq.setNewPwd("newPassword");
+    	
+    	
+        var resp = controller.resetPassword(uReq);
+
+        Assertions.assertThat(resp).isNotNull();
+    }
+    
+    @Test
+    @Order(6)
+    public void updateAll_ok() {
+
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "caio");
+        Clienti c = TestDataFactory.creaClienteValido(clR, utR);
+        
+        
+        UtentiReq uReq = new UtentiReq();
+        uReq.setUsername(ut.getUserName());
+        
+        ClientiReq cReq = new ClientiReq();
+        cReq.setCognome("UPDATEE");
+        
+        RegisterReq req = new RegisterReq(uReq,cReq);
+        
+
+        ResponseEntity<Resp> resp = controller.Allupdate(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
     }
 }

@@ -65,13 +65,12 @@ public class CorrieriControllerTest {
     @Order(2)
     public void getById() {
         log.debug("getById test");
-        // Uso la factory per essere sicuri di avere un ID 1 o quello creato
         Corrieri c = TestDataFactory.creaCorriereValido(corR);
         
         ResponseEntity<?> resp = corrieriC.getById(c.getId());
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         CorrieriDTO dto = (CorrieriDTO) resp.getBody();
-        Assertions.assertThat(dto.getNome()).contains("DHL"); // La factory crea DHL+timestamp
+        Assertions.assertThat(dto.getNome()).contains("DHL"); 
     }
 
     @Test
@@ -117,4 +116,44 @@ public class CorrieriControllerTest {
         Assertions.assertThat(r.getMsg())
             .isEqualTo(msgS.get("rest_deleted"));
     }
+    
+    @Test
+    @Order(6)
+    public void updateCorriereERR() {
+        log.debug("Update corriere ERR");
+        
+        CorrieriReq req = new CorrieriReq();
+        req.setId(9999);
+        req.setNome("DHL Express Updated");
+
+        ResponseEntity<Resp> resp = corrieriC.update(req);
+        
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
+    
+    @Test
+    @Order(7)
+    public void deleteCorriereERR() {
+        log.debug("delete corriere ERR");
+        
+
+        ResponseEntity<Resp> resp = corrieriC.delete(99999);
+        
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
+    
+    @Test
+    @Order(8)
+    public void getByIdErr() {
+        log.debug("getById corriere ERR");
+        
+
+        ResponseEntity<?> resp = corrieriC.getById(99999);
+        
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
+    
 }

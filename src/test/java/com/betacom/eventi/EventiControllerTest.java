@@ -129,5 +129,25 @@ public class EventiControllerTest {
 		Assertions.assertThat(lE.size()).isGreaterThanOrEqualTo(0);
 		lE.forEach(e -> log.debug(e.toString()));
 	}
+	
+	@Test
+	@Order(6)	
+	public void find() {
+		log.debug("Test find eventi");
+		
+		EventiReq req = new EventiReq();
+		req.setTipoEvento("Visita Guidata");
+		req.setDataInizio(LocalDate.now());
+		req.setDataFine(LocalDate.now().plusDays(5));
+		
+		ResponseEntity<?> resp = eventiC.find(req);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Object body = resp.getBody();
+		
+		List<EventiDTO> lE = (List<EventiDTO>) body;
+		
+		Assertions.assertThat(lE.size()).isGreaterThanOrEqualTo(0);
+		lE.forEach(e -> log.debug(e.toString()));
+	}
 
 }

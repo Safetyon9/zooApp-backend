@@ -175,4 +175,30 @@ public class OggettiOrdiniControllerTest {
         List<OggettiOrdiniDTO> list = (List<OggettiOrdiniDTO>) resp.getBody();
         Assertions.assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }
+    
+    @Test
+    @Order(8)
+    public void updateOggettoOrdineTestErr() {
+        log.debug("Update oggetto ordine ERR");
+
+        OggettiOrdiniReq req = new OggettiOrdiniReq();
+        req.setId(99999);
+        req.setQuantita(3);
+        req.setPrezzoTotale(new BigDecimal("60.00"));
+
+        ResponseEntity<Resp> resp = ooC.update(req);
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
+    
+    
+    @Test
+    @Order(9)
+    public void deleteOggettoOrdineTestErr() {
+        log.debug("Update oggetto ordine ERR");
+
+        ResponseEntity<Resp> resp = ooC.delete(9999);
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+
+    }
 }
