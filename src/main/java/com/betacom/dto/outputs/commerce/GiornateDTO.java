@@ -16,5 +16,7 @@ public class GiornateDTO {
 
     private Integer id;
     private LocalDate data;
+    private Boolean aperto;
     private Integer eventoId;
+    private Integer stock;
 }

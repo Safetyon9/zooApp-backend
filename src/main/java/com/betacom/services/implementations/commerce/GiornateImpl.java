@@ -34,12 +34,24 @@ public class GiornateImpl implements IGiornateServices {
         if (req.getEventoId() == null || req.getEventoId() <= 0)
             throw new Exception("EventoId non valido");
         
+        if (req.getStock() == null)
+            throw new Exception("Stock obbligatorio");
+        
+        if (req.getAperto() == null)
+            throw new Exception("Condizione obbligatoria");
+
+
+        
         Eventi e = evE.findById(req.getEventoId())
                 .orElseThrow(() -> new Exception("Evento non trovato"));
 
         Giornate g = new Giornate();
         g.setData(req.getData());
         g.setEvento(e);
+        g.setStock(req.getStock());
+        g.setAperto(req.getAperto());
+
+        repo.save(g);
 
         repo.save(g);
     }
@@ -64,7 +76,19 @@ public class GiornateImpl implements IGiornateServices {
             g.setEvento(e);
         }
 
+        if (req.getStock() != null) {
+            if (req.getStock() < 0)
+                throw new Exception("Stock non valido");
+
+            g.setStock(req.getStock());
+        }
+
+        if (req.getAperto() != null) {
+            g.setAperto(req.getAperto());
+        }
+
         repo.save(g);
+    
     }
     @Transactional(rollbackFor = Exception.class)
     @Override

@@ -11,8 +11,11 @@ import lombok.ToString;
 @ToString
 
 public class GiornateReq {
-
-	private Integer id;
+	
+    private Integer id;
     private LocalDate data;
+    private Boolean aperto;
     private Integer eventoId;
+    private Integer stock;
+    
 }

@@ -21,7 +21,6 @@ import com.betacom.dto.outputs.commerce.checkout.OrdiniDTO;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.dto.outputs.commerce.checkout.SpedizioniDTO;
 import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
-import com.betacom.dto.outputs.commerce.items.BigliettiGiornateDTO;
 import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.dto.outputs.commerce.items.TipiBigliettiDTO;
@@ -40,7 +39,6 @@ import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.checkout.Spedizioni;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
-import com.betacom.persistence.entity.commerce.items.BigliettiGiornata;
 import com.betacom.persistence.entity.commerce.items.Categorie;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
 import com.betacom.persistence.entity.commerce.items.TipiBiglietti;
@@ -245,24 +243,18 @@ public class Mapper {
                 .build();
 	}
 	
-	public static BigliettiGiornateDTO buildBigliettiGiornateDTO(BigliettiGiornata bg) {
-	    return BigliettiGiornateDTO.builder()
-	            .id(bg.getId())
-	            .bigliettoId(bg.getBiglietto() != null ? bg.getBiglietto().getId() : null)
-	            .giornataId(bg.getGiornata() != null ? bg.getGiornata().getId() : null)
-	            .eventoId(bg.getEvento() != null ? bg.getEvento().getId() : null)
-	            .prezzo(bg.getPrezzo())
-	            .stock(bg.getStock())
-	            .build();
-	}
+	
+	
 	
 	public static GiornateDTO buildGiornataDTO(Giornate g){
-	    return GiornateDTO.builder()
-	            .id(g.getId())
-	            .data(g.getData())
-	            .eventoId(g.getEvento() != null ? g.getEvento().getId() : null)
-	            .build();
-	}
+        return GiornateDTO.builder()
+                .id(g.getId())
+                .data(g.getData())
+                .eventoId(g.getEvento() != null ? g.getEvento().getId() : null)
+                .stock(g.getStock())
+                .aperto(g.getAperto())
+                .build();
+    }
 	
 	public static OggettiCarrelliDTO buildOggettiCarrelliDTO(OggettiCarrelli oc) {
 		
