@@ -12,19 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.checkout.OggettiOrdiniController;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
-import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
@@ -42,8 +34,7 @@ import com.betacom.utilities.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Import(TestMailConfig.class)
-@ActiveProfiles("test")
+
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

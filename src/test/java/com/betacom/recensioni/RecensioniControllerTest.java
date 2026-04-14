@@ -11,12 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
-import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.RecensioniController;
 import com.betacom.dto.inputs.commerce.RecensioniReq;
 import com.betacom.dto.outputs.commerce.RecensioniDTO;
@@ -34,8 +31,7 @@ import com.betacom.testutils.TestDataFactory;
 import lombok.extern.slf4j.Slf4j;
 
 
-@ActiveProfiles("test")
-@Import(TestMailConfig.class)
+
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
