@@ -114,34 +114,43 @@ public class CouponsImpl implements ICouponsServices {
         TipoCoupon tipo = TipoCoupon.valueOf(req.getTipo());
         BigDecimal valore = req.getValore();
 
-        
-
         if (valore == null) {
             throw new ZooException("Valore coupon obbligatorio per generare il codice");
         }
 
-        int percentuale = valore.intValue();
+        int valoreIntero = valore.intValue();
 
-        if (percentuale <= 0) {
-            throw new ZooException("Valore percentuale non valido");
+        if (valoreIntero <= 0) {
+            throw new ZooException("Valore coupon non valido");
         }
 
-        int progressivo = 1;
-        String codice="";
+        String codice;
 
         do {
-        	if (tipo == TipoCoupon.PERCENTUALE) {
-        		codice = String.format("ZOO-P%d-%04d", percentuale, progressivo);
-                          
+            String randomPart = generaParteCasuale(4);
+
+            if (tipo == TipoCoupon.PERCENTUALE) {
+                codice = String.format("ZOO-P%d-%s", valoreIntero, randomPart);
+            } else {
+                codice = String.format("ZOO-%d-%s", valoreIntero, randomPart);
             }
-        	else {
-        		codice = String.format("ZOO-%d-%04d", valore, progressivo);
 
-        	}
-        	progressivo++; 
         } while (couponsRepo.existsByCodice(codice));
-
+        
         return codice;
+    }
+    
+    private String generaParteCasuale(int length) {
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        java.security.SecureRandom random = new java.security.SecureRandom();
+
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+        return sb.toString();
     }
     
     

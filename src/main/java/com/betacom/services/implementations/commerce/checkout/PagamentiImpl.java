@@ -14,7 +14,6 @@ import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;
 import com.betacom.enums.StatoPagamento;
 import com.betacom.enums.TipoCoupon;
 import com.betacom.exceptions.ZooException;
-import com.betacom.persistence.entity.commerce.OggettiCarrelli;
 import com.betacom.persistence.entity.commerce.checkout.Coupons;
 import com.betacom.persistence.entity.commerce.checkout.MetodiPagamento;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;

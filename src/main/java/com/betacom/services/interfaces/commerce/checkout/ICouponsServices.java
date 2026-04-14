@@ -12,4 +12,6 @@ public interface ICouponsServices {
 	
 	List<CouponsDTO> findAll() throws Exception;
 	CouponsDTO getById(Integer id) throws Exception;
+	
+	
 }
