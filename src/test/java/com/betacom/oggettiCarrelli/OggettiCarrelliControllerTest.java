@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.betacom.config.TestMailConfig;
 import com.betacom.controllers.commerce.OggettiCarrelliController;
 import com.betacom.dto.inputs.commerce.OggettiCarrelliReq;
 import com.betacom.dto.outputs.commerce.OggettiCarrelliDTO;
@@ -33,6 +35,7 @@ import com.betacom.utilities.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Import(TestMailConfig.class)
 @ActiveProfiles("test")
 @Slf4j
 @SpringBootTest
