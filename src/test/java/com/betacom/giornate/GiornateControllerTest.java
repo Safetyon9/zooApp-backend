@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.betacom.controllers.commerce.GiornateController;
 import com.betacom.dto.inputs.commerce.GiornateReq;
@@ -23,6 +24,7 @@ import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.repository.commerce.IEventiRepository;
 import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
@@ -34,6 +36,10 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GiornateControllerTest {
+	
+	@MockitoBean
+	private IMailServices mailServices;
+	
 	@Autowired
 	private GiornateController giornateC;
 

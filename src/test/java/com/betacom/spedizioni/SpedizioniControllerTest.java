@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.betacom.controllers.commerce.checkout.SpedizioniController;
 import com.betacom.dto.inputs.commerce.checkout.SpedizioniReq;
@@ -27,6 +28,7 @@ import com.betacom.persistence.repository.commerce.checkout.ICorrieriRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.ISpedizioniRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
@@ -37,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpedizioniControllerTest {
 
+	@MockitoBean
+	private IMailServices mailServices;
+	
 	@Autowired
     private SpedizioniController spedC;
 	

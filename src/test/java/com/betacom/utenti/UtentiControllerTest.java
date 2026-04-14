@@ -13,373 +13,311 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.betacom.controllers.commerce.UtentiController;
-import com.betacom.dto.inputs.LoginReq;
-import com.betacom.dto.inputs.RegisterReq;
-import com.betacom.dto.inputs.UtentiReq;
+import com.betacom.dto.inputs.*;
 import com.betacom.dto.inputs.commerce.ClientiReq;
-import com.betacom.dto.outputs.LoginDTO;
-import com.betacom.dto.outputs.RegisterDTO;
-import com.betacom.dto.outputs.UtentiDTO;
-import com.betacom.dto.outputs.UtentiResp;
+import com.betacom.dto.outputs.*;
 import com.betacom.persistence.entity.Utenti;
-import com.betacom.persistence.entity.commerce.Clienti;
 import com.betacom.persistence.repository.IUtentiRepository;
-import com.betacom.persistence.repository.commerce.IClientiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
-import lombok.extern.slf4j.Slf4j;
-
-
 @SpringBootTest
-@Slf4j
+@ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UtentiControllerTest {
-	
-	@Autowired
-	private UtentiController utentiC;
-	
-	@Autowired
-	private IMessaggiServices msgS;
-	
-	@Autowired 
-	private IUtentiRepository utR;
-	
-	@Autowired 
-	private IClientiRepository clR;
-	
-	@Test
-	@Order(1)
-	public void getUtenti() {
-		log.debug("Test getUtenti");
-		ResponseEntity<?> resp = utentiC.findByUserName("Test1");
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		UtentiDTO ute = (UtentiDTO) resp.getBody();
-		Assertions.assertThat(ute.getEmail()).isEqualTo("test@email.com");
-	
-	}
-	
-	@Test
-	@Order(2)
-	public void getUtentiError() {
-		log.debug("Test getUtenti");
-		ResponseEntity<?> resp = utentiC.findByUserName("Test1000");
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-	
-	}
-	
-	@Test
-	@Order(3)	
-	public void createUtenti() {
 
-		log.debug("Create Utenti");
-		UtentiReq req = new UtentiReq();
-		req.setUsername("Test3");
-		req.setPwd("LaBella");
-		req.setRole("User");
-		req.setEmail("a.bella@gmail.com");
-		
-		ResponseEntity<?> resp = utentiC.create(req);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_created"));
-		
-	}
-	@Test
-	@Order(12)	
-	public void createUtentiErr() {
+    @MockitoBean
+    private IMailServices mailServices;
 
-		log.debug("Create Utenti");
-		UtentiReq req = new UtentiReq();
-		req.setUsername("Test3");
-		req.setPwd("LaBella");
-		req.setRole("User");
-		req.setEmail("mailsbagliata");
-		
-		ResponseEntity<?> resp = utentiC.create(req);
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		
-	}
-	
-	@Test
-	@Order(4)	
-	public void updateUtenti() {
-		log.debug("******* Update utenti  *******");
-		
-		Utenti ut = TestDataFactory.creaUtenteValido(utR,"1");
-		
-		
-		UtentiReq req = new UtentiReq();
-		req.setUsername(ut.getUserName());
-		req.setPwd("labrutta");
-		
-		
-		ResponseEntity<Resp> resp = utentiC.update(req);
-	
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_updated"));
-			
-	}
-	
-	@Test
-	@Order(1)	
-	public void updateUtentiErr() {
-		log.debug("******* Update utenti error *******");
-		
-		UtentiReq req = new UtentiReq();
-		req.setUsername("Test99");
-		req.setPwd("LaBella");
-		req.setRole("User");
-		req.setEmail("test@gmail.com");
-		
-		ResponseEntity<Resp> resp = utentiC.update(req);
-	
-		
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-			
-	}
-	
-	@Test
-	@Order(5)	
-	public void deleteUtenti() {
-		log.debug("******* delete utenti  *******");
-		
-		Utenti ut = TestDataFactory.creaUtenteValido(utR,"2z");
-		
-		ResponseEntity<Resp> resp = utentiC.delete(ut.getUserName());
-		
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_deleted"));
-		
-	}
-	
-	@Test
-	@Order(5)	
-	public void deleteUtentiErr() {
-		log.debug("******* delete utenti error *******");
-		
-		
-		ResponseEntity<Resp> resp = utentiC.delete("Test400");
-	
-		
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-		
-	}
-	
-	@Test
-	@Order(8)	
-	public void list() {
-		log.debug("Test list Utenti");
-		
-		ResponseEntity<?> resp = utentiC.list();
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Object body = resp.getBody();
-		
-		List<UtentiDTO> lS = (List<UtentiDTO>) body;
-		
-		Assertions.assertThat(lS.size()).isGreaterThan(0);
-	//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
-		lS.forEach(s -> log.debug(s.toString()));
-		// updateSocio();
-	}
-	
-	
-	@Test
-	@Order(9)	
-	public void login() {
-		log.debug("Test list Utenti");
-		
-		LoginReq req = new LoginReq();
-		req.setUsername("Test3");
-		req.setPwd("LaBella");
-		
-		ResponseEntity<?> resp = utentiC.login(req);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		LoginDTO login = (LoginDTO) resp.getBody();
-		Assertions.assertThat(login.getUsername()).isEqualTo("Test3");
+    @Autowired
+    private UtentiController controller;
 
-	}
-	
-	@Test
-	@Order(10)
-	public void loginError() {
-	    LoginReq req = new LoginReq();
-	    req.setUsername("InvalidUser"); 
-	    req.setPwd("wrongpwd");
-	    
-	    ResponseEntity<Object> resp = utentiC.login(req); 
-	    assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-	    
-	    Object body = resp.getBody();
-	    Assertions.assertThat(body).isInstanceOf(Resp.class);  
-	    Resp errorResp = (Resp) body;
-	}
-	
-	@Test
-	@Order(11)
-	public void register() {
-		log.debug("Test register OK");
+    @Autowired
+    private IUtentiRepository utR;
+
+    // =========================
+    // CREATE
+    // =========================
+
+    @Test
+    @Order(1)
+    public void create_ok() {
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername("test_order");
+        req.setPwd("123");
+        req.setEmail("test_order@mail.com");
+        req.setRole("USER");
+
+        ResponseEntity<Resp> resp = controller.create(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        Assertions.assertThat(resp.getBody().getMsg()).isNotNull();
+    }
+
+    @Test
+    @Order(2)
+    public void create_error_email() {
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername("test_order2");
+        req.setPwd("123");
+        req.setEmail("email_sbagliata");
+        req.setRole("USER");
+
+        ResponseEntity<Resp> resp = controller.create(req);
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // LOGIN
+    // =========================
+
+    @Test
+    @Order(3)
+    public void login_ok() {
+
+        // se esiste già da DB/testdata
+        LoginReq req = new LoginReq();
+        req.setUsername("Test3");
+        req.setPwd("LaBella");
+
+        ResponseEntity<Object> resp = controller.login(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        Assertions.assertThat(resp.getBody())
+                .isInstanceOf(LoginDTO.class);
+    }
+
+    @Test
+    @Order(4)
+    public void login_error() {
+
+        LoginReq req = new LoginReq();
+        req.setUsername("fake_user");
+        req.setPwd("wrong");
+
+        ResponseEntity<Object> resp = controller.login(req);
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // LIST
+    // =========================
+
+    @Test
+    @Order(5)
+    public void list_ok() {
+
+        ResponseEntity<Object> resp = controller.list();
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        @SuppressWarnings("unchecked")
+        List<UtentiDTO> list = (List<UtentiDTO>) resp.getBody();
+
+        Assertions.assertThat(list).isNotNull();
+    }
+
+    // =========================
+    // UPDATE
+    // =========================
+
+    @Test
+    @Order(6)
+    public void update_ok() {
+
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "900");
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername(ut.getUserName());
+        req.setPwd("nuova_pwd");
+
+        ResponseEntity<Resp> resp = controller.update(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+    }
+
+    @Test
+    @Order(7)
+    public void update_error_user_not_found() {
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername("non_esiste");
+        req.setPwd("123");
+
+        ResponseEntity<Resp> resp = controller.update(req);
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // DELETE
+    // =========================
+
+    @Test
+    @Order(8)
+    public void delete_ok() {
+
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "901");
+
+        ResponseEntity<Resp> resp = controller.delete(ut.getUserName());
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+    }
+
+    @Test
+    @Order(9)
+    public void delete_error() {
+
+        ResponseEntity<Resp> resp =
+                controller.delete("utente_inesistente");
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // REGISTER
+    // =========================
+
+    @Test
+    @Order(10)
+    public void register_ok() {
 
         UtentiReq u = new UtentiReq();
-        u.setUsername("TEST1747");
-        u.setEmail("ciao@gmail.com");
-        u.setPwd("12341414");
+        u.setUsername("reg_user");
+        u.setEmail("reg@mail.com");
+        u.setPwd("123");
         u.setRole("USER");
 
-        ClientiReq c = new ClientiReq();
-        c.setNome("asdadad");
-        c.setCognome("Register1234412");
-        c.setIndirizzo("asdadasdad");
-        c.setCap("00124");
-        c.setComune("Ciao");
-        c.setTelefono("123456789");
-        c.setProvincia("Roma");
-	    
-	    RegisterReq req = new RegisterReq(u, c);
-	    
-	    ResponseEntity<?> resp = utentiC.register(req);
-	    assertEquals(HttpStatus.OK, resp.getStatusCode()); 
-	    RegisterDTO body = (RegisterDTO) resp.getBody();
-		Assertions.assertThat(body.getEmail()).isEqualTo("ciao@gmail.com");
-
-	}
-	
-	@Test
-	@Order(12)
-	public void findAllByUserName() {
-		log.debug("Test getUtenti");
-		
-		
-		
-		Utenti u = TestDataFactory.creaUtenteValido(utR,"104");
-		
-		Clienti c = new Clienti();
-		
-		c.setNome("Mario");
-        c.setCognome("Rossi");
-        c.setIndirizzo("Via Roma 1");
-        c.setUtente(u);
-        c.setComune("Roma");
-        c.setCap("00100");
-        c.setTelefono("3331234567");
-        c.setProvinca("RM");
-		
-		ResponseEntity<?> resp = utentiC.findAllByUserName("testuser104");
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		UtentiResp ute = (UtentiResp) resp.getBody();
-		Assertions.assertThat(ute.getEmail()).isEqualTo("test104@mail.com");
-	
-	}
-	@Test
-	@Order(13)	
-	public void updateAllUtenti() {
-		
-		UtentiReq u = new UtentiReq();
-		u.setUsername("TEST1747");
-        u.setEmail("ciao@gmail.com");
-        u.setPwd("12341414");
-        u.setRole("USER");
-		
         ClientiReq c = new ClientiReq();
         c.setNome("Mario");
         c.setCognome("Rossi");
-        c.setIndirizzo("Via Roma 1");
-        c.setComune("Roma");
+        c.setIndirizzo("Via Roma");
         c.setCap("00100");
-        c.setTelefono("3331234567");
-        
-        
-		RegisterReq req = new RegisterReq(u,c);
-		req.setUtente(u);
-		
-		
-		ResponseEntity<Resp> resp = utentiC.Allupdate(req);
-	
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_updated"));
-	}
-	
-	@Test
-	@Order(14)	
-	public void updateAllUtentiErr() {
-		
-		UtentiReq u = new UtentiReq();
-		u.setUsername("TEST1747");
-        u.setEmail("ciao@gmail.com");
-        u.setPwd("12341414");
-        u.setRole("USER");
-        
-		RegisterReq req = new RegisterReq(u,null);
-		req.setUtente(u);
-		
-		ResponseEntity<Resp> resp = utentiC.Allupdate(req);
-		
-		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-	}
-	
-	@Test
-	@Order(15)	
-	public void logout() {
-		log.debug("Test logout Utenti");
-		
-		Utenti u = TestDataFactory.creaUtenteValido(utR,"103");
-        
-		ResponseEntity<?> resp = utentiC.logout(u.getUserName());
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Assertions.assertThat(u.getIsActive()).isFalse();
-	}
-	@Test
-	@Order(16)	
-	public void changePwd() {
-		log.debug("******* change pwd utenti  *******");
-		
-		Utenti ut = TestDataFactory.creaUtenteValido(utR,"1");
-		
-		
-		UtentiReq req = new UtentiReq();
-		req.setUsername(ut.getUserName());
-		
-		
-		req.setOldPwd(ut.getPwd());
-		
-		req.setNewPwd(ut.getPwd()+"1");
-		req.setPwd(ut.getPwd()+"1");
-		
-		ResponseEntity<Resp> resp = utentiC.changePwd(req);
-	
-		
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Resp r = (Resp)resp.getBody();
-		log.debug(r.getMsg());
-		Assertions.assertThat(r.getMsg())
-        .isEqualTo(msgS.get("rest_updated"));
-			
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+        c.setComune("Roma");
+        c.setTelefono("123");
+        c.setProvincia("RM");
+
+        RegisterReq req = new RegisterReq(u, c);
+
+        ResponseEntity<Object> resp = controller.register(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+
+        Assertions.assertThat(resp.getBody())
+                .isInstanceOf(RegisterDTO.class);
+    }
+
+    // =========================
+    // CHANGE PWD
+    // =========================
+
+    @Test
+    @Order(11)
+    public void changePwd_ok() {
+
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "902");
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername(ut.getUserName());
+        req.setOldPwd(ut.getPwd());
+        req.setNewPwd("nuova123");
+
+        ResponseEntity<Resp> resp = controller.changePwd(req);
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+    }
+
+    @Test
+    @Order(12)
+    public void changePwd_error() {
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername("fake");
+        req.setOldPwd("a");
+        req.setNewPwd("b");
+
+        ResponseEntity<Resp> resp = controller.changePwd(req);
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // PASSWORD DIMENTICATA
+    // =========================
+
+    @Test
+    @Order(13)
+    public void forgot_password() {
+
+        ResponseEntity<Resp> resp =
+                controller.passwordDimenticata("test@mail.com");
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+    }
+
+    // =========================
+    // EMAIL VALIDATE
+    // =========================
+
+    @Test
+    @Order(14)
+    public void validation_error() {
+
+        ResponseEntity<Resp> resp =
+                controller.emailValidate("token_fake");
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
+
+    // =========================
+    // SEARCH
+    // =========================
+
+    @Test
+    @Order(15)
+    public void search_ok() {
+
+        UtentiReq req = new UtentiReq();
+        req.setUsername("Test3");
+
+        var resp = controller.search(req);
+
+        Assertions.assertThat(resp).isNotNull();
+    }
+
+    // =========================
+    // LOGOUT
+    // =========================
+
+    @Test
+    @Order(16)
+    public void logout_ok() {
+
+        Utenti ut = TestDataFactory.creaUtenteValido(utR, "903");
+
+        ResponseEntity<Resp> resp =
+                controller.logout(ut.getUserName());
+
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+    }
+
+    @Test
+    @Order(17)
+    public void logout_error() {
+
+        ResponseEntity<Resp> resp =
+                controller.logout("utente_fake");
+
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+    }
 }

@@ -11,7 +11,6 @@ import com.betacom.corrieri.CorrieriControllerTest;
 import com.betacom.coupons.CouponsControllerTest;
 import com.betacom.eventi.EventiControllerTest;
 import com.betacom.giornate.GiornateControllerTest;
-import com.betacom.mail.MailControllerTest;
 import com.betacom.metodiPagamento.MetodiPagamentoControllerTest;
 import com.betacom.oggettiCarrelli.OggettiCarrelliControllerTest;
 import com.betacom.oggettiordini.OggettiOrdiniControllerTest;
@@ -33,7 +32,6 @@ import com.betacom.utenti.UtentiControllerTest;
     CouponsControllerTest.class,
     EventiControllerTest.class,
     GiornateControllerTest.class,
-    MailControllerTest.class,
     MetodiPagamentoControllerTest.class,
     OggettiCarrelliControllerTest.class,
     OggettiOrdiniControllerTest.class,

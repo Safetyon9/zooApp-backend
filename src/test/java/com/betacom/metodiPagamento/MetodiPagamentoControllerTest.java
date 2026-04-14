@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.betacom.controllers.commerce.checkout.MetodiPagamentoController;
 import com.betacom.dto.inputs.commerce.checkout.MetodiPagamentoReq;
 import com.betacom.dto.outputs.commerce.checkout.MetodiPagamentoDTO;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMailServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MetodiPagamentoControllerTest {
+	
+	@MockitoBean
+	private IMailServices mailServices;
 
     @Autowired
     private MetodiPagamentoController mpC;
