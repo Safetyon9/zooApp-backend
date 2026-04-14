@@ -1,6 +1,7 @@
 package com.betacom.dto.inputs.commerce.checkout;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +20,8 @@ public class OggettiOrdiniReq {
     private Integer quantita;
     private Integer ordineId;
     private Integer itemId;
-    
-
-	private BigDecimal prezzoUnitario;
-	private BigDecimal prezzoTotale;
+    private BigDecimal prezzoUnitario;
+    private BigDecimal prezzoTotale;
+    private LocalDate dataVisita;
 
 }

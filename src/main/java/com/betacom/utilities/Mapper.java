@@ -121,6 +121,7 @@ public class Mapper {
                 .prezzoUnitario(oo.getPrezzoUnitario())
                 .prezzoTotale(oo.getPrezzoTotale())
                 .ordineId(oo.getOrdine()!= null ? oo.getOrdine().getId() : null)
+                .dataVisita(oo.getDataVisita())
                 .build();
     }
 	

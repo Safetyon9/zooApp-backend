@@ -1,6 +1,7 @@
 package com.betacom.persistence.entity.commerce.checkout;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import com.betacom.persistence.entity.commerce.items.Items;
 
@@ -36,6 +37,9 @@ public class OggettiOrdini {
 	@Column (nullable =false, precision = 10, scale = 2)
 	private BigDecimal prezzoTotale;
 	
+	@Column(name = "data_visita", nullable = true)
+    private LocalDate dataVisita;
+
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
     private Items item;
