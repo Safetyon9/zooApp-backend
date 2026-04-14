@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.betacom.controllers.commerce.checkout.PagamentiController;
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
@@ -29,6 +30,7 @@ import com.betacom.persistence.repository.commerce.checkout.IMetodiPagamentiRepo
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.response.Resp;
+import com.betacom.services.interfaces.IMailServices;
 import com.betacom.services.interfaces.IMessaggiServices;
 import com.betacom.testutils.TestDataFactory;
 
@@ -40,6 +42,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PagamentiControllerTest {
+
+	@MockitoBean
+	private IMailServices mailServices;
 
 	@Autowired
     private PagamentiController pagC;
