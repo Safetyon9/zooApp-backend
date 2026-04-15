@@ -9,4 +9,6 @@ public interface IUploadServices {
 		void removeImage(String fileName) throws Exception;
 		
 		String buildUrl(String fileName);
+
+		String saveRicevutaPdf(MultipartFile file, Integer pagamentoId, String idRicevuta) throws Exception;
 }
