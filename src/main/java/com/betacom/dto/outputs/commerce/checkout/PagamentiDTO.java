@@ -26,6 +26,8 @@ public class PagamentiDTO {
 
     private Integer ordineId;
     
+    private String idRicevuta;
+    
 	private String urlRicevutaPDF;
 
     private Integer metodoPagamentoId;
