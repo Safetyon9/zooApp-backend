@@ -94,6 +94,14 @@ public class OrdiniImpl implements IOrdiniServices {
                 .map(o -> Mapper.buildOrdiniDTO(o))
                 .toList();
     }
+    
+    @Override
+    public List<OrdiniDTO> listByClienteId(Integer clienteId) {
+        return repoO.findByClienteId(clienteId)
+                .stream()
+                .map(o -> Mapper.buildOrdiniDTO(o))
+                .toList();
+    }
 
     @Override
     public OrdiniDTO getById(Integer id) throws ZooException {

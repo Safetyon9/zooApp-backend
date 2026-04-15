@@ -96,6 +96,15 @@ public class OrdiniController {
         }
         return ResponseEntity.status(status).body(r);
     }
+    
+    @GetMapping("/my-list/{clienteId}")
+    public ResponseEntity<Object> myList(@PathVariable Integer clienteId) {
+        try {
+            return ResponseEntity.ok(ordS.listByClienteId(clienteId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping("/findById")
     public ResponseEntity<Object> findById(@RequestParam(required = true) Integer idOrdine) {
