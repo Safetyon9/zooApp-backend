@@ -221,15 +221,18 @@ public class UtentiImpl implements IUtentiServices {
 	    repoU.save(utente);
 
 	    Integer carrelloId = null;
+	    Integer clienteId = null;
 
 	    if (utente.getCliente() != null && utente.getCliente().getCarrello() != null) {
 	        carrelloId = utente.getCliente().getCarrello().getId();
+	        clienteId = utente.getCliente().getId();
 	    }
 
 	    return LoginDTO.builder()
 	            .username(utente.getUserName())
 	            .ruolo(utente.getRole().toString())
 	            .carrelloId(carrelloId)
+	            .clienteId(clienteId)
 	            .build();
 	}
 
