@@ -141,6 +141,7 @@ public class Mapper {
 		        .indirizzo(o.getIndirizzo())
 		        .stato(o.getStato())
 		        .dataOrdine(o.getDataOrdine())
+		        .importoTotale(o.getPagamenti().getImporto())
 		        .righe(
 		            o.getOggettiOrdine() != null 
 		                ? buildOgettiOrdiniDTO(o.getOggettiOrdine()) 

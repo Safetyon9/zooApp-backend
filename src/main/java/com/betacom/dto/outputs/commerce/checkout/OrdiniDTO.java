@@ -1,5 +1,6 @@
 package com.betacom.dto.outputs.commerce.checkout;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class OrdiniDTO {
     private String cognome;
     private String indirizzo;
     private LocalDateTime dataOrdine;
+    
+    private BigDecimal importoTotale;
+    
     private StatoOrdine stato;
     private List<OggettiOrdiniDTO> righe;
 
