@@ -1,6 +1,5 @@
 package com.betacom.services.implementations.commerce.checkout;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.dto.inputs.commerce.checkout.OggettiOrdiniReq;
 import com.betacom.dto.outputs.commerce.checkout.OggettiOrdiniDTO;
 import com.betacom.exceptions.ZooException;
-import com.betacom.persistence.entity.commerce.Giornate;
 import com.betacom.persistence.entity.commerce.checkout.OggettiOrdini;
 import com.betacom.persistence.entity.commerce.checkout.Ordini;
 import com.betacom.persistence.entity.commerce.items.Items;
-import com.betacom.persistence.repository.commerce.IGiornateRepository;
 import com.betacom.persistence.repository.commerce.IItemsRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOggettiOrdiniRepository;
 import com.betacom.persistence.repository.commerce.checkout.IOrdiniRepository;
@@ -35,8 +32,7 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
     private final IMessaggiServices msgS;
     
     private final IOrdiniRepository ordR;
-    private final IItemsRepository itemRepo;
-    private final IGiornateRepository giornateR;
+	private final IItemsRepository itemRepo;
 
     @Transactional(rollbackFor = ZooException.class)
     @Override
@@ -46,32 +42,15 @@ public class OggettiOrdiniImpl implements IOggettiOrdiniServices {
         Ordini o = ordR.findById(req.getOrdineId())
 				.orElseThrow(() -> new ZooException("ordine non trovato nel DB: "+ req.getOrdineId()));
 		
+		Items item = itemRepo.findById(req.getItemId())
+		        .orElseThrow(() -> new ZooException("item non trovato nel DB: " + req.getItemId()));
+
         OggettiOrdini oo = new OggettiOrdini();
         oo.setQuantita(req.getQuantita());
         oo.setPrezzoUnitario(item.getPrezzo());
         oo.setPrezzoTotale(Utils.calcolaPrezzoTotale(oo.getQuantita(),oo.getPrezzoUnitario()));
         oo.setOrdine(o);
         oo.setItem(item);
-
-        log.debug("ELABORAZIONE RIGA ORDINE: item={}, dataVisita={}", item.getNome(), req.getDataVisita());
-
-        if (req.getDataVisita() != null && !req.getDataVisita().isBlank()) {
-            LocalDate dVisita = LocalDate.parse(req.getDataVisita().substring(0, 10)); // Safe parse for YYYY-MM-DD
-            Giornate giornata = giornateR.findByData(dVisita)
-                    .orElseThrow(() -> new ZooException("Nessuna giornata configurata per la data: " + dVisita));
-
-            if (!Boolean.TRUE.equals(giornata.getAperto()))
-                throw new ZooException("Il parco è chiuso nella data selezionata: " + dVisita);
-
-            int quantita = req.getQuantita() != null ? req.getQuantita() : 1;
-            if (giornata.getStock() < quantita)
-                throw new ZooException("Stock insufficiente per la data " + dVisita + ". Disponibili: " + giornata.getStock());
-
-            giornata.setStock(giornata.getStock() - quantita);
-            giornateR.save(giornata);
-            oo.setDataVisita(dVisita);
-            log.debug("STOCK AGGIORNATO per data {}: nuovo stock={}", dVisita, giornata.getStock());
-        }
 
         ooR.save(oo);
     }

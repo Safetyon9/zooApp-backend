@@ -36,7 +36,7 @@ public class EventiImpl implements IEventiServices {
         if (req.getDataInizio() == null)
             throw new Exception("Data inizio obbligatoria");
 
-        if (req.getDataFine().isBefore(req.getDataInizio()))
+        if (req.getDataFine() != null && req.getDataFine().isBefore(req.getDataInizio()))
             throw new Exception("Data fine non può essere prima della data inizio");
         
         

@@ -93,7 +93,7 @@ public class GiornateController {
 	        try {
 	            List<GiornateDTO> tutte = giornateS.findAll();
 	            r = tutte.stream()
-	                     .filter(g -> g.getEventoId().equals(eventoId))
+	                     .filter(g -> eventoId.equals(g.getEventoId()))
 	                     .toList();
 	        } catch (Exception e) {
 	            r = e.getMessage();
