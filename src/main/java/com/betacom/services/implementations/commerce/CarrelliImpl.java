@@ -91,7 +91,9 @@ public class CarrelliImpl implements ICarrelliServices{
 	    Carrelli c = carrelliRepo.findById(carrelloId)
 	        .orElseThrow(() -> new ZooException("Carrello non trovato nel DB: " + carrelloId));
 
-	    c.setOggettiCarrello(new ArrayList<>());
+	    if (c.getOggettiCarrello() != null) {
+	        c.getOggettiCarrello().clear();
+	    }
 
 	    carrelliRepo.save(c);
 
