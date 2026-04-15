@@ -68,7 +68,7 @@ public class UtentiImpl implements IUtentiServices {
             throw new ZooException(msgS.get("email_exists"));
         }
         
-        if (!Ureq.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+        if (!Ureq.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$")) {
         	 throw new ZooException(msgS.get("email_invalid"));
 	    }
 
@@ -144,8 +144,14 @@ public class UtentiImpl implements IUtentiServices {
         if(Creq.getProvincia() != null)
         	c.setProvinca(Creq.getProvincia());
         
-        if(Ureq.getRole() != null)
+        if(Ureq.getRole() != null){
         	u.setRole(Roles.valueOf(Ureq.getRole().toUpperCase()));
+        	if(u.getRole().equals(Roles.ADMIN)) {
+        		u.setIsValidate(true);
+        	}else {
+        		u.setIsValidate(false);
+        	}
+        }
 
         u.setValidationToken(null);
         
@@ -215,15 +221,18 @@ public class UtentiImpl implements IUtentiServices {
 	    repoU.save(utente);
 
 	    Integer carrelloId = null;
+	    Integer clienteId = null;
 
 	    if (utente.getCliente() != null && utente.getCliente().getCarrello() != null) {
 	        carrelloId = utente.getCliente().getCarrello().getId();
+	        clienteId = utente.getCliente().getId();
 	    }
 
 	    return LoginDTO.builder()
 	            .username(utente.getUserName())
 	            .ruolo(utente.getRole().toString())
 	            .carrelloId(carrelloId)
+	            .clienteId(clienteId)
 	            .build();
 	}
 
@@ -344,6 +353,7 @@ public class UtentiImpl implements IUtentiServices {
         ut.setValidationToken(null);
         repoU.save(ut);
     }
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void passwordDimenticata(String email) throws Exception {
@@ -410,8 +420,4 @@ public class UtentiImpl implements IUtentiServices {
             return is.readAllBytes();
         }
     }
-	
-	
-
-
 }

@@ -15,6 +15,7 @@ public interface IOrdiniServices {
     void delete(Integer id) throws ZooException;
 
     List<OrdiniDTO> list() throws ZooException;
+    List<OrdiniDTO> listByClienteId(Integer clienteId);
 
     OrdiniDTO getById(Integer id) throws ZooException;
 

@@ -12,16 +12,18 @@ import lombok.Setter;
 @Builder
 public class OggettiCarrelliDTO {
 	private Integer id;
-
-	private Integer quantita;
 	
-
 	private BigDecimal prezzoUnitario;
 	
 	private BigDecimal prezzoTotale;
-
 	
     private Integer carrelloId;
-	
+    
     private Integer itemId;
+    private String tipo;
+
+    private String nome;
+    private String urlImmagine;
+
+    private Integer quantita;
 }

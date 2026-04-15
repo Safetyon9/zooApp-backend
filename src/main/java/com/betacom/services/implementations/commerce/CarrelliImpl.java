@@ -1,8 +1,6 @@
 package com.betacom.services.implementations.commerce;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -85,7 +83,21 @@ public class CarrelliImpl implements ICarrelliServices{
 		return Mapper.buildCarrelliDTO(carrelli);
 
 	}
-	
-	
+
+
+	@Override
+	public void clear(Integer carrelloId) throws Exception {
+
+	    Carrelli c = carrelliRepo.findById(carrelloId)
+	        .orElseThrow(() -> new ZooException("Carrello non trovato nel DB: " + carrelloId));
+
+	    if (c.getOggettiCarrello() != null) {
+	        c.getOggettiCarrello().clear();
+	    }
+
+	    carrelliRepo.save(c);
+
+	}
+
 
 }

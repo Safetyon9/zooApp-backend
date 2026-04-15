@@ -260,6 +260,8 @@ public class TestDataFactory {
         Giornate g = new Giornate();
         g.setData(LocalDate.now());
         g.setEvento(e);
+        g.setAperto(true);
+        g.setStock(1);
         return gioR.save(g);
     }
     

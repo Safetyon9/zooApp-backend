@@ -24,6 +24,7 @@ import com.betacom.dto.outputs.commerce.items.BigliettiDTO;
 import com.betacom.dto.outputs.commerce.items.CategorieDTO;
 import com.betacom.dto.outputs.commerce.items.ProdottiDTO;
 import com.betacom.dto.outputs.commerce.items.TipiBigliettiDTO;
+import com.betacom.enums.TipoItem;
 import com.betacom.persistence.entity.Utenti;
 import com.betacom.persistence.entity.commerce.Carrelli;
 import com.betacom.persistence.entity.commerce.Clienti;
@@ -266,6 +267,9 @@ public class Mapper {
 				.quantita(oc.getQuantita())
 				.carrelloId(oc.getCarrello().getId())
 		        .itemId(oc.getItem().getId())
+		        .nome(oc.getItem().getNome())
+		        .urlImmagine(oc.getItem().getUrlImmagine())
+		        .tipo((oc.getItem() instanceof Prodotti)? "prodotto" : "biglietti")
 				.build();
 	}
 	

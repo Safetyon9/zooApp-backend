@@ -83,4 +83,21 @@ public class CarrelliController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@DeleteMapping("/clear/{id}")
+	public ResponseEntity<Resp> clear(@PathVariable(required = true) Integer id) {
+
+	    Resp r = new Resp();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        carrS.clear(id);
+	        r.setMsg(msgS.get("rest_cleared"));
+	    } catch (Exception e) {
+	        r.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
+	}
 }

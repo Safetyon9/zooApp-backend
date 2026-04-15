@@ -61,6 +61,8 @@ public class GiornateControllerTest {
 		GiornateReq req = new GiornateReq();
 		req.setData(LocalDate.now());
 		req.setEventoId(evento.getId());
+		req.setStock(1);
+		req.setAperto(true);
 
 		ResponseEntity<Resp> resp = giornateC.create(req);
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -137,6 +139,23 @@ public class GiornateControllerTest {
 		log.debug("Test list giornate");
 		
 		ResponseEntity<?> resp = giornateC.list();
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Object body = resp.getBody();
+		
+		List<GiornateDTO> lG = (List<GiornateDTO>) body;
+		
+		Assertions.assertThat(lG.size()).isGreaterThanOrEqualTo(0);
+		lG.forEach(g -> log.debug(g.toString()));
+	}
+	
+	@Test
+	@Order(7)	
+	public void listByEvento() {
+		log.debug("Test list giornate");
+		
+		Eventi evento = TestDataFactory.creaEventoValido(evRepo);
+
+		ResponseEntity<?> resp = giornateC.listByEvento(evento.getId());
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 		Object body = resp.getBody();
 		
