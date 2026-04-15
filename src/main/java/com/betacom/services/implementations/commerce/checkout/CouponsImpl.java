@@ -152,6 +152,15 @@ public class CouponsImpl implements ICouponsServices {
 
         return sb.toString();
     }
+
+    @Override
+    public CouponsDTO getByCodice(String codice) {
+
+        Coupons c = couponsRepo.findByCodice(codice)
+                .orElseThrow(() -> new ZooException("Coupon non trovato"));
+
+        return Mapper.buildCouponsDTO(c);
+    }
     
     
 }

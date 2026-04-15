@@ -82,16 +82,18 @@ public class OggettiCarrelliImpl implements IOggettiCarrelliServices{
 		OggettiCarrelli oggettiCarrelli = oggRepo.findById(req.getId())
 				.orElseThrow(() -> new ZooException("oggetto carrello non trovato nel DB: "+ req.getId()));
 		
-		if(req.getPrezzoTotale() != null)
-			oggettiCarrelli.setPrezzoTotale(
-				    Utils.calcolaPrezzoTotale(
-				        oggettiCarrelli.getQuantita(),
-				        oggettiCarrelli.getPrezzoUnitario()
-				    )
-				);
-		
 		if(req.getQuantita() != null)
 			oggettiCarrelli.setQuantita(req.getQuantita());
+		
+
+		oggettiCarrelli.setPrezzoTotale(
+			    Utils.calcolaPrezzoTotale(
+			        oggettiCarrelli.getQuantita(),
+			        oggettiCarrelli.getPrezzoUnitario()
+			    )
+			);
+		
+
 		
 		oggRepo.save(oggettiCarrelli);
 		
