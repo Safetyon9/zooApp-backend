@@ -11,4 +11,5 @@ public interface ICarrelliServices {
 	
 	List<CarrelliDTO> findAll() throws Exception;
 	CarrelliDTO getById(Integer id) throws Exception;
+	void clear(Integer carrelloId) throws Exception;
 }

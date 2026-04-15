@@ -33,7 +33,7 @@ public class Carrelli {
 			mappedBy = "carrello",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			fetch = FetchType.EAGER
+			fetch = FetchType.LAZY
 			)
     private List<OggettiCarrelli> oggettiCarrello;
 }
