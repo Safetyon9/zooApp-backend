@@ -25,6 +25,8 @@ public class PagamentiDTO {
     private LocalDateTime dataEsecuzione;
 
     private Integer ordineId;
+    
+	private String urlRicevutaPDF;
 
     private Integer metodoPagamentoId;
 

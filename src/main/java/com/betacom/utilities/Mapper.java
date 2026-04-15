@@ -223,6 +223,7 @@ public class Mapper {
 	            .id(p.getId())
 	            .importo(p.getImporto())
 	            .stato(p.getStato().toString())
+	            .urlRicevutaPDF(p.getUrlRicevutaPDF())
 	            .dataCreazione(p.getDataCreazione())
 	            .dataEsecuzione(p.getDataEsecuzione())
 	            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
