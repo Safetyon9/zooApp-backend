@@ -1,6 +1,7 @@
 package com.betacom.services.interfaces.commerce.checkout;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.betacom.dto.inputs.commerce.checkout.PagamentiReq;
 import com.betacom.dto.outputs.commerce.checkout.PagamentiDTO;

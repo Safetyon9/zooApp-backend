@@ -152,6 +152,27 @@ public class CouponsImpl implements ICouponsServices {
 
         return sb.toString();
     }
+
+    @Override
+    public CouponsDTO getByCodice(String codice) {
+
+        Coupons c = couponsRepo.findByCodice(codice)
+                .orElseThrow(() -> new ZooException("Coupon non trovato"));
+
+        if (!c.getAttivo()) {
+            throw new ZooException("Coupon non attivo");
+        }
+
+        if (c.getDataInizio() != null && c.getDataInizio().isAfter(java.time.LocalDate.now())) {
+            throw new ZooException("Coupon non ancora valido");
+        }
+
+        if (c.getDataFine() != null && c.getDataFine().isBefore(java.time.LocalDate.now())) {
+            throw new ZooException("Coupon scaduto");
+        }
+
+        return Mapper.buildCouponsDTO(c);
+    }
     
     
 }

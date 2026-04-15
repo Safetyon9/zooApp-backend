@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.betacom.persistence.entity.commerce.checkout.Pagamenti;
 import com.betacom.persistence.entity.commerce.items.Biglietti;
 import com.betacom.persistence.entity.commerce.items.Prodotti;
+import com.betacom.persistence.repository.commerce.checkout.IPagamentiRepository;
 import com.betacom.persistence.repository.commerce.items.IBigliettiRepository;
 import com.betacom.persistence.repository.commerce.items.IProdottiRepository;
 import com.betacom.services.interfaces.IMessaggiServices;
@@ -29,17 +31,20 @@ public class UploadImpl implements IUploadServices {
     private final IMessaggiServices msgS;
     private final IProdottiRepository repoP;
     private final IBigliettiRepository bigP;
+    private final IPagamentiRepository pagRepo;
 
     public UploadImpl(
             @Value("${app.upload.dir:uploads}") String uploadDir,
             IMessaggiServices msgS,
             IProdottiRepository repoP,
-            IBigliettiRepository bigP
+            IBigliettiRepository bigP,
+            IPagamentiRepository pagRepo
     ) {
         this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         this.msgS = msgS;
         this.repoP = repoP;
         this.bigP = bigP;
+        this.pagRepo = pagRepo;
         init();
     }
 
@@ -112,6 +117,55 @@ public class UploadImpl implements IUploadServices {
             throw new RuntimeException("Errore salvataggio file");
         }
     }
+    
+    @Override
+    public String saveRicevutaPdf(MultipartFile file, Integer pagamentoId, String idRicevuta) throws Exception {
+
+        if (file == null || file.isEmpty()) {
+            throw new RuntimeException("File PDF vuoto");
+        }
+
+        if (pagamentoId == null) {
+            throw new RuntimeException("Pagamento non valido");
+        }
+
+        if (idRicevuta == null || idRicevuta.isBlank()) {
+            throw new RuntimeException("Id ricevuta non valido");
+        }
+
+        Pagamenti pagamento = pagRepo.findById(pagamentoId)
+                .orElseThrow(() -> new RuntimeException("Pagamento non trovato"));
+
+        Path ricevutePath = uploadPath.resolve("ricevute");
+        if (Files.notExists(ricevutePath)) {
+            Files.createDirectories(ricevutePath);
+        }
+
+        String safeIdRicevuta = idRicevuta.replaceAll("[^a-zA-Z0-9-_]", "");
+        String fileName = "ricevuta-" + safeIdRicevuta + ".pdf";
+
+        Path destinationFile = ricevutePath.resolve(fileName);
+
+        try {
+            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+
+            String fileUrl = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/files/uploads/ricevute/")
+                    .path(fileName)
+                    .toUriString();
+
+            pagamento.setIdRicevuta(idRicevuta);
+            pagamento.setUrlRicevutaPDF(fileUrl);
+            pagRepo.save(pagamento);
+
+            return fileUrl;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Errore salvataggio PDF ricevuta");
+        }
+    }
+    
 
     @Override
     public void removeImage(String filename) throws Exception {

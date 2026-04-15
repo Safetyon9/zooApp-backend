@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -48,7 +49,8 @@ public class PagamentiImpl implements IPagamentiServices{
 	@Override
 	public void create(PagamentiReq req) throws ZooException {
 	    log.debug("create {}", req);
-
+	    
+	    
 	    if (req.getOrdineId() == null)
 	        throw new ZooException("Ordine collegato non trovato.");
 
@@ -66,6 +68,9 @@ public class PagamentiImpl implements IPagamentiServices{
 	    pag.setMetodoPagamento(metodo);
 	    pag.setDataCreazione(LocalDateTime.now());
 	    pag.setStato(StatoPagamento.ATTESA);
+	    pag.setIdRicevuta(UUID.randomUUID().toString());
+	    
+
 
 	    List<OggettiOrdini> oggetti = oggR.findByOrdineId(ordine.getId());
 
@@ -128,6 +133,9 @@ public class PagamentiImpl implements IPagamentiServices{
 		
 		if (req.getStato() != null)
 			p.setStato(StatoPagamento.valueOf(req.getStato().toUpperCase()));
+		
+		if (req.getUrlRicevutaPDF() != null)
+			p.setUrlRicevutaPDF(req.getUrlRicevutaPDF());
 		
 		pagaR.save(p);
 	}

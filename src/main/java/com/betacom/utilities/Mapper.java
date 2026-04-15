@@ -142,6 +142,7 @@ public class Mapper {
 		        .indirizzo(o.getIndirizzo())
 		        .stato(o.getStato())
 		        .dataOrdine(o.getDataOrdine())
+		        .importoTotale(o.getPagamenti().getImporto())
 		        .righe(
 		            o.getOggettiOrdine() != null 
 		                ? buildOgettiOrdiniDTO(o.getOggettiOrdine()) 
@@ -224,10 +225,13 @@ public class Mapper {
 	            .id(p.getId())
 	            .importo(p.getImporto())
 	            .stato(p.getStato().toString())
+	            .idRicevuta(p.getIdRicevuta())
+	            .urlRicevutaPDF(p.getUrlRicevutaPDF())
 	            .dataCreazione(p.getDataCreazione())
 	            .dataEsecuzione(p.getDataEsecuzione())
 	            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
 	            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
+	            .metodoPagamentoNome(p.getMetodoPagamento().getNome())
 	            .couponId(p.getCoupon() != null ? p.getCoupon().getId() : null)
 	            .build();
 	}

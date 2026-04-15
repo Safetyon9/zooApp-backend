@@ -99,5 +99,20 @@ public class CouponsController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@GetMapping("/codice/{codice}")
+	public ResponseEntity<Object> getByCodice(@PathVariable String codice) {
+	    Object r = new Object();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        r = couponsS.getByCodice(codice);
+	    } catch (Exception e) {
+	        r = e.getMessage();
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(r);
+	}
 
 }

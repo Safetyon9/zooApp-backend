@@ -2,6 +2,7 @@ package com.betacom.persistence.entity.commerce.checkout;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.betacom.enums.StatoPagamento;
 
@@ -27,7 +28,7 @@ import lombok.Setter;
 public class Pagamenti {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 	
 	@Column(nullable = false, precision = 10, scale = 2)
@@ -39,6 +40,12 @@ public class Pagamenti {
 	
 	@Column(nullable = false)
     private LocalDateTime dataCreazione = LocalDateTime.now();
+	
+	@Column
+	private String urlRicevutaPDF;
+	
+	@Column(unique=true)
+	private String idRicevuta;
 	
 	@Column(nullable = true)
     private LocalDateTime dataEsecuzione;

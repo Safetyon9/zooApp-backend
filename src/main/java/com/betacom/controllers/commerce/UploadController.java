@@ -48,6 +48,31 @@ public class UploadController {
         }
     }
 
+    @PostMapping(value = "/ricevuta", consumes = "multipart/form-data")
+    public ResponseEntity<Resp> uploadRicevutaPdf(
+            @RequestParam MultipartFile file,
+            @RequestParam Integer pagamentoId,
+            @RequestParam String idRicevuta) {
+
+        Resp r = new Resp();
+
+        try {
+            if (file.getContentType() == null || !file.getContentType().equalsIgnoreCase("application/pdf")) {
+                r.setMsg("Il file deve essere un PDF");
+                return ResponseEntity.badRequest().body(r);
+            }
+
+            String url = uplS.saveRicevutaPdf(file, pagamentoId, idRicevuta);
+
+            r.setMsg(url);
+            return ResponseEntity.status(HttpStatus.CREATED).body(r);
+
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            return ResponseEntity.internalServerError().body(r);
+        }
+    }
+
     @GetMapping("/getUrl")
     public ResponseEntity<Resp> getUrl(@RequestParam String filename) {
 
