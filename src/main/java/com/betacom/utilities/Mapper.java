@@ -228,6 +228,7 @@ public class Mapper {
 	            .dataEsecuzione(p.getDataEsecuzione())
 	            .ordineId(p.getOrdine() != null ? p.getOrdine().getId() : null)
 	            .metodoPagamentoId(p.getMetodoPagamento() != null ? p.getMetodoPagamento().getId() : null)
+	            .metodoPagamentoNome(p.getMetodoPagamento().getNome())
 	            .couponId(p.getCoupon() != null ? p.getCoupon().getId() : null)
 	            .build();
 	}

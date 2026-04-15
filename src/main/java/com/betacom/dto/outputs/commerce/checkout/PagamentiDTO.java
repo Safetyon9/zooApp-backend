@@ -29,6 +29,8 @@ public class PagamentiDTO {
 	private String urlRicevutaPDF;
 
     private Integer metodoPagamentoId;
+    
+    private String metodoPagamentoNome;
 
     private Integer couponId;
 }
