@@ -147,6 +147,7 @@ public class Mapper {
 		                ? buildOgettiOrdiniDTO(o.getOggettiOrdine()) 
 		                : Collections.emptyList()
 		        )
+		        .pagamentoId(o.getPagamenti().getId())
 		        .build();
       
 	}

@@ -25,6 +25,7 @@ public class OrdiniDTO {
     private LocalDateTime dataOrdine;
     
     private BigDecimal importoTotale;
+    private Integer pagamentoId;
     
     private StatoOrdine stato;
     private List<OggettiOrdiniDTO> righe;

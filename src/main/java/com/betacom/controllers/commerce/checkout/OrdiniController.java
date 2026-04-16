@@ -48,6 +48,7 @@ public class OrdiniController {
             req.getPagamenti().setOrdineId(idOrdine);
             pagS.create(req.getPagamenti());
             r.setMsg(msgS.get("rest_created"));
+            r.setData(idOrdine);
         } catch (Exception e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
