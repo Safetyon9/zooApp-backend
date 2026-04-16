@@ -2,6 +2,7 @@ package com.betacom.controllers.commerce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,8 @@ public class UploadController {
         }
     }
 
-    @PostMapping(value = "/ricevuta", consumes = "multipart/form-data")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/ricevuta")
     public ResponseEntity<Resp> uploadRicevutaPdf(
             @RequestParam MultipartFile file,
             @RequestParam Integer pagamentoId,
@@ -65,6 +67,9 @@ public class UploadController {
             String url = uplS.saveRicevutaPdf(file, pagamentoId, idRicevuta);
 
             r.setMsg(url);
+            
+            
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(r);
 
         } catch (Exception e) {

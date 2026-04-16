@@ -18,4 +18,8 @@ public class MailReq {
 	private String oggetto;
 	private String body;
 	private byte[] attachment;
+	
+	private byte[] pdfRicevuta;
+    private String pdfFileName;
+	
 }

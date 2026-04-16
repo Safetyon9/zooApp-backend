@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ricevuta ordine</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5efe4;
+      font-family: 'Trebuchet MS', 'Segoe UI', Arial, sans-serif;
+      color: #2f2217;
+    }
+
+    .shell {
+      width: 100%;
+      padding: 34px 12px;
+      background: radial-gradient(circle at top right, #e4cc9a 0%, #f5efe4 40%, #efe3cf 100%);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 620px;
+      background-color: #fffaf2;
+      border: 1px solid #caa867;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(56, 36, 19, 0.18);
+    }
+
+    .hero {
+      padding: 22px 30px;
+      background-color: #5b3a1f;
+      background-image:
+        linear-gradient(135deg, rgba(43, 26, 13, 0.8), rgba(96, 66, 32, 0.45)),
+        url('cid:email-bg');
+      background-size: cover;
+      background-position: center;
+      color: #f9e4b1;
+      border-bottom: 2px solid #c89c49;
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+
+    .content {
+      padding: 30px;
+      line-height: 1.65;
+      font-size: 16px;
+      color: #3d2a1d;
+    }
+
+    .title {
+      margin: 0 0 18px 0;
+      font-size: 27px;
+      color: #5a381f;
+    }
+
+    .cta {
+      display: inline-block;
+      margin: 6px 0 12px 0;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #a86e2f 0%, #d0a44f 100%);
+      color: #fff9ea;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid #8f5c25;
+    }
+
+    .info-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background-color: #f9f0de;
+      border: 1px dashed #bb8c43;
+      border-radius: 8px;
+    }
+
+    .info-box p {
+      margin: 0 0 6px 0;
+    }
+
+    .link-box {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background-color: #f9f0de;
+      border: 1px dashed #bb8c43;
+      border-radius: 8px;
+      word-break: break-all;
+    }
+
+    .link-box a {
+      color: #6a431f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 22px;
+      font-size: 13px;
+      color: #7d5b35;
+    }
+
+    @media only screen and (max-width: 620px) {
+      .hero,
+      .content {
+        padding: 22px;
+      }
+
+      .title {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="shell">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="620" cellspacing="0" cellpadding="0" class="card">
+          <tr>
+            <td class="hero">
+              Zoo Betacom Roma
+            </td>
+          </tr>
+          <tr>
+            <td class="content">
+              <h2 class="title">Pagamento ricevuto</h2>
+
+              <p style="margin:0 0 14px 0;">
+                Buongiorno <strong>{{username}}</strong>,
+              </p>
+
+              <p style="margin:0 0 14px 0;">
+                Il pagamento del tuo ordine è stato registrato correttamente.
+              </p>
+
+              <p style="margin:0 0 14px 0;">
+                In allegato trovi la ricevuta PDF del tuo acquisto.
+              </p>
+
+              <div class="info-box">
+                <p><strong>ID ricevuta:</strong> {{idRicevuta}}</p>
+                <p><strong>Numero pagamento:</strong> {{pagamentoId}}</p>
+              </div>
+
+              <p style="margin:18px 0 12px 0;">
+                Se vuoi, puoi anche aprire la ricevuta online dal pulsante qui sotto:
+              </p>
+
+              <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 16px 0;">
+                <tr>
+                  <td>
+                    <a href="{{pdfLink}}"
+                       target="_blank"
+                       class="cta">
+                      Apri ricevuta
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0; font-size:14px; color:#6d4b2a;">
+                Se il pulsante non funziona, copia e incolla questo link nel browser:
+              </p>
+
+              <div class="link-box">
+                <a href="{{pdfLink}}" target="_blank">
+                  {{pdfLink}}
+                </a>
+              </div>
+
+              <p class="footer">
+                Il team di Roma1 di Betacom
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

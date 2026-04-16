@@ -32,26 +32,41 @@ public class MailImpl implements IMailServices{
 	
 	@Override
 	public void sendMail(MailReq req) throws Exception {
-		log.debug("sendMail []", req);
-		
-		if (req.getTo() == null || req.getOggetto() == null || req.getBody() == null)
-			throw new ZooException(msgS.get("mail_error"));
-		
-		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, "UTF-8");
-		
-		helper.setTo(req.getTo());
-		helper.setFrom(from);
-		helper.setSubject(req.getOggetto());
-		helper.setText(req.getBody(), true);
-		if (req.getAttachment() != null && req.getAttachment().length > 0) {
-			helper.addInline("email-bg", new ByteArrayResource(req.getAttachment()), "image/jpeg");
-		}
-		mailSender.send(mimeMessage);
-		log.debug("dopo  send");
-		
-		
-		
+	    log.debug("sendMail []", req);
+
+	    if (req.getTo() == null || req.getOggetto() == null || req.getBody() == null) {
+	        throw new ZooException(msgS.get("mail_error"));
+	    }
+
+	    MimeMessage mimeMessage = mailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+	    helper.setTo(req.getTo());
+	    helper.setFrom(from);
+	    helper.setSubject(req.getOggetto());
+	    helper.setText(req.getBody(), true);
+
+	    if (req.getAttachment() != null && req.getAttachment().length > 0) {
+	        helper.addInline(
+	            "email-bg",
+	            new ByteArrayResource(req.getAttachment()),
+	            "image/jpeg"
+	        );
+	    }
+
+	    if (req.getPdfRicevuta() != null && req.getPdfRicevuta().length > 0) {
+	      String nomeFile = (req.getPdfFileName() != null && !req.getPdfFileName().isBlank())
+	              ? req.getPdfFileName()
+	              : "ricevuta.pdf";
+
+	      helper.addAttachment(
+	          nomeFile,
+	          new ByteArrayResource(req.getPdfRicevuta())
+	      );
+	    }
+
+	    mailSender.send(mimeMessage);
+	    log.debug("dopo send");
 	}
 
 }
