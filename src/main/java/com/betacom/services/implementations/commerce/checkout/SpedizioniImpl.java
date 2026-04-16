@@ -129,4 +129,14 @@ public class SpedizioniImpl implements ISpedizioniServices{
 
 	    return Mapper.buildSpedizioniDTO(sped);
 	}
+
+	@Override
+	public SpedizioniDTO getByOrdineId(Integer id) throws Exception {
+	    log.debug("getByOrdineId {}", id);
+
+	    Spedizioni sped = speR.findByOrdine_Id(id)
+	            .orElseThrow(() -> new ZooException("Spedizione non trovata"));
+
+	    return Mapper.buildSpedizioniDTO(sped);
+	}
 }

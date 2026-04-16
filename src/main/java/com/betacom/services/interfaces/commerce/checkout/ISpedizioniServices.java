@@ -12,4 +12,5 @@ public interface ISpedizioniServices {
 	
 	List<SpedizioniDTO> list();
 	SpedizioniDTO getById(Integer id) throws Exception;
+	SpedizioniDTO getByOrdineId(Integer id) throws Exception;
 }

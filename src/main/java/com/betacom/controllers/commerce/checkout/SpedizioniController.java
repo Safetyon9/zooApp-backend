@@ -56,6 +56,21 @@ public class SpedizioniController {
         }
         return ResponseEntity.status(status).body(r);
     }
+    
+    @GetMapping("/findByOrdineId")
+    public ResponseEntity<Object> findByOrdineId(@RequestParam(required = true) Integer ordineId) {
+        Object r;
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            r = speS.getByOrdineId(ordineId);
+        } catch (Exception e) {
+            r = e.getMessage();
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return ResponseEntity.status(status).body(r);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Resp> create(@RequestBody(required = true) SpedizioniReq req) {
